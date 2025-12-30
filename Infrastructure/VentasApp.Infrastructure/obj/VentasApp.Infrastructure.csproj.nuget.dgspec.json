@@ -1,33 +1,39 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj": {}
+    "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj": {
+    "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\VentasApp.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj",
+        "projectUniqueName": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\VentasApp.Application.csproj",
         "projectName": "VentasApp.Application",
-        "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj",
-        "packagesPath": "C:\\Users\\Javier\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\obj\\",
+        "projectPath": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\VentasApp.Application.csproj",
+        "packagesPath": "C:\\Users\\Juanchi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Javier\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Juanchi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj": {
-                "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj"
+              "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj": {
+                "projectPath": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj"
               }
             }
           }
@@ -41,7 +47,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -62,26 +69,32 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.319/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj": {
+    "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj",
         "projectName": "VentasApp.Domain",
-        "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj",
-        "packagesPath": "C:\\Users\\Javier\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\obj\\",
+        "projectPath": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj",
+        "packagesPath": "C:\\Users\\Juanchi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Domain\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Javier\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Juanchi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -99,7 +112,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
@@ -120,34 +134,40 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.319/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj": {
+    "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj",
         "projectName": "VentasApp.Infrastructure",
-        "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj",
-        "packagesPath": "C:\\Users\\Javier\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\obj\\",
+        "projectPath": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj",
+        "packagesPath": "C:\\Users\\Juanchi\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Infrastructure\\VentasApp.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Javier\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\Juanchi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj": {
-                "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj"
+              "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\VentasApp.Application.csproj": {
+                "projectPath": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\VentasApp.Application.csproj"
               }
             }
           }
@@ -161,15 +181,25 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "10.0.100"
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.Data.Sqlite": {
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[10.0.1, )"
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -188,7 +218,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.319/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.101/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

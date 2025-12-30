@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Core",
+    "\\Core\\VentasApp.Domain",
+    "\\Infrastructure",
+    "\\Infrastructure\\VentasApp.Infrastructure"
+  ],
+  "SelectedNode": "\\VentasApp.sln",
+  "PreviewInSolutionExplorer": false
+}
