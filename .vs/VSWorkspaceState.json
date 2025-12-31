@@ -6,6 +6,6 @@
     "\\Infrastructure",
     "\\Infrastructure\\VentasApp.Infrastructure"
   ],
-  "SelectedNode": "\\VentasApp.sln",
+  "SelectedNode": "\\Core\\VentasApp.Domain\\Venta.cs",
   "PreviewInSolutionExplorer": false
 }

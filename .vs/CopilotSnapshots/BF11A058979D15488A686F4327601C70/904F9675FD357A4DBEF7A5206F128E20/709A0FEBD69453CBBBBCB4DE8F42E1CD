@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using Microsoft.EntityFrameworkCore;
 using VentasApp.Domain;
 
@@ -53,8 +53,7 @@ public class DatabaseContext : DbContext
             entity.Property(v => v.IdEstado)
                   .HasColumnName("id_estado")
                   .IsRequired();
-
-            entity.HasOne(v => v.Estado)
+            entity.HasOne<Estado>()
                   .WithMany()
                   .HasForeignKey(v => v.IdEstado);
         });
@@ -114,8 +113,7 @@ public class DatabaseContext : DbContext
             entity.Property(t => t.IdCliente)
                   .HasColumnName("id_cliente")
                   .IsRequired();
-
-            entity.HasOne(t => t.Cliente)
+            entity.HasOne<Cliente>()
                   .WithMany()
                   .HasForeignKey(t => t.IdCliente);
         });
@@ -142,8 +140,7 @@ public class DatabaseContext : DbContext
             entity.Property(p => p.IdVenta)
                   .HasColumnName("id_venta")
                   .IsRequired();
-
-            entity.HasOne(p => p.Venta)
+            entity.HasOne<Venta>()
                   .WithMany()
                   .HasForeignKey(p => p.IdVenta);
         });
@@ -155,7 +152,7 @@ public class DatabaseContext : DbContext
             entity.Property(m => m.IdMedioPago)
                   .HasColumnName("id_medio_pago")
                   .ValueGeneratedOnAdd();
-            entity.Property(m => m.TieneRecargo)
+            entity.Property(p => p.TieneRecargo)
                   .HasColumnName("tiene_recargo")
                   .HasColumnType("BOOLEAN")
                   .IsRequired();
@@ -182,20 +179,18 @@ public class DatabaseContext : DbContext
                   .HasColumnName("monto")
                   .HasColumnType("DOUBLE")
                   .IsRequired();
-
-            entity.HasOne(pm => pm.Pago)
+            entity.HasOne<Pago>()
                   .WithMany()
                   .HasForeignKey(pm => pm.IdPago);
-
-            entity.HasOne(pm => pm.MedioPago)
+            entity.HasOne<MedioPago>()
                   .WithMany()
                   .HasForeignKey(pm => pm.IdMedioPago);
         });
         /*
         modelBuilder.Entity<MedioPago>().HasData(
             new MedioPago { IdMedioPago = 1, Nombre = "Efectivo" },
-            new MedioPago { IdMedioPago = 2, Nombre = "Tarjeta de Crédito" },
-            new MedioPago { IdMedioPago = 3, Nombre = "Tarjeta de Débito" },
+            new MedioPago { IdMedioPago = 2, Nombre = "Tarjeta de CrÃ©dito" },
+            new MedioPago { IdMedioPago = 3, Nombre = "Tarjeta de DÃ©bito" },
             new MedioPago { IdMedioPago = 4, Nombre = "Transferencia Bancaria" }
         );
         */
@@ -203,23 +198,20 @@ public class DatabaseContext : DbContext
         modelBuilder.Entity<Compra>(entity =>
         {
             entity.ToTable("Compra");
-
-            entity.HasKey(c => new { c.IdVenta, c.IdCliente }); // Clave primaria compuesta
-
             entity.Property(c => c.IdVenta)
                   .HasColumnName("id_venta")
                   .IsRequired();
             entity.Property(c => c.IdCliente)
                   .HasColumnName("id_cliente")
                   .IsRequired();
-
-            entity.HasOne(c => c.Venta)
+            entity.HasOne<Venta>()
                   .WithMany()
                   .HasForeignKey(c => c.IdVenta);
-
-            entity.HasOne(c => c.Cliente)
+            entity.HasOne<Cliente>()
                   .WithMany()
                   .HasForeignKey(c => c.IdCliente);
+            entity.HasOne<Venta>()
+            entity.HasOne<Cliente>()
         });
     }
 }

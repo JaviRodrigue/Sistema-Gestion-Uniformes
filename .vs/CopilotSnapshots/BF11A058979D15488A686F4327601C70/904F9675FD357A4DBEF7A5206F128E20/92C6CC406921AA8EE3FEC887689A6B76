@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using Microsoft.EntityFrameworkCore;
 using VentasApp.Domain;
 
@@ -54,6 +54,7 @@ public class DatabaseContext : DbContext
                   .HasColumnName("id_estado")
                   .IsRequired();
 
+            // navigation: Venta -> Estado
             entity.HasOne(v => v.Estado)
                   .WithMany()
                   .HasForeignKey(v => v.IdEstado);
@@ -115,6 +116,7 @@ public class DatabaseContext : DbContext
                   .HasColumnName("id_cliente")
                   .IsRequired();
 
+            // navigation: Telefono -> Cliente
             entity.HasOne(t => t.Cliente)
                   .WithMany()
                   .HasForeignKey(t => t.IdCliente);
@@ -143,6 +145,7 @@ public class DatabaseContext : DbContext
                   .HasColumnName("id_venta")
                   .IsRequired();
 
+            // navigation: Pago -> Venta
             entity.HasOne(p => p.Venta)
                   .WithMany()
                   .HasForeignKey(p => p.IdVenta);
@@ -183,10 +186,12 @@ public class DatabaseContext : DbContext
                   .HasColumnType("DOUBLE")
                   .IsRequired();
 
+            // navigation: PagoMetodo -> Pago
             entity.HasOne(pm => pm.Pago)
                   .WithMany()
                   .HasForeignKey(pm => pm.IdPago);
 
+            // navigation: PagoMetodo -> MedioPago
             entity.HasOne(pm => pm.MedioPago)
                   .WithMany()
                   .HasForeignKey(pm => pm.IdMedioPago);
@@ -194,8 +199,8 @@ public class DatabaseContext : DbContext
         /*
         modelBuilder.Entity<MedioPago>().HasData(
             new MedioPago { IdMedioPago = 1, Nombre = "Efectivo" },
-            new MedioPago { IdMedioPago = 2, Nombre = "Tarjeta de Crédito" },
-            new MedioPago { IdMedioPago = 3, Nombre = "Tarjeta de Débito" },
+            new MedioPago { IdMedioPago = 2, Nombre = "Tarjeta de CrÃ©dito" },
+            new MedioPago { IdMedioPago = 3, Nombre = "Tarjeta de DÃ©bito" },
             new MedioPago { IdMedioPago = 4, Nombre = "Transferencia Bancaria" }
         );
         */
@@ -204,7 +209,8 @@ public class DatabaseContext : DbContext
         {
             entity.ToTable("Compra");
 
-            entity.HasKey(c => new { c.IdVenta, c.IdCliente }); // Clave primaria compuesta
+            // composite key because Compra has no separate IdCompra
+            entity.HasKey(c => new { c.IdVenta, c.IdCliente });
 
             entity.Property(c => c.IdVenta)
                   .HasColumnName("id_venta")
@@ -213,10 +219,12 @@ public class DatabaseContext : DbContext
                   .HasColumnName("id_cliente")
                   .IsRequired();
 
+            // navigation: Compra -> Venta
             entity.HasOne(c => c.Venta)
                   .WithMany()
                   .HasForeignKey(c => c.IdVenta);
 
+            // navigation: Compra -> Cliente
             entity.HasOne(c => c.Cliente)
                   .WithMany()
                   .HasForeignKey(c => c.IdCliente);
