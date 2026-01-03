@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "qngY2pK9tIs=",
+  "dgSpecHash": "ykQLJkTuAXA=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj",
+  "projectFilePath": "c:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Javier\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\Javier\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\6.0.0\\microsoft.bcl.asyncinterfaces.6.0.0.nupkg.sha512",

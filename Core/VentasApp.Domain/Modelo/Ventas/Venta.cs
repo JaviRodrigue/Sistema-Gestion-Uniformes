@@ -1,5 +1,3 @@
-using System;
-
 namespace VentasApp.Domain;
 
 public class Venta
@@ -11,7 +9,7 @@ public class Venta
     public double MontoPagado { get; private set; }
     public double SaldoPendiente { get; private set; }
     public int IdEstado { get; private set; }
-    public Estado Estado { get; private set; }
+    public Estado? Estado { get; private set; }
 
     private Venta() { }
 }

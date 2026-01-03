@@ -1,4 +1,3 @@
-using System;
 using Microsoft.EntityFrameworkCore;
 using VentasApp.Domain;
 
@@ -28,12 +27,12 @@ public class DatabaseContext : DbContext
             entity.ToTable("Venta");
             entity.HasKey(e => e.IdVenta);
             entity.Property(v => v.IdVenta)
-              .HasColumnName("id_venta")
-              .ValueGeneratedOnAdd();
+                  .HasColumnName("id_venta")
+                  .ValueGeneratedOnAdd();
             entity.Property(v => v.FechaVenta)
-              .HasColumnName("fecha_venta")
-              .HasColumnType("DATE")
-              .IsRequired();
+                  .HasColumnName("fecha_venta")
+                  .HasColumnType("DATE")
+                  .IsRequired();
             entity.Property(v => v.TipoVenta)
                   .HasColumnName("tipo_venta")
                   .HasColumnType("BOOLEAN")

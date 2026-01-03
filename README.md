@@ -1,12 +1,13 @@
 ```text
 VentasApp
 │
-├── src
+├── Core
 │   ├── VentasApp.Domain
 │   ├── VentasApp.Application
-│   ├── VentasApp.Infrastructure
-│   └── VentasApp.UI
-│
-└── tests
-    └── VentasApp.Domain.Tests
+|
+├── VentasApp.Infrastructure
+|
+└── VentasApp.UI
+|
+└── VentasApp.Domain.Tests
 ```

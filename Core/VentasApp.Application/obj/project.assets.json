@@ -32,11 +32,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj",
+      "projectUniqueName": "c:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj",
       "projectName": "VentasApp.Application",
-      "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj",
+      "projectPath": "c:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj",
       "packagesPath": "C:\\Users\\Javier\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\obj\\",
+      "outputPath": "c:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Javier\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -51,8 +51,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj": {
-              "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj"
+            "c:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj": {
+              "projectPath": "c:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj"
             }
           }
         }
