@@ -1,13 +1,14 @@
-﻿namespace VentasApp.Domain;
+﻿using VentasApp.Domain.Base;
 
-public class PagoMetodo
+namespace VentasApp.Domain.Modelo.Pago;
+
+public class PagoMetodo : Entidad
 {
-    public int IdPagoMetodo { get; private set; }
     public int IdPago { get; private set; }
     public Pago? Pago { get; private set; }
     public int IdMedioPago { get; private set; }
     public MedioPago? MedioPago { get; private set; }
-    public double Monto { get; private set; }
+    public decimal Monto { get; private set; }
 
     public PagoMetodo()
     {

@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj": {}
+    "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\VentasApp.Tests.csproj": {}
   },
   "projects": {
     "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj": {
@@ -124,14 +124,14 @@
         }
       }
     },
-    "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj": {
+    "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\VentasApp.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj",
-        "projectName": "VentasApp.Infrastructure",
-        "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\VentasApp.Tests.csproj",
+        "projectName": "VentasApp.Tests",
+        "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\VentasApp.Tests.csproj",
         "packagesPath": "C:\\Users\\Javier\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Javier\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -148,6 +148,9 @@
             "projectReferences": {
               "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj": {
                 "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\VentasApp.Application.csproj"
+              },
+              "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj": {
+                "projectPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\VentasApp.Domain.csproj"
               }
             }
           }
@@ -167,18 +170,21 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.EntityFrameworkCore": {
+            "Microsoft.NET.Test.Sdk": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[17.8.0, )"
             },
-            "Microsoft.EntityFrameworkCore.Sqlite": {
+            "coverlet.collector": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[6.0.0, )"
             },
-            "Microsoft.EntityFrameworkCore.Tools": {
-              "suppressParent": "All",
+            "xunit": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[2.5.3, )"
+            },
+            "xunit.runner.visualstudio": {
+              "target": "Package",
+              "version": "[2.5.3, )"
             }
           },
           "imports": [

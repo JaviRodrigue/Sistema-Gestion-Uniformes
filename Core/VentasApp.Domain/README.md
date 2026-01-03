@@ -19,12 +19,12 @@ GestionVentas.Domain
 │   │   └── MedioPago.cs        Representa un medio de pago configurable (recargos, estado, etc)
 │   │
 │   └── Clientes
-│       └── Cliente.cs          Representa un cliente el negocio, almacena los datos basicos de un cliente y permite su asosiacion opcional a una venta
-│
-├── ValueObjects
-│   ├── Dinero.cs               Representa un valor monetario, encapsula el monto y provee operaciones seguras para calculos financieros
-│   └── Telefono.cs             Representa un numero de telefono valido, Encapsula la validacion y el formato del numero como un objeto inmutable
-│
+│   |   └── Cliente.cs          Representa un cliente el negocio, almacena los datos basicos de un cliente y permite su asosiacion opcional a una venta
+│   |   └── Telefono.cs         Representa un numero de telefono valido, Encapsula la validacion y el formato del numero como un objeto inmutable
+|   |
+|   └── Categoria
+|       └── Categoria.cs   
+|
 └── Enums
     ├── EstadoVenta.cs          Define los posible estados de una venta, Se utiliza para controlar el flujo y las transciciones validas del proceso venta
     └── TipoVenta.cs            Define los tipo de venta admitidos por el sistema, permite diferenciar comportamientos segun si la venta es al contado, a credito o por pedido

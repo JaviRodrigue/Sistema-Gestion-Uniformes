@@ -193,8 +193,8 @@ public class DatabaseContext : DbContext
         /*
         modelBuilder.Entity<MedioPago>().HasData(
             new MedioPago { IdMedioPago = 1, Nombre = "Efectivo" },
-            new MedioPago { IdMedioPago = 2, Nombre = "Tarjeta de Crédito" },
-            new MedioPago { IdMedioPago = 3, Nombre = "Tarjeta de Débito" },
+            new MedioPago { IdMedioPago = 2, Nombre = "Tarjeta de Crï¿½dito" },
+            new MedioPago { IdMedioPago = 3, Nombre = "Tarjeta de Dï¿½bito" },
             new MedioPago { IdMedioPago = 4, Nombre = "Transferencia Bancaria" }
         );
         */
