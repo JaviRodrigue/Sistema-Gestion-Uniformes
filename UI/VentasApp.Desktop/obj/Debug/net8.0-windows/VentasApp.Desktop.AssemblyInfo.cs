@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VentasApp.Desktop")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb3a2b56118a6fb2ee2fcd4aa6dc750331ed3699")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+70a8d2c287cf0cc3973d985d031a4eb7add7b4c8")]
 [assembly: System.Reflection.AssemblyProductAttribute("VentasApp.Desktop")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VentasApp.Desktop")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

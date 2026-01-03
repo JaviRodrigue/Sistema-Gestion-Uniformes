@@ -1,0 +1,225 @@
+using System;
+using Microsoft.EntityFrameworkCore;
+using VentasApp.Domain;
+
+namespace VentasApp.Infrastructure;
+
+public class DatabaseContext : DbContext
+{
+    public DbSet<Venta> ventas { get; set; }
+    public DbSet<Estado> estados { get; set; }
+    public DbSet<Compra> compras { get; set; }
+    public DbSet<Cliente> clientes { get; set; }
+    public DbSet<Telefono> telefonos { get; set; }
+    public DbSet<Pago> pagos { get; set; }
+    public DbSet<PagoMetodo> pagoMetodos { get; set; }
+    public DbSet<MedioPago> medioPagos { get; set; }
+
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("data source=Database.sqlite");
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Venta>(entity =>
+        {
+            entity.ToTable("Venta");
+            entity.HasKey(e => e.IdVenta);
+            entity.Property(v => v.IdVenta)
+              .HasColumnName("id_venta")
+              .ValueGeneratedOnAdd();
+            entity.Property(v => v.FechaVenta)
+              .HasColumnName("fecha_venta")
+              .HasColumnType("DATE")
+              .IsRequired();
+            entity.Property(v => v.TipoVenta)
+                  .HasColumnName("tipo_venta")
+                  .HasColumnType("BOOLEAN")
+                  .IsRequired();
+            entity.Property(v => v.MontoTotal)
+                  .HasColumnName("monto_total")
+                  .HasColumnType("DOUBLE")
+                  .IsRequired();
+            entity.Property(v => v.MontoPagado)
+                  .HasColumnName("monto_pagado")
+                  .HasColumnType("DOUBLE")
+                  .IsRequired();
+            entity.Property(v => v.SaldoPendiente)
+                  .HasColumnName("saldo_pendiente")
+                  .HasColumnType("DOUBLE")
+                  .IsRequired();
+            entity.Property(v => v.IdEstado)
+                  .HasColumnName("id_estado")
+                  .IsRequired();
+
+            entity.HasOne(v => v.Estado)
+                  .WithMany()
+                  .HasForeignKey(v => v.IdEstado);
+        });
+
+        modelBuilder.Entity<Estado>(entity =>
+        {
+            entity.ToTable("Estado");
+            entity.HasKey(e => e.IdEstado);
+            entity.Property(e => e.IdEstado)
+                  .HasColumnName("id_estado")
+                  .ValueGeneratedOnAdd();
+            entity.Property(e => e.Nombre)
+                  .HasColumnName("nombre")
+                  .HasColumnType("VARCHAR(50)")
+                  .IsRequired();
+        });
+        /*
+        modelBuilder.Entity<Estado>().HasData(
+            new Estado { IdEstado = 1, Nombre = "Pendiente" },
+            new Estado { IdEstado = 2, Nombre = "Completada" },
+            new Estado { IdEstado = 3, Nombre = "Cancelada" }
+        );
+        */
+
+        modelBuilder.Entity<Cliente>(entity =>
+        {
+            entity.ToTable("Cliente");
+            entity.HasKey(e => e.IdCliente);
+            entity.Property(c => c.IdCliente)
+                  .HasColumnName("id_cliente")
+                  .ValueGeneratedOnAdd();
+            entity.Property(c => c.DNI)
+                  .HasColumnName("dni")
+                  .HasColumnType("BIGINT")
+                  .IsRequired();
+            entity.Property(c => c.Nombre)
+                  .HasColumnName("nombre")
+                  .HasColumnType("VARCHAR(100)")
+                  .IsRequired();
+            entity.Property(c => c.FechaAlta)
+                  .HasColumnName("fecha_alta")
+                  .HasColumnType("DATE")
+                  .IsRequired();
+        });
+
+        modelBuilder.Entity<Telefono>(entity =>
+        {
+            entity.ToTable("Telefono");
+            entity.HasKey(e => e.IdTelefono);
+            entity.Property(t => t.IdTelefono)
+                  .HasColumnName("id_telefono")
+                  .ValueGeneratedOnAdd();
+            entity.Property(t => t.Numero)
+                  .HasColumnName("numero")
+                  .HasColumnType("INTEGER")
+                  .IsRequired();
+            entity.Property(t => t.IdCliente)
+                  .HasColumnName("id_cliente")
+                  .IsRequired();
+
+            entity.HasOne(t => t.Cliente)
+                  .WithMany()
+                  .HasForeignKey(t => t.IdCliente);
+        });
+
+        modelBuilder.Entity<Pago>(entity =>
+        {
+            entity.ToTable("Pago");
+            entity.HasKey(e => e.IdPago);
+            entity.Property(p => p.IdPago)
+                  .HasColumnName("id_pago")
+                  .ValueGeneratedOnAdd();
+            entity.Property(p => p.Monto)
+                  .HasColumnName("monto")
+                  .HasColumnType("DOUBLE")
+                  .IsRequired();
+            entity.Property(p => p.FechaPago)
+                  .HasColumnName("fecha_pago")
+                  .HasColumnType("DATE")
+                  .IsRequired();
+            entity.Property(p => p.EsSenia)
+                  .HasColumnName("es_senia")
+                  .HasColumnType("BOOLEAN")
+                  .IsRequired();
+            entity.Property(p => p.IdVenta)
+                  .HasColumnName("id_venta")
+                  .IsRequired();
+
+            entity.HasOne(p => p.Venta)
+                  .WithMany()
+                  .HasForeignKey(p => p.IdVenta);
+        });
+
+        modelBuilder.Entity<MedioPago>(entity =>
+        {
+            entity.ToTable("MedioPago");
+            entity.HasKey(e => e.IdMedioPago);
+            entity.Property(m => m.IdMedioPago)
+                  .HasColumnName("id_medio_pago")
+                  .ValueGeneratedOnAdd();
+            entity.Property(m => m.TieneRecargo)
+                  .HasColumnName("tiene_recargo")
+                  .HasColumnType("BOOLEAN")
+                  .IsRequired();
+            entity.Property(m => m.Nombre)
+                  .HasColumnName("nombre")
+                  .HasColumnType("VARCHAR(50)")
+                  .IsRequired();
+        });
+
+        modelBuilder.Entity<PagoMetodo>(entity =>
+        {
+            entity.ToTable("PagoMetodo");
+            entity.HasKey(e => e.IdPagoMetodo);
+            entity.Property(pm => pm.IdPagoMetodo)
+                  .HasColumnName("id_pago_metodo")
+                  .ValueGeneratedOnAdd();
+            entity.Property(pm => pm.IdPago)
+                  .HasColumnName("id_pago")
+                  .IsRequired();
+            entity.Property(pm => pm.IdMedioPago)
+                  .HasColumnName("id_medio_pago")
+                  .IsRequired();
+            entity.Property(pm => pm.Monto)
+                  .HasColumnName("monto")
+                  .HasColumnType("DOUBLE")
+                  .IsRequired();
+
+            entity.HasOne(pm => pm.Pago)
+                  .WithMany()
+                  .HasForeignKey(pm => pm.IdPago);
+
+            entity.HasOne(pm => pm.MedioPago)
+                  .WithMany()
+                  .HasForeignKey(pm => pm.IdMedioPago);
+        });
+        /*
+        modelBuilder.Entity<MedioPago>().HasData(
+            new MedioPago { IdMedioPago = 1, Nombre = "Efectivo" },
+            new MedioPago { IdMedioPago = 2, Nombre = "Tarjeta de Crédito" },
+            new MedioPago { IdMedioPago = 3, Nombre = "Tarjeta de Débito" },
+            new MedioPago { IdMedioPago = 4, Nombre = "Transferencia Bancaria" }
+        );
+        */
+
+        modelBuilder.Entity<Compra>(entity =>
+        {
+            entity.ToTable("Compra");
+
+            entity.HasKey(c => new { c.IdVenta, c.IdCliente }); // Clave primaria compuesta
+
+            entity.Property(c => c.IdVenta)
+                  .HasColumnName("id_venta")
+                  .IsRequired();
+            entity.Property(c => c.IdCliente)
+                  .HasColumnName("id_cliente")
+                  .IsRequired();
+
+            entity.HasOne(c => c.Venta)
+                  .WithMany()
+                  .HasForeignKey(c => c.IdVenta);
+
+            entity.HasOne(c => c.Cliente)
+                  .WithMany()
+                  .HasForeignKey(c => c.IdCliente);
+        });
+    }
+}
