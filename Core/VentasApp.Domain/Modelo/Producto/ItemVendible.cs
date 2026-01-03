@@ -1,10 +1,12 @@
+namespace VentasApp.Domain.Modelo.Producto;
 using VentasApp.Domain.Base;
 
-namespace VentasApp.Domain.Modelo.Producto;
 
 public class ItemVendible : Entidad
 {
     public int IdProducto {get; private set;}
+    public Producto Producto {get;}
+
     public int IdStock {get; private set;}
 
     public string? Nombre {get ; private set ;}
