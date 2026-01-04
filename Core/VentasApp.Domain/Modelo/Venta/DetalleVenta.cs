@@ -4,16 +4,22 @@ namespace VentasApp.Domain.Modelo.Venta;
 public class DetalleVenta : Entidad
 {
     public int IdItemVendible {get ; private set;}
-    public int IdVenta {get ; private set;}
     public int Cantidad {get ; private set;}
     public decimal PrecioUnitario {get; private set;}
     public decimal SubTotal => Cantidad * PrecioUnitario;
 
     protected DetalleVenta(){}
-    public DetalleVenta(int idItem,int idVenta, int cantidad, decimal precioUnitario)
+    public DetalleVenta(int idItem, int cantidad, decimal precioUnitario)
     {
+        if(cantidad <= 0)
+        {
+            throw new ExcepcionDominio("La cantidad debe ser mayor a cero");
+        }
+        if(precioUnitario <= 0)
+        {
+            throw new ExcepcionDominio("El precio unitario debe ser mayor a cero");
+        }
         this.IdItemVendible = idItem;
-        this.IdVenta = idVenta;
         this.Cantidad = cantidad;
         this.PrecioUnitario = precioUnitario;
     }
