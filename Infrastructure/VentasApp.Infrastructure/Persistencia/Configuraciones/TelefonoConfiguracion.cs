@@ -15,7 +15,7 @@ using VentasApp.Domain.Modelo.Cliente;
                   .ValueGeneratedOnAdd();
             builder.Property(t => t.Numero)
                   .HasColumnName("numero")
-                  .HasColumnType("INTEGER")
+                  .HasColumnType("VARCHAR(20)")
                   .IsRequired();
             builder.Property(t => t.IdCliente)
                   .HasColumnName("id_cliente")
