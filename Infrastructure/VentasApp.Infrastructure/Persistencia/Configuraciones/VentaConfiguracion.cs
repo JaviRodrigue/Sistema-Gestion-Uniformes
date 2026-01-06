@@ -24,6 +24,12 @@ using VentasApp.Domain.Modelo.Venta;
             builder.Property(v => v.SaldoPendiente)
                    .HasColumnType("DOUBLE)");
 
+              builder.HasMany(v => v.Detalles)
+                     .WithOne()
+                     .HasForeignKey("VentaId")
+                     .OnDelete(DeleteBehavior.Cascade);
+
+
             
         }
     }
