@@ -6,6 +6,7 @@ public class ObtenerVentaUseCase{
     
     private readonly IVentaRepository _ventaRepository;
 
+
     public ObtenerVentaUseCase(IVentaRepository ventaRepository)
     {
         _ventaRepository = ventaRepository;

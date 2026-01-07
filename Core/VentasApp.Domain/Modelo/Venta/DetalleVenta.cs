@@ -24,4 +24,24 @@ public class DetalleVenta : Entidad
         this.PrecioUnitario = precioUnitario;
     }
 
+    internal void ModificarPrecio(decimal precio)
+    {
+        if(precio <= 0)
+        {
+            throw new ExcepcionDominio("El precio debe ser mayor a 0");
+        }
+        PrecioUnitario = precio;
+    }
+
+    internal void ModificarCantidad(int cantidad)
+    {
+        if(cantidad <= 0)
+        {
+            throw new ExcepcionDominio("La cantidad debe ser mayor a 0");
+        }
+        this.Cantidad = cantidad;
+    }
+
+
+
 }

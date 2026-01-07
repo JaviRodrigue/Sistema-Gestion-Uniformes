@@ -27,12 +27,20 @@ public class Venta : Entidad
 
     public void AgregarDetalle(int itemVendible, int cantidad, decimal precioUnitario)
     {
+        if(Estado != EstadoVenta.Pendiente)
+        {
+            throw new ExcepcionDominio("Solo se puede agregar items a una venta pendiente");
+        }
         var detalle = new DetalleVenta(itemVendible,cantidad,precioUnitario);
         _detalles.Add(detalle);
         RecalcularTotal();
     }
     public void Confirmar()
     {
+        if(Estado != EstadoVenta.Pendiente)
+        {
+            throw new ExcepcionDominio("La venta no puede confirmarse en su estado actual");
+        }
         if(!_detalles.Any())
         {
             throw new ExcepcionDominio("La venta debe tener al menos un item");
@@ -49,6 +57,10 @@ public class Venta : Entidad
         if(monto <= 0)
         {
             throw new ExcepcionDominio("El monto debe ser mayor a 0");
+        }
+        if(this.MontoPagado + monto > this.MontoTotal)
+        {
+            throw new ExcepcionDominio("El monto excede al total de la venta");
         }
         
         this.MontoPagado += monto;
@@ -71,5 +83,29 @@ public class Venta : Entidad
     private void RecalcularTotal()
     {
         this.MontoTotal = _detalles.Sum(d => d.SubTotal);
+    }
+
+    public void EliminarDetalle(int idDetalle)
+    {
+        if(Estado != EstadoVenta.Pendiente)
+        {
+            throw new ExcepcionDominio("No se puede eliminar un detalle de una venta confirmada");
+        }
+
+        var detalle = _detalles.FirstOrDefault(d => d.Id == idDetalle) ?? throw new ExcepcionDominio("Detalle no encontrado");
+        _detalles.Remove(detalle);
+        RecalcularTotal();
+    }
+
+    public void ModificarDetalle(int idDetalle, int cantidad, decimal precio)
+    {
+        if(Estado != EstadoVenta.Pendiente)
+        {
+            throw new ExcepcionDominio("No se puede modificar un detalle de una venta confirmada");
+        }
+        var detalle = _detalles.FirstOrDefault(d => d.Id == idDetalle) ?? throw new ExcepcionDominio("El detalle no existe");
+        detalle.ModificarPrecio(precio);
+        detalle.ModificarCantidad(cantidad);
+        RecalcularTotal();
     }
 }
