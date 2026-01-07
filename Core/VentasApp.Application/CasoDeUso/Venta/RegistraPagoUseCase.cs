@@ -6,10 +6,12 @@ using VentasApp.Domain.Modelo.Venta;
 public class RegistrarPagoUseCase
 {
     private readonly IVentaRepository _ventaRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public RegistrarPagoUseCase(IVentaRepository ventaRepository)
+    public RegistrarPagoUseCase(IVentaRepository ventaRepository, IUnitOfWork unit)
     {
         _ventaRepository = ventaRepository;
+        _unitOfWork = unit;
     }
 
     public async Task EjecutarAsync(int idVenta, decimal monto)
@@ -17,6 +19,6 @@ public class RegistrarPagoUseCase
         //Verifico que la venta exista
         var venta = await _ventaRepository.ObtenerPorId(idVenta) ?? throw new Exception("La venta no existe");
         venta.RegistrarPago(monto);
-        await _ventaRepository.Actualizar(venta);
+        await _unitOfWork.SaveChanges();
     }
 }

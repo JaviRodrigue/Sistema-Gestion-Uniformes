@@ -10,6 +10,7 @@ public class Producto : Entidad
     public decimal Ganancia => PrecioVenta - Costo;
     public Categoria Categoria {get;}
 
+
     public Producto(int id_categoria,string nombre, decimal costo, decimal precioVenta)
     {
         this.IdCategoria = id_categoria;

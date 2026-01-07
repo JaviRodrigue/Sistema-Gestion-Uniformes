@@ -1,21 +1,22 @@
 namespace VentasApp.Application.CasoDeUso.Venta;
-using VentasApp.Application.Interfaces;
 using VentasApp.Application.Interfaces.Repositorios;
-using VentasApp.Domain.Modelo.Venta;
+
 
 public class AnularVentaUseCase
 {
     private readonly IVentaRepository _ventaRepository;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public AnularVentaUseCase(IVentaRepository ventaRepository)
+    public AnularVentaUseCase(IVentaRepository ventaRepository, IUnitOfWork unit)
     {
         _ventaRepository = ventaRepository;
+        _unitOfWork = unit;
     }
 
     public async Task EjecutarAsync(int idVenta)
     {
         var venta = await _ventaRepository.ObtenerPorId(idVenta) ?? throw new Exception("La venta no existe");
         venta.AnularVenta();
-        await _ventaRepository.Actualizar(venta);
+        await _unitOfWork.SaveChanges();
     }
 }

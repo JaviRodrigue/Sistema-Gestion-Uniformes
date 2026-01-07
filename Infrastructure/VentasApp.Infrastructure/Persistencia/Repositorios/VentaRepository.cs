@@ -20,14 +20,14 @@ public class VentaRepository : IVentaRepository
 
     public async Task<Venta?> ObtenerPorId(int idVenta)
     {
-        return (await _context.Ventas.Include(v => v.Detalles)
-                                    .FirstOrDefaultAsync(v => v.Id == idVenta));
+        return await _context.Ventas.Include(v => v.Detalles)
+                                    .FirstOrDefaultAsync(v => v.Id == idVenta);
     }
 
     public async Task<List<Venta>> ObtenerTodas()
     {
-        return (await _context.Ventas.OrderByDescending(v => v.FechaVenta)
-                                    .ToListAsync());
+        return await _context.Ventas.OrderByDescending(v => v.FechaVenta)
+                                    .ToListAsync();
     }
 
     public Task Actualizar(Venta venta)

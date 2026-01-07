@@ -21,7 +21,7 @@ public class Venta : Entidad
         this.TipoVenta = tipoVenta;
         this.MontoPagado = 0;
         this.MontoTotal = 0;
-        this.Estado = EstadoVenta.SinPagar;
+        this.Estado = EstadoVenta.Pendiente;
         this.FechaVenta = DateTime.Now;
     }
 
