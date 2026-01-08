@@ -4,7 +4,8 @@ namespace VentasApp.Domain.Modelo.Categoria;
 
 public class Categoria : Entidad
 {
-    public string Nombre {get; private set;}
+    //Tuve que poner =null! porque me tiraba advertencia de posibles referencias a null
+    public string Nombre {get; private set;} = null!;
 
     protected Categoria(){}
     public Categoria(string nombre)

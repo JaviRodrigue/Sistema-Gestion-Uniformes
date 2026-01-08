@@ -1,7 +1,8 @@
 namespace VentasApp.Application.DTOs.Categoria;
 
-public class ActualizarCategoriaDto
+public class CategoriaDto
 {
     //Tuve que poner =null! porque me tiraba advertencia de posibles referencias a null
+    public int Id{get;set;}
     public string Nombre{get;set;} = null!;
 }
