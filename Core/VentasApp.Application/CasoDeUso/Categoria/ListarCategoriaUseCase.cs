@@ -16,7 +16,8 @@ public class ListarCategoriaUseCase
     {
         var categorias = await _repository.ObtenerTodasCategorias();
 
-        return categorias.Select(c => new CategoriaDto
+        return categorias.Where(c => c.Activa)
+        .Select(c => new CategoriaDto
         {
             Id = c.Id,
             Nombre = c.Nombre

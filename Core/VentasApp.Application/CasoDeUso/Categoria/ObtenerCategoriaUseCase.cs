@@ -23,7 +23,8 @@ public class ObtenerCategoriaUseCase
         return new CategoriaDto
         {
             Id = categoria.Id,
-            Nombre = categoria.Nombre
+            Nombre = categoria.Nombre,
+            Activa = categoria.Activa
         };
     }
 }
