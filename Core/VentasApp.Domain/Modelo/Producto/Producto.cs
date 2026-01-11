@@ -10,7 +10,9 @@ public class Producto : Entidad
     public decimal Ganancia => PrecioVenta - Costo;
     public bool Activo;
     private readonly List<ItemVendible> _itemVendibles = new();
-    public IReadOnlyCollection<ItemVendible> ItemsVendibles() => _itemVendibles.AsReadOnly();
+    public IReadOnlyCollection<ItemVendible> ItemsVendibles 
+    => _itemVendibles;
+
 
     protected Producto(){}
     public Producto(int id_categoria,string nombre, decimal costo, decimal precioVenta)
