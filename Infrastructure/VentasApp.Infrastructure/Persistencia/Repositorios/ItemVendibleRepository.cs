@@ -38,5 +38,4 @@ public class ItemVendibleRepository : IItemVendibleRepository
                     .FirstOrDefaultAsync(i => i.CodigoBarra == codigo);
     }
 
-
 }
