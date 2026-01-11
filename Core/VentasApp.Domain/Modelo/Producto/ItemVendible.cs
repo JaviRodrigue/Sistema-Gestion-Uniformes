@@ -5,10 +5,11 @@ using VentasApp.Domain.Base;
 public class ItemVendible : Entidad
 {
     public int IdProducto {get; private set;}
-    public Producto Producto {get;}
-    public string? Nombre {get ; private set ;}
-    public string? CodigoBarra{get ; private set;}
+    public Producto Producto {get;} = null!;
+    public string Nombre {get ; private set;} = null!;
+    public string CodigoBarra{get ; private set;} = null!;
     public string? Talle {get; private set;}
+    public bool Activado{get; private set;}
 
     protected ItemVendible(){}
 
@@ -18,6 +19,7 @@ public class ItemVendible : Entidad
         CambiarNombre(nombre);
         CambiarCodigoBarras(codigo);
         this.Talle = talle;
+        Activado = true;
     }
 
     public void CambiarNombre(string nombre)
@@ -39,6 +41,13 @@ public class ItemVendible : Entidad
         this.CodigoBarra = cod;
     }
 
+    public void CambiarTalle(string? talle)
+    {
+        Talle = talle;
+    }
 
-
+    public void Desactivar()
+    {
+        Activado = false;
+    }
 }
