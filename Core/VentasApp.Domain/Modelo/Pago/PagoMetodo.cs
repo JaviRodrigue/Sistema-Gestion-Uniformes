@@ -10,7 +10,16 @@ public class PagoMetodo : Entidad
     public MedioPago? MedioPago { get; private set; }
     public decimal Monto { get; private set; }
 
-    public PagoMetodo()
+    protected PagoMetodo(){}
+    public PagoMetodo(int idMedioPago, decimal monto)
     {
+        if(monto <= 0)
+        {
+            throw new ExcepcionDominio("El monto debe ser mayor a 0");
+        }
+        this.IdMedioPago = idMedioPago;
+        this.Monto = monto;
     }
+
+    
 }
