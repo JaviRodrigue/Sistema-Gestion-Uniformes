@@ -1,0 +1,9 @@
+using VentasApp.Domain.Modelo.Pago;
+
+namespace VentasApp.Application.Interfaces.Repositorios;
+
+public interface IPagoRepository
+{
+    Task Agregar(Pago pago);
+    Task<List<Pago>> ObtenerPorVenta(int idVenta);
+}
