@@ -20,9 +20,6 @@ namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
 
             builder.Property(d => d.SubTotal)
                    .HasColumnType("DOUBLE");
-            
-            builder.Property(d =>d.IdVenta)
-                    .IsRequired();
                     
         }
     }

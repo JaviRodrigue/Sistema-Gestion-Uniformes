@@ -4,10 +4,31 @@ namespace VentasApp.Domain.Modelo.Categoria;
 
 public class Categoria : Entidad
 {
-    public string Nombre {get; private set;}
+    //Tuve que poner =null! porque me tiraba advertencia de posibles referencias a null
+    public string Nombre {get; private set;} = null!;
+    public bool Activa {get; private set;}
 
+    protected Categoria(){}
     public Categoria(string nombre)
     {
-        this.Nombre = nombre;
+        CambiarNombre(nombre);
+        this.Activa = true;
     }
+
+    public void CambiarNombre(string nombre)
+    {
+        if (string.IsNullOrWhiteSpace(nombre))
+        {
+            throw new ExcepcionDominio("El nombre debe ser obligatorio");
+        }
+        Nombre = nombre.Trim();
+        Nombre = Nombre.ToLower();
+    }
+
+    public void Desactivar()
+    {
+        this.Activa = false;
+    }
+
+
 }

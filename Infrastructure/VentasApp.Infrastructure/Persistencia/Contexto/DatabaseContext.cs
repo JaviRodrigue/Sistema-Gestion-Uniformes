@@ -12,14 +12,21 @@ namespace VentasApp.Infrastructure.Persistencia.Contexto;
 
 public class DatabaseContext : DbContext
 {
+    //Ventas
     public DbSet<Venta> Ventas { get; set; }
     public DbSet<DetalleVenta> DetalleVenta { get; set; }
     public DbSet<Compra> Compras { get; set; }
+    
+    //Cliente
     public DbSet<Cliente> Clientes { get; set; }
     public DbSet<Telefono> Telefonos { get; set; }
+    
+    //Pagos
     public DbSet<Pago> Pagos { get; set; }
     public DbSet<PagoMetodo> PagoMetodos { get; set; }
     public DbSet<MedioPago> MedioPagos { get; set; }
+    
+    //Productos
     public DbSet<Producto> Producto { get; set; }
     public DbSet<ItemVendible> ItemVendible { get; set; }
     public DbSet<Stock> Stock { get; set; }

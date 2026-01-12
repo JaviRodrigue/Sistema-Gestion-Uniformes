@@ -4,6 +4,6 @@ namespace VentasApp.Domain.Enum;
 //Una venta por Pedido y una venta por Presencial, el cual es opcional guardar la informacion del cliente
 public enum TipoVenta
 {
-    Pedido,
-    Presencial
+    Pedido = 1,
+    Presencial = 2
 }
