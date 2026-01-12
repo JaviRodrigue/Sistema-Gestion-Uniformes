@@ -12,6 +12,10 @@ namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
 
             builder.HasKey(d => d.Id);
 
+            builder.HasOne<Venta>()
+              .WithMany(v => v.Detalles)
+              .HasForeignKey(d => d.IdVenta);
+
             builder.Property(d => d.Cantidad)
                    .IsRequired();
 

@@ -3,6 +3,7 @@ namespace VentasApp.Domain.Modelo.Venta;
 
 public class DetalleVenta : Entidad
 {
+    public int IdVenta{get;private set;}
     public int IdItemVendible {get ; private set;}
     public int Cantidad {get ; private set;}
     public decimal PrecioUnitario {get; private set;}
@@ -41,6 +42,8 @@ public class DetalleVenta : Entidad
         }
         this.Cantidad = cantidad;
     }
+
+
 
 
 

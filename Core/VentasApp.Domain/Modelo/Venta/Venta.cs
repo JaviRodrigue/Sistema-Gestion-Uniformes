@@ -11,6 +11,7 @@ public class Venta : Entidad
     public decimal MontoPagado { get; private set; }
     public decimal SaldoPendiente => MontoTotal - MontoPagado;
     public EstadoVenta Estado { get; private set; }
+    public bool EsPedido => TipoVenta == TipoVenta.Pedido;
 
     public IReadOnlyCollection<DetalleVenta> Detalles => _detalles.AsReadOnly();
 
