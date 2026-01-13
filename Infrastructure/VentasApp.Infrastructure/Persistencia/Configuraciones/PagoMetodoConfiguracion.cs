@@ -13,12 +13,15 @@ namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
             builder.Property(pm => pm.Id)
                   .HasColumnName("id_pago_metodo")
                   .ValueGeneratedOnAdd();
+
             builder.Property(pm => pm.IdPago)
                   .HasColumnName("id_pago")
                   .IsRequired();
+
             builder.Property(pm => pm.IdMedioPago)
                   .HasColumnName("id_medio_pago")
                   .IsRequired();
+
             builder.Property(pm => pm.Monto)
                   .HasColumnName("monto")
                   .HasColumnType("DOUBLE")
@@ -29,7 +32,8 @@ namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
                   .HasForeignKey(pm => pm.IdPago);
 
             builder.HasOne(pm => pm.MedioPago)
-                  .WithMany()
-                  .HasForeignKey(pm => pm.IdMedioPago);
+            .WithMany()
+            .HasForeignKey(pm => pm.IdMedioPago)
+            .OnDelete(DeleteBehavior.Restrict);
       }
     }

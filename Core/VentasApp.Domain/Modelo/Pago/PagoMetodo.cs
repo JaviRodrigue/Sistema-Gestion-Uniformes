@@ -7,7 +7,7 @@ public class PagoMetodo : Entidad
     public int IdPago { get; private set; }
     public Pago? Pago { get; private set; }
     public int IdMedioPago { get; private set; }
-    public MedioPago? MedioPago { get; private set; }
+    public MedioPago MedioPago { get; private set; } = null!;
     public decimal Monto { get; private set; }
 
     protected PagoMetodo(){}
