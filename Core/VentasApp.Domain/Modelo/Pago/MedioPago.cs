@@ -4,13 +4,30 @@ namespace VentasApp.Domain.Modelo.Pago;
 
 public class MedioPago : Entidad
 {
-    public string Nombre { get; set; }
-    public bool TieneRecargo { get; set; }
+    public string Nombre { get; private set; } = null!;
+    public bool TieneRecargo { get; private set; }
+    public bool Activo{get;private set;}
 
-    //protected MedioPago(){}
+    protected MedioPago(){}
     public MedioPago(string nombre, bool recargo)
     {
-        this.Nombre = nombre;
+        CambiarNombre(nombre);
         this.TieneRecargo = recargo;
+        this.Activo = true;
     }
+
+    public void Desactivar()
+    {
+        this.Activo = false;
+    }
+
+    public void CambiarNombre(string nombre)
+    {
+        if (string.IsNullOrWhiteSpace(nombre))
+        {
+            throw new ExcepcionDominio("El nombre del Medio de Pago es obligatorio");
+        }
+        this.Nombre = nombre.Trim();
+    }
+
 }
