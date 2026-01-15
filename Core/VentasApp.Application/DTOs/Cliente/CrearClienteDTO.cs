@@ -1,10 +1,10 @@
-using System;
+using System.Collections.Generic;
 
 namespace VentasApp.Application.DTOs.Cliente;
 
-public class CrearClienteDTO
+public class CrearClienteDto
 {
-    public long? Dni { get; set; }
-    public string? Telefono { get; set; }
-    public string? Nombre { get; set; }
+    public string Nombre { get; set; } = string.Empty;
+    public string Dni { get; set; } = string.Empty;
+    public List<string>? Telefonos { get; set; }
 }

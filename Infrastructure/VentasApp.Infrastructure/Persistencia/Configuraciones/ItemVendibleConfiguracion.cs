@@ -15,7 +15,7 @@ using VentasApp.Domain.Modelo.Producto;
 
             // Propiedades
             builder.Property(i => i.Nombre)
-                   .HasMaxLength(100)
+                   .HasMaxLength(150)
                    .IsRequired();
 
             builder.Property(i => i.CodigoBarra)
@@ -38,10 +38,11 @@ using VentasApp.Domain.Modelo.Producto;
 
 
             // Relación 1–1 con Stock (sin navegación en dominio)
-            builder.HasOne<Stock>()
-                   .WithOne()
-                   .HasForeignKey<ItemVendible>(i => i.IdStock)
-                   .OnDelete(DeleteBehavior.Restrict);
+       // builder.HasOne<Stock>()
+       //        .WithOne()
+       //        .HasForeignKey<ItemVendible>(i => i.IdStock)
+       //        .OnDelete(DeleteBehavior.Restrict);
         }
     }
 
+       

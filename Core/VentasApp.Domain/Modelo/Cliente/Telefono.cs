@@ -8,11 +8,21 @@ public class Telefono : Entidad
     public int IdCliente { get; private set; }
     public Cliente? Cliente { get; private set; }
 
-    protected Telefono(){}
+    protected Telefono() { }
+
+    // Se mantiene ctor anterior por compatibilidad si fuese necesario
     public Telefono(int idCliente, string numero, Cliente cliente)
     {
         this.Numero = numero;
-        this.IdCliente = cliente.Id;
+        this.IdCliente = idCliente;
         this.Cliente = cliente;
+    }
+
+    // Ctor práctico para crear teléfonos dentro del agregado Cliente
+    public Telefono(Cliente cliente, string numero)
+    {
+        this.Numero = numero;
+        this.Cliente = cliente;
+        this.IdCliente = cliente.Id;
     }
 }

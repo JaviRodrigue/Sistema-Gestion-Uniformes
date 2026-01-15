@@ -12,7 +12,7 @@ public class ProductoConfiguracion : IEntityTypeConfiguration<Producto>
 
         builder.Property(p => p.Nombre)
                .IsRequired()
-               .HasMaxLength(50);
+               .HasMaxLength(150);
 
         builder.Property(p => p.Costo)
                .HasColumnType("DOUBLE")
@@ -22,12 +22,11 @@ public class ProductoConfiguracion : IEntityTypeConfiguration<Producto>
                .HasColumnType("DOUBLE")
                .IsRequired();
 
-        builder.Property(p => p.Ganancia)
-               .HasColumnType("DOUBLE");
+       builder.Property(p => p.Activo)
+            .IsRequired();
 
-        builder.HasOne(p => p.Categoria)
-               .WithMany()
-               .HasForeignKey(p => p.IdCategoria)
-               .OnDelete(DeleteBehavior.Restrict);
+        builder.HasMany(p => p.ItemsVendibles)
+              .WithOne(i => i.Producto)
+              .HasForeignKey(i => i.IdProducto);
     }
 }

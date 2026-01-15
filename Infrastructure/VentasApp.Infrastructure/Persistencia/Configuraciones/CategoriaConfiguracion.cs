@@ -16,5 +16,7 @@ public class CategoriaConfiguracion : IEntityTypeConfiguration<Categoria>
 
         builder.HasIndex(c => c.Nombre)
                .IsUnique();
+        builder.Property(c => c.Activa)
+                .IsRequired();
     }
 }
