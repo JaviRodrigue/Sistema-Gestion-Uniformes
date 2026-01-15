@@ -17,7 +17,7 @@ public class CrearClienteCasoDeUso
 
     public async Task EjecutarAsync(CrearClienteDto dto)
     {
-        var cliente = new Cliente(dto.Nombre, dto.Dni);
+        var cliente = new VentasApp.Domain.Modelo.Cliente.Cliente(dto.Nombre, dto.Dni);
         if (dto.Telefonos != null && dto.Telefonos.Any())
         {
             cliente.ReemplazarTelefonos(dto.Telefonos);

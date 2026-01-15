@@ -1,0 +1,21 @@
+using System;
+using VentasApp.Application.Interfaces.Repositorios;
+
+namespace VentasApp.Application.CasoDeUso.Telefono;
+
+public class ObtenerTelefonoPorIdCasoDeUso
+{
+    public readonly ITelefonoRepository _repository;
+
+    public ObtenerTelefonoPorIdCasoDeUso(ITelefonoRepository repo)
+    {
+        _repository = repo;
+    }
+
+    public async Task<string> EjecutarAsync(int id)
+    {
+        var telefono = await _repository.ObtenerTelefonoPorId(id)
+            ?? throw new Exception("No se encontró el teléfono");
+        return telefono;
+    }
+}

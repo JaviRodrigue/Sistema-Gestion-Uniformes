@@ -4,6 +4,6 @@ namespace VentasApp.Application.DTOs.Cliente;
 
 public class AgregarTelefonoClienteDTO
 {
-  public int Id { get; set; }
-    public string Telefono { get; set; }
+  public int IdCliente { get; set; }
+    public string? Numero { get; set; }
 }
