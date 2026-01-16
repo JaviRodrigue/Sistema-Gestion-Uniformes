@@ -3,40 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\juanchi\\desktop\\sistema-gestion-uniformes\\core\\ventasapp.application\\casodeuso\\telefono\\creartelefonocasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\telefono\\creartelefonocasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Telefono\\CrearTelefonoCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\VentasApp.Application\\CasoDeUso\\Telefono\\CrearTelefonoCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\juanchi\\desktop\\sistema-gestion-uniformes\\core\\ventasapp.application\\dtos\\cliente\\agregartelefonoclientedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\dtos\\cliente\\agregartelefonoclientedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ActualizarTelefonoCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ActualizarTelefonoCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\juanchi\\desktop\\sistema-gestion-uniformes\\core\\ventasapp.application\\casodeuso\\telefono\\eliminartelefonocasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\telefono\\eliminartelefonocasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\DTOs\\Cliente\\AgregarTelefonoClienteDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\VentasApp.Application\\DTOs\\Cliente\\AgregarTelefonoClienteDTO.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\juanchi\\desktop\\sistema-gestion-uniformes\\core\\ventasapp.application\\casodeuso\\telefono\\actualizartelefonocasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\telefono\\actualizartelefonocasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\Interfaces\\Repositorios\\ITelefonoRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\VentasApp.Application\\Interfaces\\Repositorios\\ITelefonoRepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\juanchi\\desktop\\sistema-gestion-uniformes\\core\\ventasapp.application\\interfaces\\repositorios\\itelefonorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\interfaces\\repositorios\\itelefonorepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Telefono\\EliminarTelefonoCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\VentasApp.Application\\CasoDeUso\\Telefono\\EliminarTelefonoCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\juanchi\\desktop\\sistema-gestion-uniformes\\core\\ventasapp.application\\casodeuso\\telefono\\obtenertelefonoporidcasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\telefono\\obtenertelefonoporidcasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ObtenerTelefonoPorIdCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ObtenerTelefonoPorIdCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\juanchi\\desktop\\sistema-gestion-uniformes\\core\\ventasapp.application\\casodeuso\\telefono\\obtenertelefonosporclientecasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\telefono\\obtenertelefonosporclientecasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ObtenerTelefonosPorClienteCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ObtenerTelefonosPorClienteCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\juanchi\\desktop\\sistema-gestion-uniformes\\core\\ventasapp.application\\casodeuso\\telefono\\eliminartelefonosdeclientecasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\telefono\\eliminartelefonosdeclientecasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Telefono\\EliminarTelefonosDeClienteCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\VentasApp.Application\\CasoDeUso\\Telefono\\EliminarTelefonosDeClienteCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\juanchi\\desktop\\sistema-gestion-uniformes\\core\\ventasapp.application\\casodeuso\\cliente\\crearclientecasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\cliente\\crearclientecasodeuso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Cliente\\CrearClienteCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Core\\VentasApp.Application\\CasoDeUso\\Cliente\\CrearClienteCasoDeUso.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -56,14 +56,12 @@
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Telefono\\CrearTelefonoCasoDeUso.cs",
               "ToolTip": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Telefono\\CrearTelefonoCasoDeUso.cs",
               "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Telefono\\CrearTelefonoCasoDeUso.cs",
-              "ViewState": "AgIAAAwAAAAAAAAAAAAqwBkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T17:55:50.582Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-15T17:55:50.582Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
               "Title": "ActualizarTelefonoCasoDeUso.cs",
               "DocumentMoniker": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ActualizarTelefonoCasoDeUso.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ActualizarTelefonoCasoDeUso.cs",
@@ -71,12 +69,11 @@
               "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ActualizarTelefonoCasoDeUso.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T17:50:32.865Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-15T17:50:32.865Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AgregarTelefonoClienteDTO.cs",
               "DocumentMoniker": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\DTOs\\Cliente\\AgregarTelefonoClienteDTO.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\DTOs\\Cliente\\AgregarTelefonoClienteDTO.cs",
@@ -84,12 +81,11 @@
               "RelativeToolTip": "Core\\VentasApp.Application\\DTOs\\Cliente\\AgregarTelefonoClienteDTO.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T17:46:43.973Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-15T17:46:43.973Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 3,
               "Title": "ITelefonoRepository.cs",
               "DocumentMoniker": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\Interfaces\\Repositorios\\ITelefonoRepository.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\Interfaces\\Repositorios\\ITelefonoRepository.cs",
@@ -97,12 +93,11 @@
               "RelativeToolTip": "Core\\VentasApp.Application\\Interfaces\\Repositorios\\ITelefonoRepository.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAYwBAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T17:49:45.634Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-15T17:49:45.634Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 4,
               "Title": "EliminarTelefonoCasoDeUso.cs",
               "DocumentMoniker": "C:\\Users\\Juanchi\\Desktop\\Sistema-Gestion-Uniformes\\Core\\VentasApp.Application\\CasoDeUso\\Telefono\\EliminarTelefonoCasoDeUso.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Telefono\\EliminarTelefonoCasoDeUso.cs",
@@ -110,8 +105,7 @@
               "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Telefono\\EliminarTelefonoCasoDeUso.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAoAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T17:45:47.826Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-15T17:45:47.826Z"
             },
             {
               "$type": "Document",
@@ -123,8 +117,7 @@
               "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ObtenerTelefonoPorIdCasoDeUso.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAowBUAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T17:50:05.135Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-15T17:50:05.135Z"
             },
             {
               "$type": "Document",
@@ -136,8 +129,7 @@
               "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Telefono\\ObtenerTelefonosPorClienteCasoDeUso.cs",
               "ViewState": "AgIAAAQAAAAAAAAAAAAowBQAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T17:49:55.9Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-15T17:49:55.9Z"
             },
             {
               "$type": "Document",
@@ -149,8 +141,7 @@
               "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Telefono\\EliminarTelefonosDeClienteCasoDeUso.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T17:45:45.389Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-15T17:45:45.389Z"
             },
             {
               "$type": "Document",
@@ -162,8 +153,7 @@
               "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Cliente\\CrearClienteCasoDeUso.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-01-15T17:45:43.547Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-01-15T17:45:43.547Z"
             }
           ]
         }
