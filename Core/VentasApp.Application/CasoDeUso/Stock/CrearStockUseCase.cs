@@ -1,0 +1,36 @@
+namespace VentasApp.Application.CasoDeUso.Stock;
+using VentasApp.Application.DTOs.Stock;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Modelo.Producto;
+
+public class CrearStockUseCase
+{
+    public readonly IStockRepository _repository;
+    public readonly IUnitOfWork _unit;
+
+    public CrearStockUseCase(IStockRepository repo, IUnitOfWork unit)
+    {
+        _repository = repo;
+        _unit = unit;
+    }
+
+    public async Task<int> EjecutarAsync(CrearStockDto dto)
+    {
+        //Verifico si el item ya tiene stock asignado
+        var existe = await _repository.ObtenerPorItemVendible(dto.IdItemVendible);
+        if(existe != null)
+        {
+            throw new Exception("El item ya tiene un stock asignado");
+        }
+        var stock = new Stock(
+            dto.IdItemVendible,
+            dto.CantidadInicial,
+            dto.StockMinimo
+        );
+
+        await _repository.Agregar(stock);
+        //Guardo los cambios realizados
+        await _unit.SaveChanges();
+        return stock.Id;
+    }
+}
