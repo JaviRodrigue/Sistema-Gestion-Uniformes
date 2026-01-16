@@ -1,0 +1,15 @@
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\bin\Debug\net8.0\VentasApp.Application.deps.json
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\bin\Debug\net8.0\VentasApp.Application.dll
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\bin\Debug\net8.0\VentasApp.Application.pdb
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\bin\Debug\net8.0\VentasApp.Domain.dll
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\bin\Debug\net8.0\VentasApp.Domain.pdb
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\VentasApp.Application.csproj.AssemblyReference.cache
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\VentasApp.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\VentasApp.Application.AssemblyInfoInputs.cache
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\VentasApp.Application.AssemblyInfo.cs
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\VentasApp.Application.csproj.CoreCompileInputs.cache
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\VentasAp.3301118E.Up2Date
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\VentasApp.Application.dll
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\refint\VentasApp.Application.dll
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\VentasApp.Application.pdb
+C:\Users\Javier\Desktop\VentasApp\Core\VentasApp.Application\obj\Debug\net8.0\ref\VentasApp.Application.dll

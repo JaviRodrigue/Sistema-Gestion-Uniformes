@@ -1,7 +1,0 @@
-namespace VentasApp.Application.DTOs.Pago;
-
-public class PagoMetodoDetalleDto
-{
-    public string MedioPago{get;set;} = null!;
-    public decimal Monto{get;set;}
-}
