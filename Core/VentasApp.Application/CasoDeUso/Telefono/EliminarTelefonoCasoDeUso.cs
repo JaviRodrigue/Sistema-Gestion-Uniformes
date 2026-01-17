@@ -20,7 +20,8 @@ public class EliminarTelefonoCasoDeUso
         var existe = await _repository.ObtenerTelefonoPorId(idTelefono)
             ?? throw new Exception("No se encontró el teléfono");
 
-        await _repository.EliminarTelefono(idTelefono);
+        // Eliminación lógica: desactivar el teléfono en vez de borrarlo físicamente
+        await _repository.DesactivarTelefono(idTelefono);
         await _unit.SaveChanges();
     }
 }

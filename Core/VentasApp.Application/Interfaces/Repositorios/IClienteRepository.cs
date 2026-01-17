@@ -14,5 +14,6 @@ public interface IClienteRepository
     Task<List<Cliente>> ListarClientes();
     Task Actualizar(Cliente cliente);
     Task Eliminar(int id);
+    Task Desactivar(int id);
 }
 

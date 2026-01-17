@@ -8,10 +8,12 @@ public class Cliente : Entidad
     public string? Nombre { get; private set; }
     public DateTime FechaAlta { get; private set; }
     public List<Telefono> Telefonos { get; private set; }
+    public bool Activado { get; private set; }
 
     protected Cliente()
     {
         Telefonos = new List<Telefono>();
+        Activado = true;
     }
 
     public Cliente(string nombre, string dni)
@@ -20,6 +22,7 @@ public class Cliente : Entidad
         this.DNI = dni;
         this.FechaAlta = DateTime.Now;
         this.Telefonos = new List<Telefono>();
+        Activado = true;
     }
 
     public Cliente(string nombre, string dni, List<Telefono> telefonos)
@@ -28,6 +31,7 @@ public class Cliente : Entidad
         this.DNI = dni;
         this.FechaAlta = DateTime.Now;
         this.Telefonos = telefonos ?? new List<Telefono>();
+        Activado = true;
     }
 
     // Mutadores / comportamientos del agregado
@@ -58,5 +62,15 @@ public class Cliente : Entidad
             if (!string.IsNullOrWhiteSpace(n))
                 Telefonos.Add(new Telefono(this, n));
         }
+    }
+
+    public void Desactivar()
+    {
+        Activado = false;
+    }
+
+    public void Activar()
+    {
+        Activado = true;
     }
 }

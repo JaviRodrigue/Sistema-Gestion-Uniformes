@@ -16,7 +16,11 @@ public class EliminarTelefonosDeClienteCasoDeUso
 
     public async Task EjecutarAsync(int idCliente)
     {
-        await _repository.EliminarTelefonosPorClienteId(idCliente);
+        if (_repository is not null)
+        {
+                await _repository.DesactivarTelefonosPorClienteId(idCliente);
+        }
+
         await _unit.SaveChanges();
     }
 }

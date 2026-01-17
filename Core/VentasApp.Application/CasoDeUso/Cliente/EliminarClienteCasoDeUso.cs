@@ -19,7 +19,8 @@ public class EliminarClienteCasoDeUso
         var existe = await _repository.ObtenerClientePorId(idCliente)
             ?? throw new Exception("No se encontró el cliente");
 
-        await _repository.Eliminar(idCliente);
+        // Eliminación lógica: desactivar el cliente en vez de borrarlo físicamente
+        await _repository.Desactivar(idCliente);
         await _unit.SaveChanges();
     }
 }
