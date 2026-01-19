@@ -3,6 +3,7 @@ using VentasApp.Domain.Base;
 using VentasApp.Domain.Modelo.Venta;
 
 
+
 public class Pago : Entidad
 {
     private List<PagoMetodo> _metodos = new();

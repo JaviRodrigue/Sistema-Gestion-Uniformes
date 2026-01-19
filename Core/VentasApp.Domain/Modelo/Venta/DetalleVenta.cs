@@ -25,7 +25,7 @@ public class DetalleVenta : Entidad
         this.PrecioUnitario = precioUnitario;
     }
 
-    internal void ModificarPrecio(decimal precio)
+    public void ModificarPrecio(decimal precio)
     {
         if(precio <= 0)
         {
@@ -34,7 +34,7 @@ public class DetalleVenta : Entidad
         PrecioUnitario = precio;
     }
 
-    internal void ModificarCantidad(int cantidad)
+    public void ModificarCantidad(int cantidad)
     {
         if(cantidad <= 0)
         {

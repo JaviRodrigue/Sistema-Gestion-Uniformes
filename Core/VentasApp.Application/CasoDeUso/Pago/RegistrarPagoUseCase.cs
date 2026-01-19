@@ -38,12 +38,12 @@ public class RegistrarPagoUseCase
         var totalPagado = pagosPrevios.Sum(p => p.Total);
 
         //Llegado a este punto, creo el pago
-        var pago = new Pago(dto.IdVenta);
+        var pago = new Pago(dto.IdVenta, dto.EsSenia);
 
         foreach(var metodo in dto.Metodos)
         {
             var medio = await _repositoryMedioPago.ObtenerPorId(metodo.IdMedioPago) ?? throw new Exception("Medio de pago invalido");
-            pago.AgregarPago(medio, metodo.Monto);
+            pago.AgregarPago(medio.Id, metodo.Monto);
         }
 
         //valido si el pago tiene la menos un metodo de pago

@@ -1,0 +1,67 @@
+using Xunit;
+using Moq;
+using VentasApp.Application.CasoDeUso.Venta;
+using VentasApp.Application.DTOs.Venta;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Modelo.Venta;
+
+public class AgregarItemAVentaUseCaseTests
+{
+    private readonly Mock<IVentaRepository> _ventaRepoMock;
+    private readonly Mock<IUnitOfWork> _unitOfWorkMock;
+
+    public AgregarItemAVentaUseCaseTests()
+    {
+        _ventaRepoMock = new Mock<IVentaRepository>();
+        _unitOfWorkMock = new Mock<IUnitOfWork>();
+    }
+
+    [Fact]
+    public async Task AgregarItem_VentaExiste_AgregaDetalleYGuarda()
+    {
+        // Arrange
+        var venta = new Venta(VentasApp.Domain.Enum.TipoVenta.Presencial);
+
+        _ventaRepoMock
+            .Setup(r => r.ObtenerPorId(It.IsAny<int>()))
+            .ReturnsAsync(venta);
+
+        var useCase = new AgregarItemAVentaUseCase(
+            _ventaRepoMock.Object,
+            _unitOfWorkMock.Object
+        );
+
+        var dto = new AgregarDetalleDto
+        {
+            IdItemVendible = 1,
+            Cantidad = 2,
+            PrecioUnitario = 100
+        };
+
+        // Act
+        await useCase.EjecutarAsync(1, dto);
+
+        // Assert
+        Assert.Single(venta.Detalles);
+        Assert.Equal(200, venta.MontoTotal);
+
+        _unitOfWorkMock.Verify(u => u.SaveChanges(), Times.Once);
+    }
+
+    [Fact]
+    public async Task AgregarItem_VentaNoExiste_LanzaExcepcion()
+    {
+        _ventaRepoMock
+            .Setup(r => r.ObtenerPorId(It.IsAny<int>()))
+            .ReturnsAsync((Venta?)null);
+
+        var useCase = new AgregarItemAVentaUseCase(
+            _ventaRepoMock.Object,
+            _unitOfWorkMock.Object
+        );
+
+        await Assert.ThrowsAsync<Exception>(() =>
+            useCase.EjecutarAsync(1, new AgregarDetalleDto())
+        );
+    }
+}
