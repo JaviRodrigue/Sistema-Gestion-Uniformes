@@ -17,6 +17,10 @@ public class PagoMetodo : Entidad
         {
             throw new ExcepcionDominio("El monto debe ser mayor a 0");
         }
+        if(idMedioPago <= 0)
+        {
+            throw new ExcepcionDominio("Medio de pago invalido");
+        }
         this.IdMedioPago = idMedioPago;
         this.Monto = monto;
     }

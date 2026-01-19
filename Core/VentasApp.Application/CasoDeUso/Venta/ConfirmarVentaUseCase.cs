@@ -19,14 +19,25 @@ public class ConfirmarVentaUseCase
         //Verifico que la venta exista
         var venta = await _ventaRepository.ObtenerPorId(id) ?? throw new Exception("La venta no existe");
 
-        if (venta.EsPedido)
+        //Recorro todos los detalles de la venta pasada por parametro
+        //verifico si el stock existe
+        foreach(var detalle in venta.Detalles)
         {
-            foreach(var detalle in venta.Detalles)
+            var stock = await _repositoryStock.ObtenerPorItemVendible(detalle.IdItemVendible) ?? throw new Exception("No se encontro stock");
+
+            //Si la venta es un pedido, realizo una reserva en el stock
+            //Si no es pedido, directamente, descuento el stock disponible
+            //Las validaciones de si hay stock disponible, ya las realizo en el Dominio 
+            if (venta.EsPedido)
             {
-                var stock = await _repositoryStock.ObtenerPorItemVendible(detalle.IdItemVendible) ?? throw new Exception("No se encontro el stock");
-                stock.ConfirmarReserva(detalle.Cantidad);
+                stock.Reservar(detalle.Cantidad);
+            }
+            else
+            {
+                stock.Descontar(detalle.Cantidad);
             }
         }
+
         venta.Confirmar();
         await _unitOfWork.SaveChanges();
     }

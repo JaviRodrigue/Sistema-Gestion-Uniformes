@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("VentasApp.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3f09d8c3e014f131bdd617c815764adedb25ea5c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0cb266f1387a003117fdbd86b3a6bd5fc644428d")]
 [assembly: System.Reflection.AssemblyProductAttribute("VentasApp.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("VentasApp.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
