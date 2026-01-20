@@ -8,7 +8,7 @@ public interface IClienteRepository
 {
     Task Agregar(Cliente cliente);
     Task<Cliente?> ObtenerClientePorId(int id);
-    Task<Cliente?> ObtenerClientePorDni(long dni);
+    Task<Cliente?> ObtenerClientePorDni(string dni);
     Task<Cliente?> ObtenerClientePorTelefono(string telefono);
     Task<List<Cliente>> BuscarPorNombre(string nombre);
     Task<List<Cliente>> ListarClientes();

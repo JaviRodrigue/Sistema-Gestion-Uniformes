@@ -3,20 +3,15 @@ using VentasApp.Application.Interfaces.Repositorios;
 
 namespace VentasApp.Application.CasoDeUso.Cliente;
 
-public class EliminarClienteCasoDeUso
+public class EliminarClienteCasoDeUso(IClienteRepository repo, IUnitOfWork unit)
 {
-    public readonly IClienteRepository _repository;
-    public readonly IUnitOfWork _unit;
+    public readonly IClienteRepository _repository = repo;
+    public readonly IUnitOfWork _unit=unit;
 
-    public EliminarClienteCasoDeUso(IClienteRepository repo, IUnitOfWork unit)
-    {
-        _repository = repo;
-        _unit = unit;
-    }
 
     public async Task EjecutarAsync(int idCliente)
     {
-        var existe = await _repository.ObtenerClientePorId(idCliente)
+        _ = await _repository.ObtenerClientePorId(idCliente)
             ?? throw new Exception("No se encontró el cliente");
 
         // Eliminación lógica: desactivar el cliente en vez de borrarlo físicamente
