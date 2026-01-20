@@ -19,6 +19,8 @@ public class AnularVentaUseCase
     {
         //Verifico que venta exista
         var venta = await _ventaRepository.ObtenerPorId(idVenta) ?? throw new Exception("La venta no existe");
+        //Realizo un delete logico en venta
+        venta.AnularVenta();
         foreach(var detalle in venta.Detalles)
         {
             var stock = await _repositoryStock.ObtenerPorItemVendible(detalle.IdItemVendible) ?? throw new Exception("Stock no encontrado");
@@ -33,8 +35,6 @@ public class AnularVentaUseCase
                 stock.Aumentar(detalle.Cantidad);
             }
         }
-        //Realizo un delete logico en venta
-        venta.AnularVenta();
         await _unitOfWork.SaveChanges();
     }
 }
