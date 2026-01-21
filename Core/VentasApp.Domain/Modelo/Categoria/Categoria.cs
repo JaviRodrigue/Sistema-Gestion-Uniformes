@@ -22,7 +22,6 @@ public class Categoria : Entidad
             throw new ExcepcionDominio("El nombre debe ser obligatorio");
         }
         Nombre = nombre.Trim();
-        Nombre = Nombre.ToLower();
     }
 
     public void Desactivar()
