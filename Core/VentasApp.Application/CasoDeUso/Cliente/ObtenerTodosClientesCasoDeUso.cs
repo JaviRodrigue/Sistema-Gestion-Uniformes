@@ -6,14 +6,10 @@ using VentasApp.Application.Interfaces.Repositorios;
 
 namespace VentasApp.Application.CasoDeUso.Cliente;
 
-public class ObtenerTodosClientesCasoDeUso
+public class ObtenerTodosClientesCasoDeUso(IClienteRepository repo)
 {
-    public readonly IClienteRepository _repository;
+    public readonly IClienteRepository _repository=repo;
 
-    public ObtenerTodosClientesCasoDeUso(IClienteRepository repo)
-    {
-        _repository = repo;
-    }
 
     public async Task<List<BuscarClienteDTO>> EjecutarAsync()
     {
@@ -26,13 +22,10 @@ public class ObtenerTodosClientesCasoDeUso
                 {
                     Id = c.Id,
                     Nombre = c.Nombre,
-                    Telefono = c.Telefonos?.FirstOrDefault()?.Numero
+                    Dni = c.DNI,
+                    Telefonos = c.Telefonos?.Select(t => t.Numero).ToList(),
+                    FechaAlta = c.FechaAlta
                 };
-
-                if (long.TryParse(c.DNI, out var dni))
-                    dto.Dni = dni;
-                else
-                    dto.Dni = null;
 
                 return dto;
             })
