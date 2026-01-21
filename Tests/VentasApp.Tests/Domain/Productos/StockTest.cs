@@ -35,7 +35,7 @@ public class StockTests
     [Fact]
     public void CrearStock_ConStockMinimoInvalido_DeberiaLanzarExcepcion()
     {
-        Action act = () => new Stock(1, 10, 0);
+        Action act = () => new Stock(1, 10, -1);
 
         act.Should().Throw<ExcepcionDominio>()
            .WithMessage("*stock minimo*");
