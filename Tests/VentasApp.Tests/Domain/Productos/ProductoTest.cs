@@ -3,8 +3,7 @@ using VentasApp.Domain.Modelo.Productos;
 using VentasApp.Domain.Base;
 using Xunit;
 
-
-namespace VentasApp.Domain.Tests.Productos;
+namespace VentasApp.Tests.Domain.Productos;
 
 public class ProductoTests
 {
