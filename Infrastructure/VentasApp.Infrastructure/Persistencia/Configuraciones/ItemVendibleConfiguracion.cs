@@ -1,7 +1,7 @@
 namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VentasApp.Domain.Modelo.Producto;
+using VentasApp.Domain.Modelo.Productos;
 
     public class ItemVendibleConfiguracion : IEntityTypeConfiguration<ItemVendible>
     {

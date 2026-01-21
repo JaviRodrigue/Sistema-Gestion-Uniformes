@@ -4,7 +4,7 @@ using VentasApp.Domain.Modelo.Categoria;
 using VentasApp.Domain.Modelo.Pago;
 using VentasApp.Domain.Enum;
 using VentasApp.Domain.Modelo.Cliente;
-using VentasApp.Domain.Modelo.Producto;
+using VentasApp.Domain.Modelo.Productos;
 using VentasApp.Infrastructure.Persistencia.Configuraciones;
 
 

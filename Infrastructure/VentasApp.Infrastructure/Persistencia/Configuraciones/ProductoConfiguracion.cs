@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VentasApp.Domain.Modelo.Producto;
+using VentasApp.Domain.Modelo.Productos;
 
 public class ProductoConfiguracion : IEntityTypeConfiguration<Producto>
 {

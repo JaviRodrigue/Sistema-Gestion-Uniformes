@@ -1,7 +1,7 @@
 namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using VentasApp.Domain.Modelo.Producto;
+using VentasApp.Domain.Modelo.Productos;
 public class StockConfiguracion : IEntityTypeConfiguration<Stock>
 {
     public void Configure(EntityTypeBuilder<Stock> builder)

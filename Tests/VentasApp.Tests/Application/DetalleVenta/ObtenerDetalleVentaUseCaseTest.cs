@@ -4,7 +4,7 @@ using VentasApp.Application.CasoDeUso.DetalleVenta;
 using VentasApp.Application.DTOs.DetalleVenta;
 using VentasApp.Application.Interfaces.Repositorios;
 using VentasApp.Domain.Modelo.Venta;
-using VentasApp.Domain.Modelo.Producto;
+using VentasApp.Domain.Modelo.Productos;
 using VentasApp.Domain.Enum;
 
 public class ObtenerDetallesUseCaseTests

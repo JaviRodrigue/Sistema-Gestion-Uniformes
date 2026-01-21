@@ -38,10 +38,7 @@ public class Venta : Entidad
     }
     public void Confirmar()
     {
-        if (!EsPedido)
-        {
-            throw new ExcepcionDominio("La venta no es un pedido");
-        }
+       
         if(Estado != EstadoVenta.Pendiente)
         {
             throw new ExcepcionDominio("La venta no puede confirmarse en su estado actual");
@@ -78,10 +75,7 @@ public class Venta : Entidad
 
     public void AnularVenta()
     {
-        if (!EsPedido)
-        {
-            throw new ExcepcionDominio("La venta no es un pedido");
-        }
+        
         if(this.Estado == EstadoVenta.Pagada)
         {
             throw new ExcepcionDominio("No se puede anular una venta pagada");

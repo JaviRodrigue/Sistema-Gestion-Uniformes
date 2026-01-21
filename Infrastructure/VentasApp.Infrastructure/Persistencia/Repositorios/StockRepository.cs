@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using VentasApp.Application.Interfaces.Repositorios;
-using VentasApp.Domain.Modelo.Producto;
+using VentasApp.Domain.Modelo.Productos;
 using VentasApp.Infrastructure.Persistencia.Contexto;
 
 namespace VentasApp.Infrastructure.Persistencia.Repositorios;

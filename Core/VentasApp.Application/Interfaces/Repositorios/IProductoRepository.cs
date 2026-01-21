@@ -1,4 +1,4 @@
-using VentasApp.Domain.Modelo.Producto;
+using VentasApp.Domain.Modelo.Productos;
 
 namespace VentasApp.Application.Interfaces.Repositorios;
 
