@@ -6,17 +6,18 @@ using Moq;
 using VentasApp.Application.CasoDeUso.Cliente;
 using VentasApp.Application.DTOs.Cliente;
 using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Modelo.Cliente;
 using Xunit;
-namespace VentasApp.Tests.Cliente.ClienteTest;
+namespace VentasApp.Tests.Application.ClienteTest;
 
 public class ObtenerTodosClientesTest
 {
     [Fact]
-    public async Task ObtenerTodosClientes_test()
+    public async Task ObtenerTodosClientes_DeberiaRetornarListaDeClientes()
     {
         // Arrange
         var repoMock = new Mock<IClienteRepository>();
-        var clientes = new List<VentasApp.Domain.Modelo.Cliente.Cliente>
+        var clientes = new List<Cliente>
         {
             new("Juan", "44048885"),
             new("Pedro", "55055999")

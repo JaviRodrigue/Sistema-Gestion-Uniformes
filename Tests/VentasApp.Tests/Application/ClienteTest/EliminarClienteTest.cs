@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 using VentasApp.Application.CasoDeUso.Cliente;
 using VentasApp.Application.DTOs.Cliente;
 using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Modelo.Cliente;
+using VentasApp.Domain.Base;
 using Xunit;
-namespace VentasApp.Tests.Cliente.ClienteTest;
+
+namespace VentasApp.Tests.Application.ClienteTest;
 
 public class EliminarClienteTest
 {
@@ -18,8 +21,8 @@ public class EliminarClienteTest
         var repoMock = new Mock<IClienteRepository>();
         var unitMock = new Mock<IUnitOfWork>();
 
-        var clienteExistente = new VentasApp.Domain.Modelo.Cliente.Cliente("Juan", "44048885");
-        typeof(VentasApp.Domain.Base.Entidad)
+        var clienteExistente = new Cliente("Juan", "44048885");
+        typeof(Entidad)
             .GetProperty("Id", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
             .SetValue(clienteExistente, 1);
         repoMock.Setup(r => r.ObtenerClientePorId(1))
@@ -36,4 +39,18 @@ public class EliminarClienteTest
         repoMock.Verify(r => r.Desactivar(clienteExistente.Id), Times.Once);
         unitMock.Verify(u => u.SaveChanges(), Times.Once);
     }
+
+    [Fact]
+    public async Task EliminarCliente_NoExiste_DeberiaLanzar()
+    {
+        var repoMock = new Mock<IClienteRepository>();
+        var unitMock = new Mock<IUnitOfWork>();
+
+        repoMock.Setup(r => r.ObtenerClientePorId(2)).ReturnsAsync((Cliente?)null);
+
+        var eliminarClienteCasoUso = new EliminarClienteCasoDeUso(repoMock.Object, unitMock.Object);
+
+        await Assert.ThrowsAsync<Exception>(async () => await eliminarClienteCasoUso.EjecutarAsync(2));
+    }
 }
+
