@@ -5,12 +5,11 @@ using VentasApp.Application.Interfaces.Repositorios;
 public class ObtenerStockUseCase
 {
     public readonly IStockRepository _repository;
-    public readonly IUnitOfWork _unit;
 
-    public ObtenerStockUseCase(IStockRepository repo, IUnitOfWork unit)
+
+    public ObtenerStockUseCase(IStockRepository repo)
     {
         _repository = repo;
-        _unit = unit;
     }
 
     public async Task<StockDto?> EjecutarAsync(int idItem)

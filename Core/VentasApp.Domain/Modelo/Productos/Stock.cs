@@ -13,6 +13,7 @@ public class Stock : Entidad
 
     protected Stock(){}
 
+
     public Stock(int IdItemVendible, int cantidadInicial, int stockMinimo = 0)
     {
         this.IdItemVendible = IdItemVendible;
@@ -24,7 +25,7 @@ public class Stock : Entidad
 
     public void CambiarStockMinimo(int stockMinimo)
     {
-        if(stockMinimo <= 0)
+        if(stockMinimo < 0)
         {
             throw new ExcepcionDominio("El stock minimo debe ser mayor a 0");
         }
