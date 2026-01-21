@@ -8,14 +8,10 @@ using VentasApp.Infrastructure.Persistencia.Contexto;
 
 namespace VentasApp.Infrastructure.Persistencia.Repositorios;
 
-public class ClienteRepository : IClienteRepository
+public class ClienteRepository(DatabaseContext context) : IClienteRepository
 {
-    private readonly DatabaseContext _context;
+    private readonly DatabaseContext _context=context;
 
-    public ClienteRepository(DatabaseContext context)
-    {
-        _context = context;
-    }
 
     public async Task Agregar(Cliente cliente)
     {
@@ -29,7 +25,7 @@ public class ClienteRepository : IClienteRepository
             .FirstOrDefaultAsync(c => c.Id == id && c.Activado);
     }
 
-    public async Task<Cliente?> ObtenerClientePorDni(long dni)
+    public async Task<Cliente?> ObtenerClientePorDni(string dni)
     {
         var str = dni.ToString();
         return await _context.Clientes
@@ -48,7 +44,7 @@ public class ClienteRepository : IClienteRepository
     {
         var q = nombre?.Trim().ToLower() ?? string.Empty;
         return await _context.Clientes
-            .Where(c => c.Activado && EF.Functions.Like(c.Nombre.ToLower(), $"%{q}%"))
+            .Where(c => c.Activado && c.Nombre != null && EF.Functions.Like(c.Nombre.ToLower(), $"%{q}%"))
             .Include(c => c.Telefonos)
             .ToListAsync();
     }

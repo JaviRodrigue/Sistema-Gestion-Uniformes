@@ -4,20 +4,16 @@ using VentasApp.Application.Interfaces.Repositorios;
 
 namespace VentasApp.Application.CasoDeUso.Cliente;
 
-public class ActualizarClienteCasoDeUso
+public class ActualizarClienteCasoDeUso(IClienteRepository repo, IUnitOfWork unit)
 {
-    public readonly IClienteRepository _repository;
-    public readonly IUnitOfWork _unit;
+    public readonly IClienteRepository _repository=repo;
+    public readonly IUnitOfWork _unit=unit;
 
-    public ActualizarClienteCasoDeUso(IClienteRepository repo, IUnitOfWork unit)
-    {
-        _repository = repo;
-        _unit = unit;
-    }
+    
 
-    public async Task EjecutarAsync(int idCliente, ActualizarClienteDto dto)
+    public async Task EjecutarAsync(ActualizarClienteDto dto)
     {
-        var cliente = await _repository.ObtenerClientePorId(idCliente)
+        var cliente = await _repository.ObtenerClientePorId(dto.Id)
             ?? throw new Exception("No se encontró el cliente");
 
         if (!string.IsNullOrWhiteSpace(dto.Nombre))

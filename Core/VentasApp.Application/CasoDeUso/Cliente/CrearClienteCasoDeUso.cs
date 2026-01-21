@@ -4,21 +4,16 @@ using VentasApp.Domain.Modelo.Cliente;
 
 namespace VentasApp.Application.CasoDeUso.Cliente;
 
-public class CrearClienteCasoDeUso
+public class CrearClienteCasoDeUso(IClienteRepository repo, IUnitOfWork unit)
 {
-    public readonly IClienteRepository _repository;
-    public readonly IUnitOfWork _unit;
+    public readonly IClienteRepository _repository=repo;
+    public readonly IUnitOfWork _unit=unit;
 
-    public CrearClienteCasoDeUso(IClienteRepository repo, IUnitOfWork unit)
-    {
-        _repository = repo;
-        _unit = unit;
-    }
 
     public async Task EjecutarAsync(CrearClienteDto dto)
     {
         var cliente = new VentasApp.Domain.Modelo.Cliente.Cliente(dto.Nombre, dto.Dni);
-        if (dto.Telefonos != null && dto.Telefonos.Any())
+        if (dto.Telefonos != null && dto.Telefonos.Count != 0)
         {
             cliente.ReemplazarTelefonos(dto.Telefonos);
         }

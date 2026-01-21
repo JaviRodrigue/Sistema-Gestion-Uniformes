@@ -12,7 +12,7 @@ public class Cliente : Entidad
 
     protected Cliente()
     {
-        Telefonos = new List<Telefono>();
+        Telefonos = [];
         Activado = true;
     }
 
@@ -21,7 +21,7 @@ public class Cliente : Entidad
         this.Nombre = nombre;
         this.DNI = dni;
         this.FechaAlta = DateTime.Now;
-        this.Telefonos = new List<Telefono>();
+        this.Telefonos = [];
         Activado = true;
     }
 
@@ -30,7 +30,7 @@ public class Cliente : Entidad
         this.Nombre = nombre;
         this.DNI = dni;
         this.FechaAlta = DateTime.Now;
-        this.Telefonos = telefonos ?? new List<Telefono>();
+        this.Telefonos = telefonos ?? [];
         Activado = true;
     }
 
