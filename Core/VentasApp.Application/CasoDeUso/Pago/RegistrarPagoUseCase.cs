@@ -5,20 +5,13 @@ using VentasApp.Application.DTOs.Pago;
 using VentasApp.Domain.Enum;
 using VentasApp.Domain.Modelo.Pago;
 
-public class RegistrarPagoUseCase
+public class RegistrarPagoUseCase(IPagoRepository pago, IVentaRepository venta, IMedioPagoRepository medioPago, IUnitOfWork unit)
 {
-    private readonly IPagoRepository _repositoryPago;
-    private readonly IVentaRepository _repositoryVenta;
-    private IMedioPagoRepository _repositoryMedioPago;
-    private IUnitOfWork _unit;
+    private readonly IPagoRepository _repositoryPago=pago;
+    private readonly IVentaRepository _repositoryVenta=venta;
+    private IMedioPagoRepository _repositoryMedioPago=medioPago;
+    private IUnitOfWork _unit=unit;
 
-    public RegistrarPagoUseCase(IPagoRepository pago, IVentaRepository venta, IMedioPagoRepository medioPago, IUnitOfWork unit)
-    {
-        _repositoryPago = pago;
-        _repositoryMedioPago = medioPago;
-        _repositoryVenta = venta;
-        _unit = unit;
-    }
 
     public async Task EjecutarAsync(CrearPagoDto dto)
     {
