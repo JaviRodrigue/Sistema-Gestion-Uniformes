@@ -19,7 +19,6 @@ public class ConfirmarVentaUseCase
         //Verifico que la venta exista
         var venta = await _ventaRepository.ObtenerPorId(id) ?? throw new Exception("La venta no existe");
 
-        venta.Confirmar();
         //Recorro todos los detalles de la venta pasada por parametro
         //verifico si el stock existe
         foreach(var detalle in venta.Detalles)
@@ -38,6 +37,7 @@ public class ConfirmarVentaUseCase
                 stock.Descontar(detalle.Cantidad);
             }
         }
+        venta.Confirmar();
 
         await _unitOfWork.SaveChanges();
     }
