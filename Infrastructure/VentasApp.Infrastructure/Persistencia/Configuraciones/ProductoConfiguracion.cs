@@ -27,6 +27,7 @@ public class ProductoConfiguracion : IEntityTypeConfiguration<Producto>
 
         builder.HasMany(p => p.ItemsVendibles)
               .WithOne(i => i.Producto)
-              .HasForeignKey(i => i.IdProducto);
+              .HasForeignKey(i => i.IdProducto)
+              .OnDelete(DeleteBehavior.Restrict);
     }
 }
