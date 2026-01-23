@@ -16,18 +16,14 @@ namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
                   .ValueGeneratedOnAdd();
 
             builder.Property(m => m.Nombre)
-                  .IsRequired()
-                  .HasMaxLength(100);
+              .HasColumnName("nombre")
+              .HasMaxLength(50)
+              .IsRequired();
 
             builder.Property(m => m.TieneRecargo)
-                  .HasColumnName("tiene_recargo")
-                  .HasColumnType("BOOLEAN")
-                  .IsRequired();
-
-            builder.Property(m => m.Nombre)
-                  .HasColumnName("nombre")
-                  .HasColumnType("VARCHAR(50)")
-                  .IsRequired();
+                      .HasColumnName("tiene_recargo")
+                      .HasColumnType("BOOLEAN")
+                      .IsRequired();
 
             builder.Property(m => m.Activo)
             .IsRequired();

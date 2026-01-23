@@ -8,7 +8,7 @@ public class Pago : Entidad
 {
     private List<PagoMetodo> _metodos = new();
 
-    public decimal Total => _metodos.Sum(m => m.Monto);
+    public decimal Total { get; private set; }
     public DateTime FechaPago { get; private set; }
     public int IdVenta { get; private set; }
     public Venta? Venta { get; private set; }
@@ -22,6 +22,7 @@ public class Pago : Entidad
         this.IdVenta = idVenta;
         this.FechaPago = DateTime.Now;
         this.EsSenia = esSenia;
+        this.Total = 0;
     }   
 
     public void AgregarPago(int idMedioPago, decimal monto)
@@ -31,6 +32,7 @@ public class Pago : Entidad
             throw new ExcepcionDominio("El monto debe ser mayor a cero");
         }
         _metodos.Add(new PagoMetodo(idMedioPago, monto));
+        Total += monto;
     }
 
     public void ValidarPago()

@@ -7,7 +7,7 @@ public class DetalleVenta : Entidad
     public int IdItemVendible {get ; private set;}
     public int Cantidad {get ; private set;}
     public decimal PrecioUnitario {get; private set;}
-    public decimal SubTotal => Cantidad * PrecioUnitario;
+    public decimal SubTotal { get; private set; }
 
     protected DetalleVenta(){}
     public DetalleVenta(int idItem, int cantidad, decimal precioUnitario)
@@ -23,6 +23,13 @@ public class DetalleVenta : Entidad
         this.IdItemVendible = idItem;
         this.Cantidad = cantidad;
         this.PrecioUnitario = precioUnitario;
+
+        CalcularSubTotal();
+    }
+
+    private void CalcularSubTotal()
+    {
+        this.SubTotal = this.Cantidad * this.PrecioUnitario;
     }
 
     public void ModificarPrecio(decimal precio)

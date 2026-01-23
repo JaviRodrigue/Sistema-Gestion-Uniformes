@@ -26,6 +26,7 @@
     <ItemGroup>
       <ProjectReference Include="..\..\Core\VentasApp.Domain\VentasApp.Domain.csproj" />
       <ProjectReference Include="..\..\Core\VentasApp.Application\VentasApp.Application.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\VentasApp.Infrastructure\VentasApp.Infrastructure.csproj" />
     </ItemGroup>
 
   </Project>

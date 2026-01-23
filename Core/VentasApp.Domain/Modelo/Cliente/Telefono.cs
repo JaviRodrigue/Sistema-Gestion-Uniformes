@@ -9,7 +9,7 @@ public class Telefono : Entidad
     public Cliente? Cliente { get; private set; }
     public bool Activado { get; private set; }
 
-
+    protected Telefono() { }
     // Se mantiene ctor anterior por compatibilidad si fuese necesario
     public Telefono(int idCliente, string numero, Cliente cliente)
     {

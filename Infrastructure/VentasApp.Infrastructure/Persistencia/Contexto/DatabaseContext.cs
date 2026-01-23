@@ -12,6 +12,12 @@ namespace VentasApp.Infrastructure.Persistencia.Contexto;
 
 public class DatabaseContext : DbContext
 {
+    public DatabaseContext() { }
+
+    public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
+    {
+    }
+
     //Ventas
     public DbSet<Venta> Ventas { get; set; }
     public DbSet<DetalleVenta> DetalleVenta { get; set; }
@@ -36,7 +42,10 @@ public class DatabaseContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("data source=Database.sqlite");
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlite("data source=Database.sqlite");
+        }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

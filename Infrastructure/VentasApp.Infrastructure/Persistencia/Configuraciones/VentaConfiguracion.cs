@@ -16,13 +16,13 @@ using VentasApp.Domain.Modelo.Venta;
                    .IsRequired();
 
             builder.Property(v => v.MontoTotal)
-                   .HasColumnType("DOUBLE)");
+                   .HasColumnType("DOUBLE");
 
             builder.Property(v => v.MontoPagado)
-                   .HasColumnType("DOUBLE)");
+                   .HasColumnType("DOUBLE");
 
             builder.Property(v => v.SaldoPendiente)
-                   .HasColumnType("DOUBLE)");
+                   .HasColumnType("DOUBLE");
 
               builder.HasMany(v => v.Detalles)
                      .WithOne()

@@ -28,12 +28,13 @@ namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
                   .IsRequired();
 
             builder.HasOne(pm => pm.Pago)
-                  .WithMany()
-                  .HasForeignKey(pm => pm.IdPago);
+               .WithMany(p => p.Metodos)
+               .HasForeignKey(pm => pm.IdPago)
+               .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(pm => pm.MedioPago)
-            .WithMany()
-            .HasForeignKey(pm => pm.IdMedioPago)
-            .OnDelete(DeleteBehavior.Restrict);
-      }
+                   .WithMany()
+                   .HasForeignKey(pm => pm.IdMedioPago)
+                   .OnDelete(DeleteBehavior.Restrict);
+    }
     }

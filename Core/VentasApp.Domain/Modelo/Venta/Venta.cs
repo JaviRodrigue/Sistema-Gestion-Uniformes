@@ -9,7 +9,7 @@ public class Venta : Entidad
     public TipoVenta TipoVenta { get; private set; }
     public decimal MontoTotal { get; private set; }
     public decimal MontoPagado { get; private set; }
-    public decimal SaldoPendiente => MontoTotal - MontoPagado;
+    public decimal SaldoPendiente { get; private set; }
     public EstadoVenta Estado { get; private set; }
     public bool EsPedido => TipoVenta == TipoVenta.Pedido;
 
@@ -22,6 +22,7 @@ public class Venta : Entidad
         this.TipoVenta = tipoVenta;
         this.MontoPagado = 0;
         this.MontoTotal = 0;
+        this.SaldoPendiente = 0;
         this.Estado = EstadoVenta.Pendiente;
         this.FechaVenta = DateTime.Now;
     }
@@ -64,8 +65,9 @@ public class Venta : Entidad
         {
             throw new ExcepcionDominio("El monto excede al total de la venta");
         }
-        
-        
+
+        this.SaldoPendiente = this.MontoTotal - this.MontoPagado;
+
         this.MontoPagado += monto;
         if(this.MontoPagado >= this.MontoTotal)
         {
@@ -87,6 +89,7 @@ public class Venta : Entidad
     private void RecalcularTotal()
     {
         this.MontoTotal = _detalles.Sum(d => d.SubTotal);
+        this.SaldoPendiente = this.MontoTotal - this.MontoPagado;
     }
 
     public void EliminarDetalle(int idDetalle)

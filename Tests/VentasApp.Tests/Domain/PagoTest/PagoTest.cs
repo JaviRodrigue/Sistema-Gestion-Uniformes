@@ -131,7 +131,7 @@ public class PagoTest
         // Act
         Action act = () =>
         {
-            var metodos = pago.Metodos as List<PagoMetodo>;
+            var metodos = (System.Collections.Generic.IList<PagoMetodo>)pago.Metodos;
             metodos!.Add(new PagoMetodo(2, 50));
         };
 
