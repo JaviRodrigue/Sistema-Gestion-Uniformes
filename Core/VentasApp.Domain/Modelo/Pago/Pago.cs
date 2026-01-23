@@ -35,7 +35,7 @@ public class Pago : Entidad
 
     public void ValidarPago()
     {
-        if (!_metodos.Any())
+        if (_metodos.Count == 0)
         {
             throw new ExcepcionDominio("El pago debe tener por lo menos un metodo");
         }

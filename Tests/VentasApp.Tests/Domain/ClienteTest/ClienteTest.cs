@@ -65,11 +65,11 @@ public class ClienteTest
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void CambiarNombre_Invalido_DeberiaLanzarExcepcion(string nombreInvalido)
+    public void CambiarNombre_Invalido_DeberiaLanzarExcepcion(string? nombreInvalido)
     {
         var cliente = ClienteValido();
 
-        Action act = () => cliente.CambiarNombre(nombreInvalido);
+        Action act = () => cliente.CambiarNombre(nombreInvalido!);
 
         act.Should().Throw<ArgumentException>()
             .WithMessage("*Nombre inválido*");
@@ -89,11 +89,11 @@ public class ClienteTest
     [InlineData("")]
     [InlineData(" ")]
     [InlineData(null)]
-    public void CambiarDni_Invalido_DeberiaLanzarExcepcion(string dniInvalido)
+    public void CambiarDni_Invalido_DeberiaLanzarExcepcion(string? dniInvalido)
     {
         var cliente = ClienteValido();
 
-        Action act = () => cliente.CambiarDni(dniInvalido);
+        Action act = () => cliente.CambiarDni(dniInvalido!);
 
         act.Should().Throw<ArgumentException>()
             .WithMessage("*DNI inválido*");
@@ -152,7 +152,7 @@ public class ClienteTest
         cliente.AgregarTelefono("111-111");
 
         // Act
-        cliente.ReemplazarTelefonos(null);
+        cliente.ReemplazarTelefonos(null!);
 
         // Assert
         cliente.Telefonos.Should().BeEmpty();
@@ -163,10 +163,10 @@ public class ClienteTest
     {
         // Arrange
         var cliente = ClienteValido();
-        var numerosMezclados = new List<string> { "222-222", "", "   ", null };
+        var numerosMezclados = new List<string?> { "222-222", "", "   ", null };
 
         // Act
-        cliente.ReemplazarTelefonos(numerosMezclados);
+        cliente.ReemplazarTelefonos(numerosMezclados!);
 
         // Assert
         cliente.Telefonos.Should().HaveCount(1); // Solo debería agregar el "222-222"

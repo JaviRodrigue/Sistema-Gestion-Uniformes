@@ -1,5 +1,4 @@
 ﻿using FluentAssertions;
-using FluentAssertions;
 using System;
 using Xunit;
 using VentasApp.Domain.Modelo.Cliente;
