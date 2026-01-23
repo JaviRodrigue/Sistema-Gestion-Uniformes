@@ -39,6 +39,7 @@ public class DetalleVenta : Entidad
             throw new ExcepcionDominio("El precio debe ser mayor a 0");
         }
         PrecioUnitario = precio;
+        CalcularSubTotal();
     }
 
     public void ModificarCantidad(int cantidad)
@@ -48,10 +49,7 @@ public class DetalleVenta : Entidad
             throw new ExcepcionDominio("La cantidad debe ser mayor a 0");
         }
         this.Cantidad = cantidad;
+        CalcularSubTotal();
     }
-
-
-
-
 
 }

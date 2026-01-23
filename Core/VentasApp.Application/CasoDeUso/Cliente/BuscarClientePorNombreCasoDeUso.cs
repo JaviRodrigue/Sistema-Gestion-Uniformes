@@ -17,7 +17,7 @@ public class BuscarClientePorNombreCasoDeUso(IClienteRepository repo)
     {
         var clientes = await _repository.BuscarPorNombre(nombre);
 
-        if (clientes == null || clientes.Count != 0)
+        if (clientes == null || clientes.Count == 0)
             throw new Exception("Cliente no encontrado");
 
         var resultado = clientes.Select(cliente => new BuscarClienteDTO

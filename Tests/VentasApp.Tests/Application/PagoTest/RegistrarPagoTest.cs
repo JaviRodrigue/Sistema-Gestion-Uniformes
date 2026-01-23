@@ -84,32 +84,38 @@ public class RegistrarPagoTest
         var repoMedio = new Mock<IMedioPagoRepository>();
         var unit = new Mock<IUnitOfWork>();
 
+        // 1. Crear Venta de 100
         var venta = new Venta(TipoVenta.Presencial);
         venta.AgregarDetalle(1, 1, 100m); // MontoTotal = 100
 
-        // existing pago of 80
+        // 2. Crear Pago Previo de 80 USANDO AGREGARPAGO (NO REFLECTION)
+        // Esto asegura que pagoPrevio.Total sea 80
         var pagoPrevio = new Pago(venta.Id, false);
-        var metodosField = typeof(Pago).GetField("_metodos", BindingFlags.NonPublic | BindingFlags.Instance)!;
-        var listPrevio = (List<PagoMetodo>)metodosField.GetValue(pagoPrevio)!;
-        var metodoPrev = new PagoMetodo(1, 80m);
-        var medioPrev = new MedioPago("Efectivo", false);
-        var medioPagoBacking = typeof(PagoMetodo).GetField("<MedioPago>k__BackingField", BindingFlags.NonPublic | BindingFlags.Instance)!;
-        medioPagoBacking.SetValue(metodoPrev, medioPrev);
-        listPrevio.Add(metodoPrev);
+        pagoPrevio.AgregarPago(1, 80m);
 
         repoVenta.Setup(r => r.ObtenerPorId(venta.Id)).ReturnsAsync(venta);
         repoPago.Setup(r => r.ObtenerPorVenta(venta.Id)).ReturnsAsync(new List<Pago> { pagoPrevio });
 
+        // 3. Mockear el MedioPago para el NUEVO pago que vamos a intentar hacer
         var medio = new MedioPago("Tarjeta", true);
-        medio.GetType().GetProperty("Id", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic)!.SetValue(medio, 2);
-        repoMedio.Setup(r => r.ObtenerPorId(It.IsAny<int>())).ReturnsAsync(medio);
+
+        // Usamos reflection SOLO para setear el ID del MedioPago simulado (porque Id tiene private set)
+        var propId = medio.GetType().GetProperty("Id", BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+        propId!.SetValue(medio, 2);
+
+        repoMedio.Setup(r => r.ObtenerPorId(2)).ReturnsAsync(medio);
 
         var useCase = new RegistrarPagoUseCase(repoPago.Object, repoVenta.Object, repoMedio.Object, unit.Object);
 
-        var nuevoMetodo = new PagoMetodo(2, 30m); // 80 + 30 = 110 > 100
+        // 4. Intentar pagar 30 más.
+        // Previo (80) + Nuevo (30) = 110. 
+        // 110 > 100 (Total Venta) -> EXCEPCIÓN
+        var nuevoMetodo = new PagoMetodo(2, 30m);
         var dto = new CrearPagoDto { IdVenta = venta.Id, EsSenia = false, Metodos = new List<PagoMetodo> { nuevoMetodo } };
 
-        await useCase.Invoking(u => u.EjecutarAsync(dto)).Should().ThrowAsync<Exception>().WithMessage("El pago supera el monto total de la venta");
+        await useCase.Invoking(u => u.EjecutarAsync(dto))
+                     .Should().ThrowAsync<Exception>()
+                     .WithMessage("El pago supera el monto total de la venta");
     }
 
     [Fact]

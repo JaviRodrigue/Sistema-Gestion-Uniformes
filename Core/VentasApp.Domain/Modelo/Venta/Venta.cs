@@ -65,10 +65,10 @@ public class Venta : Entidad
         {
             throw new ExcepcionDominio("El monto excede al total de la venta");
         }
-
+        this.MontoPagado += monto;
         this.SaldoPendiente = this.MontoTotal - this.MontoPagado;
 
-        this.MontoPagado += monto;
+        
         if(this.MontoPagado >= this.MontoTotal)
         {
             this.Estado = EstadoVenta.Pagada;
