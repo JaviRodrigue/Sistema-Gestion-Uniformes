@@ -76,3 +76,18 @@ VentasApp.Desktop
 └── appsettings.json
 
 ```
+
+
+### Flujo del UI al Backend
+```text
+View (XAML)
+ ↓
+ViewModel
+ ↓
+UseCase (Application)
+ ↓
+Repository
+ ↓
+EF Core
+
+```
