@@ -6,7 +6,20 @@
         xmlns:local="clr-namespace:VentasApp.Desktop"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
 
+        
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="220"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar -->
+        <controls:SidebarView DataContext="{Binding SidebarViewModel}" />
+
+        <!-- Contenido -->
+        <ContentControl Grid.Column="1"
+                        Content="{Binding CurrentViewModel}" />
     </Grid>
+
 </Window>
