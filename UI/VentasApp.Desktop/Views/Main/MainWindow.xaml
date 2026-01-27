@@ -4,9 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VentasApp.Desktop"
+        xmlns:vProductos="clr-namespace:VentasApp.Desktop.Views.Productos"
+        xmlns:vCliente="clr-namespace:VentasApp.Desktop.Views.Cliente"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="Sistema Uniformes" Height="700" Width="1100"
+        Background="{StaticResource SecondaryPastel}">
+    <Grid Margin="0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <!-- Encabezado Productos -->
+        <Border Grid.Row="0" Background="White" Padding="10" Margin="20,20,20,10" CornerRadius="5">
+            <TextBlock Text="Productos" FontWeight="Bold" FontSize="16"/>
+        </Border>
+        <!-- Vista Productos -->
+        <vProductos:ProductoView Grid.Row="1"/>
+
+        <!-- Encabezado Clientes -->
+        <Border Grid.Row="2" Background="White" Padding="10" Margin="20,10,20,10" CornerRadius="5">
+            <TextBlock Text="Clientes" FontWeight="Bold" FontSize="16"/>
+        </Border>
+        <!-- Vista Clientes -->
+        <vCliente:ClienteView Grid.Row="3"/>
     </Grid>
 </Window>
