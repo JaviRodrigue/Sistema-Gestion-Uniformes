@@ -1,4 +1,4 @@
-<Style x:Key="SidebarButtonStyle" TargetType="Button">
+<ResourceDictionary x:Key="SidebarButtonStyle" TargetType="Button">
     <Setter Property="Margin" Value="0,5"/>
     <Setter Property="Padding" Value="10"/>
     <Setter Property="Background" Value="Transparent"/>
@@ -21,4 +21,4 @@
             </ControlTemplate>
         </Setter.Value>
     </Setter>
-</Style>
+</ResourceDictionary>

@@ -2,9 +2,10 @@ using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using VentasApp.Desktop;
 
+
 public partial class App : Application
 {
-    private IServiceProvider _serviceProvider;
+    private IServiceProvider _serviceProvider = null!;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -25,6 +26,16 @@ public partial class App : Application
 
     private void ConfigureServices(IServiceCollection services)
     {
-        
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<INavigationService, NavigationService>();
+
+        services.AddTransient<VentaViewModel>();
+        services.AddTransient<ProductoViewModel>();
+        services.AddSingleton<SidebarViewModel>();
+        services.AddTransient<CategoriaViewModel>();
+        services.AddTransient<StockViewModel>();
+        services.AddTransient<PagoViewModel>();
+
+
     }
 }

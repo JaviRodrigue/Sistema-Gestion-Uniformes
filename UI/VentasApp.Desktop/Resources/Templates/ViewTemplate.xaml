@@ -1,4 +1,4 @@
-<Application.Resources>
+<ResourceDictionary>
     <DataTemplate DataType="{x:Type vm:VentaViewModel}">
         <views:VentaView />
     </DataTemplate>
@@ -6,4 +6,4 @@
     <DataTemplate DataType="{x:Type vm:ProductoViewModel}">
         <views:ProductoView />
     </DataTemplate>
-</Application.Resources>
+</ResourceDictionary>
