@@ -22,6 +22,7 @@
                             <ColumnDefinition Width="60"/>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
 
                         <Border Grid.Column="0" Background="{StaticResource SecondaryPastel}" 
@@ -50,6 +51,33 @@
                             <TextBlock Text="{Binding DeudaTotal, StringFormat='Debé: ${0:N2}'}" 
                                        Visibility="{Binding TieneDeuda, Converter={StaticResource BooleanToVisibilityConverter}}"
                                        Foreground="Red" HorizontalAlignment="Right" FontSize="11" Margin="0,2,0,0"/>
+                        </StackPanel>
+
+                        <!-- Acciones -->
+                        <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center">
+                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                    Background="{StaticResource SecondaryPastel}"
+                                    BorderBrush="{StaticResource SecondaryPastel}"
+                                    ToolTip="Editar cliente"
+                                    Command="{Binding DataContext.EditarClienteCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}" Margin="0,0,0,6">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Pencil" Width="16" Height="16" Foreground="Gray"/>
+                                    <TextBlock Text="Editar" Margin="6,0,0,0" Foreground="Gray"/>
+                                </StackPanel>
+                            </Button>
+                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                                    Background="{StaticResource AccentRed}"
+                                    BorderBrush="{StaticResource AccentRed}"
+                                    Foreground="White"
+                                    ToolTip="Eliminar cliente"
+                                    Command="{Binding DataContext.EliminarClienteCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                    CommandParameter="{Binding}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="TrashCan" Width="16" Height="16" Foreground="Gray"/>
+                                    <TextBlock Text="Eliminar" Margin="6,0,0,0" Foreground="Gray"/>
+                                </StackPanel>
+                            </Button>
                         </StackPanel>
                     </Grid>
                 </Expander.Header>
