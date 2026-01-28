@@ -1,14 +1,12 @@
 ﻿<Window x:Class="VentasApp.Desktop.MainWindow"
-    
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:VentasApp.Desktop.Views.Controls"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:UI.VentasApp.Desktop"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Luximel" Height="600" Width="1000">
 
-        
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="220"/>
@@ -16,11 +14,11 @@
         </Grid.ColumnDefinitions>
 
         <!-- Sidebar -->
-        <controls:SidebarView DataContext="{Binding SidebarViewModel}" />
+        <controls:SidebarView
+            DataContext="{Binding SidebarViewModel}" />
 
         <!-- Contenido -->
         <ContentControl Grid.Column="1"
                         Content="{Binding CurrentViewModel}" />
     </Grid>
-
 </Window>

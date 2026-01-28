@@ -1,5 +1,12 @@
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
+using VentasApp.Desktop.ViewModels.Ventas;
+using VentasApp.Desktop.ViewModels.Productos;
+using VentasApp.Desktop.ViewModels.Categorias;
+using VentasApp.Desktop.ViewModels.Main;
+using VentasApp.Desktop.ViewModels.Base;
+using VentasApp.Desktop.Services;
+
 using VentasApp.Desktop;
 
 

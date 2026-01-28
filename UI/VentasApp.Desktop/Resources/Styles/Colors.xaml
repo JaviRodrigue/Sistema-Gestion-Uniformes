@@ -1,0 +1,18 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Color x:Key="SidebarBackgroundColor">#FFFFFF</Color>
+    <Color x:Key="PrimaryBlueColor">#0D6EFD</Color>
+    <Color x:Key="PrimaryBlueHoverColor">#0B5ED7</Color>
+    <Color x:Key="TextDefaultColor">#212529</Color>
+    <Color x:Key="TextMutedColor">#6C757D</Color>
+    <Color x:Key="DividerColor">#E9ECEF</Color>
+
+    <SolidColorBrush x:Key="SidebarBackground" Color="{StaticResource SidebarBackgroundColor}" />
+    <SolidColorBrush x:Key="PrimaryBlue" Color="{StaticResource PrimaryBlueColor}" />
+    <SolidColorBrush x:Key="PrimaryBlueHover" Color="{StaticResource PrimaryBlueHoverColor}" />
+    <SolidColorBrush x:Key="TextDefault" Color="{StaticResource TextDefaultColor}" />
+    <SolidColorBrush x:Key="TextMuted" Color="{StaticResource TextMutedColor}" />
+    <SolidColorBrush x:Key="Divider" Color="{StaticResource DividerColor}" />
+</ResourceDictionary>

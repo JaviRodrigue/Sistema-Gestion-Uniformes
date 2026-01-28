@@ -49,9 +49,6 @@ VentasApp.Desktop
 ├── Commands/
 │   └── RelayCommand.cs (si no usás Toolkit)
 │
-├── Converters/
-│   ├── BoolToVisibilityConverter.cs
-│   └── EstadoVentaConverter.cs
 │
 ├── Services/
 │   ├── DialogService.cs
@@ -63,6 +60,7 @@ VentasApp.Desktop
 │   │   ├── Colors.xaml
 │   │   ├── Buttons.xaml
 │   │   └── TextBoxes.xaml
+|	|	└── SidebarButtonStyle.xaml
 │   │
 │   └── Templates/
 │       └── VentaTemplates.xaml

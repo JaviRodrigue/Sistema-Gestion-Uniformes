@@ -1,22 +1,28 @@
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+using VentasApp.Desktop.Services;
+using VentasApp.Desktop.ViewModels.Productos;
+using VentasApp.Desktop.ViewModels.Ventas;
+using VentasApp.Desktop.ViewModels.Categorias;
+
+namespace VentasApp.Desktop.ViewModels.Base;
 
 public class SidebarViewModel : ObservableObject
 {
-    public string NombreNegocio => "Luximel";
+    private readonly NavigationService _navigation;
 
-    public IRelayCommand IrVentasCommand { get; }
-    public IRelayCommand IrProductosCommand { get; }
-    public IRelayCommand IrCategoriasCommand { get; }
-    public IRelayCommand IrStockCommand { get; }
-    public IRelayCommand IrPagosCommand { get; }
+    public ObservableCollection<SidebarItemViewModel> Items { get; }
 
-    public SidebarViewModel(INavigationService navigation)
+    public SidebarViewModel(NavigationService navigation)
     {
-        IrVentasCommand = new RelayCommand(() => navigation.Navigate<VentaViewModel>());
-        IrProductosCommand = new RelayCommand(() => navigation.Navigate<ProductoViewModel>());
-        IrCategoriasCommand = new RelayCommand(() => navigation.Navigate<CategoriaViewModel>());
-        IrStockCommand = new RelayCommand(() => navigation.Navigate<StockViewModel>());
-        IrPagosCommand = new RelayCommand(() => navigation.Navigate<PagoViewModel>());
+        _navigation = navigation;
+
+        Items = new ObservableCollection<SidebarItemViewModel>
+        {
+            new SidebarItemViewModel("Clientes", "👤", new RelayCommand(() => _navigation.NavigateTo<CategoriaViewModel>())),
+            new SidebarItemViewModel("Productos", "📦", new RelayCommand(() => _navigation.NavigateTo<ProductoViewModel>())),
+            new SidebarItemViewModel("Ventas", "💰", new RelayCommand(() => _navigation.NavigateTo<VentaViewModel>()))
+        };
     }
 }

@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="Resources/Styles/Button.xaml"/>
                 <ResourceDictionary Source="Resources/Styles/TextBoxes.xaml"/>
                 <ResourceDictionary Source="Resources/Templates/ViewTemplate.xaml"/>
+                <ResourceDictionary Source="Resources/Styles/SidebarButtonStyle.xaml"/>
 
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

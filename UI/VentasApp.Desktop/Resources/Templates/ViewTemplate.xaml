@@ -1,9 +1,25 @@
-<ResourceDictionary>
-    <DataTemplate DataType="{x:Type vm:VentaViewModel}">
-        <views:VentaView />
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+
+    xmlns:ventasVM="clr-namespace:VentasApp.Desktop.ViewModels.Ventas"
+    xmlns:productosVM="clr-namespace:VentasApp.Desktop.ViewModels.Productos"
+    xmlns:categoriasVM="clr-namespace:VentasApp.Desktop.ViewModels.Categorias"
+
+    xmlns:ventasView="clr-namespace:VentasApp.Desktop.Views.Ventas"
+    xmlns:productosView="clr-namespace:VentasApp.Desktop.Views.Productos"
+    xmlns:categoriasView="clr-namespace:VentasApp.Desktop.Views.Categorias">
+
+    <DataTemplate DataType="{x:Type ventasVM:VentaViewModel}">
+        <ventasView:VentaView />
+    </DataTemplate>
+    
+    <DataTemplate DataType="{x:Type productosVM:ProductoViewModel}">
+        <productosView:ProductoView />
     </DataTemplate>
 
-    <DataTemplate DataType="{x:Type vm:ProductoViewModel}">
-        <views:ProductoView />
+    <DataTemplate DataType="{x:Type categoriasVM:CategoriaViewModel}">
+        <categoriasView:CategoriaView />
     </DataTemplate>
+    
 </ResourceDictionary>
