@@ -1,0 +1,41 @@
+<UserControl x:Class="VentasApp.Desktop.Views.Productos.ProductoViewTest"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:VentasApp.Desktop.ViewModels.Productos"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.DataContext>
+        <vm:ProductoViewModel/>
+    </UserControl.DataContext>
+
+    <Grid Background="#E1F5FE">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
+            <ItemsControl ItemsSource="{Binding Productos}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Border Background="White" CornerRadius="10" Margin="0,0,0,15" Padding="15">
+                            <Border.Effect>
+                                <DropShadowEffect Color="#DDDDDD" BlurRadius="10" Opacity="0.4"/>
+                            </Border.Effect>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Nombre}" FontSize="18" FontWeight="Bold" Foreground="#424242"/>
+                                <TextBlock Text="{Binding Categoria}" FontSize="14" Foreground="Gray" Margin="0,5,0,0"/>
+                                <TextBlock Text="{Binding Precio, StringFormat='Precio: ${0:N2}'}" FontSize="16" Foreground="#64B5F6" Margin="0,5,0,0"/>
+                                <TextBlock Text="{Binding StockTotal, StringFormat='Stock: {0}'}" FontSize="14" Foreground="#757575"/>
+                                <TextBlock Text="{Binding CodigoBarraReferencia}" FontSize="12" Foreground="Gray"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Vertical"/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
