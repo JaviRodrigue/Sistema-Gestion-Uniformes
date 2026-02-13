@@ -9,13 +9,12 @@ public class DeudaColorConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        // Si es true (tiene deuda), devuelve un color rojizo suave, sino blanco
-        if (value is bool tieneDeuda && tieneDeuda)
-            return new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFEBEE")); // Rojo muy suave
-
-        return Brushes.White;
+        var tieneDeuda = value is bool b && b;
+        // AccentRed (#E57373) si tiene deuda, SecondaryPastel (#E1F5FE) si no
+        var colorHex = tieneDeuda ? "#E57373" : "#E1F5FE";
+        return new SolidColorBrush((Color)ColorConverter.ConvertFromString(colorHex));
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        => throw new NotImplementedException();
+        => Binding.DoNothing;
 }
