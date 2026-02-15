@@ -1,3 +1,46 @@
-<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-</ResourceDictionary>
+<UserControl
+    x:Class="VentasApp.Desktop.Views.Ventas.VentaView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:VentasApp.Desktop.ViewModels.Ventas">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/VentasApp.Desktop;component/Resources/Templates/VentaCardTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UserControl.DataContext>
+        <vm:VentaViewModel/>
+    </UserControl.DataContext>
+
+    <Grid Background="{StaticResource SecondaryPastel}" Margin="10">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Ventas"
+                   FontSize="26"
+                   FontWeight="Bold"
+                   Margin="10"
+                   Foreground="{StaticResource TextDark}"/>
+
+        <ScrollViewer Grid.Row="1">
+
+            <ItemsControl ItemsSource="{Binding Ventas}"
+                          ItemTemplate="{StaticResource VentaCardTemplate}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+        </ScrollViewer>
+
+    </Grid>
+</UserControl>
