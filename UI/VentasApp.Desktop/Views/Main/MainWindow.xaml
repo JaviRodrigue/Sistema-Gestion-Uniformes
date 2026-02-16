@@ -4,7 +4,11 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:VentasApp.Desktop"
+        xmlns:vProductos="clr-namespace:VentasApp.Desktop.Views.Productos"
+        xmlns:vCliente="clr-namespace:VentasApp.Desktop.Views.Cliente"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+<<<<<<< HEAD
         Title="MainWindow" Height="450" Width="800">
 
         
@@ -23,3 +27,63 @@
     </Grid>
 
 </Window>
+=======
+        Title="Sistema Uniformes" Height="700" Width="1100"
+        Background="{StaticResource BackgroundMain}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar permanente -->
+        <Border Grid.Column="0" Background="{StaticResource SurfaceSoftPurple}" Padding="16" BorderBrush="{StaticResource SurfaceLight}" BorderThickness="0,0,1,0">
+            <StackPanel>
+                <TextBlock Text="Sistema Uniformes" FontWeight="Bold" FontSize="18" Foreground="{StaticResource TextPrimary}"/>
+                <Separator Margin="0,12,0,12"/>
+
+                <Button x:Name="BtnVentas" Margin="0,0,0,8" Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="{StaticResource SurfaceSoftBlue}" BorderBrush="{StaticResource SurfaceSoftBlue}"
+                        Click="OnBtnVentasClick">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CashRegister" Width="18" Height="18" Foreground="{StaticResource TextPrimary}"/>
+                        <TextBlock Text="Ventas" Margin="8,0,0,0" Foreground="{StaticResource TextPrimary}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnClientes" Margin="0,0,0,8" Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="{StaticResource SurfaceSoftBlue}" BorderBrush="{StaticResource SurfaceSoftBlue}"
+                        Click="OnBtnClientesClick">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountGroup" Width="18" Height="18" Foreground="{StaticResource TextPrimary}"/>
+                        <TextBlock Text="Clientes" Margin="8,0,0,0" Foreground="{StaticResource TextPrimary}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnProductos" Margin="0,0,0,8" Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="{StaticResource SurfaceSoftBlue}" BorderBrush="{StaticResource SurfaceSoftBlue}"
+                        Click="OnBtnProductosClick">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="TshirtCrew" Width="18" Height="18" Foreground="{StaticResource TextPrimary}"/>
+                        <TextBlock Text="Productos" Margin="8,0,0,0" Foreground="{StaticResource TextPrimary}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnConfig" Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="{StaticResource SurfaceSoftBlue}" BorderBrush="{StaticResource SurfaceSoftBlue}"
+                        Click="OnBtnConfigClick">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Cog" Width="18" Height="18" Foreground="{StaticResource TextPrimary}"/>
+                        <TextBlock Text="Configuración" Margin="8,0,0,0" Foreground="{StaticResource TextPrimary}"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Área de contenido -->
+        <Border Grid.Column="1" Background="{StaticResource BackgroundMain}" Padding="10">
+            <ContentControl x:Name="ContentHost"/>
+        </Border>
+    </Grid>
+</Window>
+>>>>>>> 24dfbc51467a7a17a210354a6c0305d87128168d
