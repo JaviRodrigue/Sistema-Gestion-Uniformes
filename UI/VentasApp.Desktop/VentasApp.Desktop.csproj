@@ -1,20 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-<<<<<<< HEAD
-  <ItemGroup>
-    <ProjectReference Include="..\..\Core\VentasApp.Application\VentasApp.Application.csproj" />
-    <ProjectReference Include="..\..\Infrastructure\VentasApp.Infrastructure\VentasApp.Infrastructure.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
-  </ItemGroup>
-
-=======
->>>>>>> 24dfbc51467a7a17a210354a6c0305d87128168d
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0-windows</TargetFramework>
