@@ -8,26 +8,6 @@
         xmlns:vCliente="clr-namespace:VentasApp.Desktop.Views.Cliente"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-<<<<<<< HEAD
-        Title="MainWindow" Height="450" Width="800">
-
-        
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="220"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-
-        <!-- Sidebar -->
-        <controls:SidebarView DataContext="{Binding SidebarViewModel}" />
-
-        <!-- Contenido -->
-        <ContentControl Grid.Column="1"
-                        Content="{Binding CurrentViewModel}" />
-    </Grid>
-
-</Window>
-=======
         Title="Sistema Uniformes" Height="700" Width="1100"
         Background="{StaticResource BackgroundMain}">
     <Grid>
@@ -86,4 +66,3 @@
         </Border>
     </Grid>
 </Window>
->>>>>>> 24dfbc51467a7a17a210354a6c0305d87128168d
