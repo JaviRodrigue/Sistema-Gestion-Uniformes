@@ -1,69 +1,126 @@
 <Window x:Class="VentasApp.Desktop.Views.Ventas.DetalleVentaWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Detalle Venta"
-        Height="600" Width="850"
+        Height="720"
+        Width="1000"
         WindowStartupLocation="CenterOwner">
 
-    <Grid Margin="15">
+
+    <Grid Margin="20">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
+
         <!-- HEADER -->
         <StackPanel>
-            <TextBlock Text="{Binding Codigo}" FontSize="22" FontWeight="Bold"/>
-            <TextBlock Text="{Binding Cliente}" Foreground="Gray"/>
+            <TextBlock Text="Detalle de Venta"
+                       FontSize="22"
+                       FontWeight="Bold"/>
+
+            <TextBox Margin="0,10,0,0"
+                     Text="{Binding Venta.Cliente, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
 
-        <!-- CONTENIDO -->
-        <Grid Grid.Row="1" Margin="0,10">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
 
-            <!-- ITEMS -->
-            <DataGrid ItemsSource="{Binding Items}"
-                      AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Producto" Binding="{Binding Producto}"/>
-                    <DataGridTextColumn Header="Precio" Binding="{Binding PrecioUnitario}"/>
-                    <DataGridTextColumn Header="Cant." Binding="{Binding Cantidad}"/>
-                    <DataGridTextColumn Header="Subtotal" Binding="{Binding Subtotal}"/>
-                </DataGrid.Columns>
-            </DataGrid>
+        <!-- ================= ITEMS ================= -->
+        <GroupBox Header="Productos" Grid.Row="1" Margin="0,10">
 
-            <!-- PAGOS -->
-            <DataGrid Grid.Column="1"
-                      ItemsSource="{Binding Pagos}"
-                      AutoGenerateColumns="False"
-                      Margin="10,0,0,0">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha}"/>
-                    <DataGridTextColumn Header="Monto" Binding="{Binding Monto}"/>
-                    <DataGridTextColumn Header="Medio" Binding="{Binding Medio}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
+            <DockPanel>
+
+                <Button Content="Agregar item"
+                        Command="{Binding AgregarItemCommand}"
+                        Background="{StaticResource AccentBlue}"
+                        DockPanel.Dock="Top"/>
+
+                <DataGrid ItemsSource="{Binding Venta.Items}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Producto" Binding="{Binding Producto, Mode=TwoWay}" Width="*"/>
+                        <DataGridTextColumn Header="Precio" Binding="{Binding PrecioUnitario, Mode=TwoWay}" Width="120"/>
+                        <DataGridTextColumn Header="Cantidad" Binding="{Binding Cantidad, Mode=TwoWay}" Width="100"/>
+                        <DataGridTextColumn Header="Subtotal" Binding="{Binding Subtotal, StringFormat=C}" IsReadOnly="True"/>
+
+                        <DataGridTemplateColumn Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="X"
+                                            Command="{Binding DataContext.EliminarItemCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                            CommandParameter="{Binding}"
+                                            Background="{StaticResource AccentRed}"
+                                            Foreground="White"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </DockPanel>
+        </GroupBox>
+
+
+        <!-- ================= PAGOS ================= -->
+        <GroupBox Header="Pagos" Grid.Row="2" Margin="0,10">
+
+            <DockPanel>
+
+                <Button Content="Agregar pago"
+                        Command="{Binding AgregarPagoCommand}"
+                        Background="{StaticResource AccentBlue}"
+                        DockPanel.Dock="Top"/>
+
+                <DataGrid ItemsSource="{Binding Venta.Pagos}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha, Mode=TwoWay, StringFormat=d}" Width="140"/>
+                        <DataGridTextColumn Header="Monto" Binding="{Binding Monto, Mode=TwoWay}" Width="120"/>
+                        <DataGridTextColumn Header="Medio" Binding="{Binding MedioPago, Mode=TwoWay}" Width="*"/>
+
+                        <DataGridTemplateColumn Width="80">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="X"
+                                        Command="{Binding DataContext.EliminarPagoCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+                                        CommandParameter="{Binding}"
+                                        Background="{StaticResource AccentRed}"
+                                        Foreground="White"/>        
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+
+                    </DataGrid.Columns>
+
+                </DataGrid>
+
+            </DockPanel>
+        </GroupBox>
+
 
         <!-- FOOTER -->
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+        <StackPanel Grid.Row="3"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Margin="0,10">
 
-            <TextBlock Text="{Binding Total, StringFormat='Total ${0:N2}'}"
+            <TextBlock Text="{Binding Venta.Total, StringFormat='Total: ${0:N2}'}" Margin="20,0"/>
+            <TextBlock Text="{Binding Venta.Pagado, StringFormat='Pagado: ${0:N2}'}" Margin="20,0"/>
+            <TextBlock Text="{Binding Venta.Restante, StringFormat='Restante: ${0:N2}'}"
                        FontWeight="Bold"
-                       Margin="0,0,20,0"/>
+                       Foreground="Red"
+                       Margin="20,0"/>
 
-            <Button Content="Cerrar"
-                    Width="100"
-                    IsCancel="True"/>
-
+            <Button Content="Guardar" Width="100" Margin="10,0" Click="Guardar_Click"/>
         </StackPanel>
 
     </Grid>

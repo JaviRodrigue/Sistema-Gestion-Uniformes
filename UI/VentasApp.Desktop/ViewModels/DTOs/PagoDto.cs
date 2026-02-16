@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using System;
 
 namespace VentasApp.Desktop.ViewModels.DTOs;
 
-public class PagoDto
+public partial class PagoDto : ObservableObject
 {
-    public DateTime Fecha { get; set; }
-    public decimal Monto { get; set; }
-    public string MedioPago { get; set; } = null!;
+    [ObservableProperty]
+    private DateTime _fecha = DateTime.Today;
+
+    [ObservableProperty]
+    private decimal _monto;
+
+    [ObservableProperty]
+    private string _medioPago = "Efectivo";
 }

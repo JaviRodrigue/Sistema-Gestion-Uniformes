@@ -2,7 +2,8 @@
     x:Class="VentasApp.Desktop.Views.Ventas.VentaView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="clr-namespace:VentasApp.Desktop.ViewModels.Ventas">
+    xmlns:vm="clr-namespace:VentasApp.Desktop.ViewModels.Ventas"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -23,12 +24,32 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Ventas"
-                   FontSize="26"
-                   FontWeight="Bold"
-                   Margin="10"
-                   Foreground="{StaticResource TextDark}"/>
+        <!-- HEADER -->
+        <DockPanel Grid.Row="0" Margin="10" LastChildFill="False">
 
+            <TextBlock Text="Listado de Ventas"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="{StaticResource TextDark}"
+                       DockPanel.Dock="Left"
+                       VerticalAlignment="Center"/>
+
+            <Button DockPanel.Dock="Right"
+                    Command="{Binding AgregarVentaCommand}"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Background="{StaticResource AccentBlue}"
+                    BorderBrush="{StaticResource AccentBlue}">
+
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CartPlus" Margin="0,0,8,0"/>
+                    <TextBlock Text="NUEVA VENTA"/>
+                </StackPanel>
+
+            </Button>
+
+        </DockPanel>
+
+        <!-- LISTADO -->
         <ScrollViewer Grid.Row="1">
 
             <ItemsControl ItemsSource="{Binding Ventas}"

@@ -1,6 +1,5 @@
-using System;
+Ôªøusing System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using VentasApp.Desktop.ViewModels.DTOs;
@@ -17,73 +16,98 @@ public partial class VentaViewModel : ObservableObject
         CargarMock();
     }
 
+    // =====================================================
+    // VER DETALLE
+    // =====================================================
+
     [RelayCommand]
-    private void VerDetalle(VentaCardDto venta)
+    private void VerDetalle(VentaCardDto? venta)
     {
-        var detalle = CrearDetalleMock(venta);
+        if (venta is null)
+            return;
+
+        var window = new Views.Ventas.DetalleVentaWindow(venta.Detalle)
+        {
+            Owner = System.Windows.Application.Current.MainWindow
+        };
+
+        window.ShowDialog();
+
+        // üî• notificar refresco visual
+        OnPropertyChanged(nameof(Ventas));
+    }
+
+    // =====================================================
+    // ELIMINAR
+    // =====================================================
+
+    [RelayCommand]
+    private void EliminarVenta(VentaCardDto? venta)
+    {
+        if (venta is null)
+            return;
+
+        Ventas.Remove(venta);
+    }
+
+    // =====================================================
+    // NUEVA VENTA
+    // =====================================================
+
+    [RelayCommand]
+    private void AgregarVenta()
+    {
+        var detalle = new VentaDetalleDto
+        {
+            Codigo = $"V-{Ventas.Count + 1:0000}"
+        };
 
         var window = new Views.Ventas.DetalleVentaWindow(detalle)
         {
             Owner = System.Windows.Application.Current.MainWindow
         };
 
-        window.ShowDialog();
+        var ok = window.ShowDialog();
+
+        if (ok != true)
+            return;
+
+        Ventas.Add(new VentaCardDto
+        {
+            Id = Ventas.Count + 1,
+            Codigo = detalle.Codigo,
+            Fecha = DateTime.Today,
+            EstadoVenta = "Nueva",
+            EstadoPago = detalle.Restante > 0 ? "Pendiente" : "Pagado",
+            Cliente = detalle.Cliente,
+            Detalle = detalle
+        });
     }
 
-    [RelayCommand]
-    private void EliminarVenta(VentaCardDto venta)
-    {
-        Ventas.Remove(venta);
-    }
-
-    // ================= MOCK =================
+    // =====================================================
+    // MOCK
+    // =====================================================
 
     private void CargarMock()
     {
-        Ventas =
-        [
-            new()
-            {
-                Id = 1,
-                Codigo = "V-0001",
-                Fecha = DateTime.Today,
-                Total = 15000,
-                Restante = 0,
-                EstadoVenta = "Completada",
-                EstadoPago = "Pagado",
-                Cliente = "MarÌa Gonz·lez"
-            },
-            new()
-            {
-                Id = 2,
-                Codigo = "V-0002",
-                Fecha = DateTime.Today.AddDays(-2),
-                Total = 25000,
-                Restante = 8000,
-                EstadoVenta = "Pendiente",
-                EstadoPago = "Parcial",
-                Cliente = "Carlos PÈrez"
-            }
-        ];
-    }
-
-    private VentaDetalleDto CrearDetalleMock(VentaCardDto v)
-    {
-        return new VentaDetalleDto
+        var d1 = new VentaDetalleDto
         {
-            Codigo = v.Codigo,
-            Cliente = v.Cliente ?? "",
-            Total = v.Total,
-            Restante = v.Restante,
-            Items = new()
-            {
-                new VentaItemDto { Producto="Galletitas", Cantidad=2, PrecioUnitario=1500 },
-                new VentaItemDto { Producto="Leche", Cantidad=5, PrecioUnitario=900 }
-            },
-            Pagos = new()
-            {
-                new PagoDto { Fecha=DateTime.Today, Monto=10000, MedioPago="Efectivo" }
-            }
+            Codigo = "V-0001",
+            Cliente = "Mar√≠a Gonz√°lez"
         };
+
+        d1.Items.Add(new VentaItemDto { Producto = "Leche", Cantidad = 2, PrecioUnitario = 900 });
+        d1.Pagos.Add(new PagoDto { Fecha = DateTime.Today, MedioPago = "Efectivo", Monto = 1800 });
+
+        Ventas.Add(new VentaCardDto
+        {
+            Id = 1,
+            Codigo = d1.Codigo,
+            Fecha = DateTime.Today,
+            EstadoVenta = "Completada",
+            EstadoPago = "Pagado",
+            Cliente = d1.Cliente,
+            Detalle = d1
+        });
     }
 }

@@ -1,17 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using VentasApp.Domain.Base;
 
 namespace VentasApp.Desktop.ViewModels.DTOs;
 
-
-    public class VentaItemDto
+public partial class VentaItemDto : ObservableObject
 {
-    public string Producto { get; set; } = null!;
-    public decimal PrecioUnitario { get; set; }
-    public int Cantidad { get; set; }
+    [ObservableProperty]
+    private string _producto = "";
+
+    [ObservableProperty]
+    private decimal _precioUnitario;
+
+    [ObservableProperty]
+    private int _cantidad;
 
     public decimal Subtotal => PrecioUnitario * Cantidad;
+
+    partial void OnPrecioUnitarioChanged(decimal _) => OnPropertyChanged(nameof(Subtotal));
+    partial void OnCantidadChanged(int _) => OnPropertyChanged(nameof(Subtotal));
 }
