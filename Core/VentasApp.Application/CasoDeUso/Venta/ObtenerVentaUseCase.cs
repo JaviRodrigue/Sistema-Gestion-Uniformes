@@ -1,19 +1,40 @@
-namespace VentasApp.Application.CasoDeUso.Venta;
+using System.Linq;
+using System.Threading.Tasks;
+using VentasApp.Application.DTOs.ItemVendible;
+using VentasApp.Application.DTOs.Productos;
+using VentasApp.Application.DTOs.Venta;
 using VentasApp.Application.Interfaces.Repositorios;
 using VentasApp.Domain.Modelo.Venta;
 
-public class ObtenerVentaUseCase{
-    
-    private readonly IVentaRepository _ventaRepository;
+namespace VentasApp.Application.CasoDeUso.Venta;
 
+public class ObtenerVentaUseCase
+{
+    private readonly IVentaRepository _ventaRepository;
 
     public ObtenerVentaUseCase(IVentaRepository ventaRepository)
     {
         _ventaRepository = ventaRepository;
     }
 
-    public async Task<Venta?> EjecutarAsync(int id)
+    public async Task<VentaDetalleDto?> EjecutarAsync(int id)
     {
-        return await _ventaRepository.ObtenerPorId(id);
+        var v = await _ventaRepository.ObtenerPorId(id);
+        if (v == null) return null;
+
+        return new VentaDetalleDto
+        {
+            Id = v.Id,
+            Codigo = $"V-{v.Id:0000}",
+            Total = v.MontoTotal,
+            Restante = v.SaldoPendiente,
+            Items = v.Detalles.Select(d => new VentaItemDto
+            {
+                IdDetalle = d.Id,
+                Descripcion = $"Item {d.IdItemVendible}",
+                Cantidad = d.Cantidad,
+                PrecioUnitario = d.PrecioUnitario
+            }).ToList()
+        };
     }
 }

@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Windows;
-using VentasApp.Desktop.ViewModels.Productos;
-using VentasApp.Desktop.Views.Productos;
 using System;
 using System.Diagnostics;
+using System.Windows;
+using VentasApp.Desktop.ViewModels.Productos;
+using VentasApp.Desktop.ViewModels.Ventas.VentaViewModel;
+using VentasApp.Desktop.Views.Productos;
+using VentasApp.Desktop.Views.Ventas;
 // Asegúrate de importar tus otros namespaces si los necesitas
 // using VentasApp.Infrastructure.Persistence; 
 // using VentasApp.Application.UseCases...
@@ -35,6 +37,10 @@ public partial class App : System.Windows.Application
                 // 3. REGISTRAR SERVICIOS Y CASOS DE USO (Aquí irán los de tu backend luego)
                 // services.AddDbContext<VentasContext>();
                 // services.AddScoped<IVentaRepository, VentaRepository>();
+
+                services.AddTransient<VentaViewModel>();
+                services.AddTransient<VentaView>();
+
 
             })
             .Build();

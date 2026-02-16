@@ -1,5 +1,5 @@
 using System.Windows;
-using VentasApp.Desktop.ViewModels.DTOs;
+using VentasApp.Application.DTOs.Venta;
 using VentasApp.Desktop.ViewModels.Ventas;
 
 namespace VentasApp.Desktop.Views.Ventas;
@@ -9,7 +9,7 @@ public partial class DetalleVentaWindow : Window
     public DetalleVentaWindow(VentaDetalleDto dto)
     {
         InitializeComponent();
-        DataContext = new DetalleVentaViewModel(dto);
+        DataContext = dto;
     }
 
     private void Guardar_Click(object sender, RoutedEventArgs e)

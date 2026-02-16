@@ -1,113 +1,74 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.ObjectModel;
+using VentasApp.Application.CasoDeUso.Venta;
+using VentasApp.Application.DTOs.Venta;
 using VentasApp.Desktop.ViewModels.DTOs;
+using VentasApp.Desktop.Views.Ventas;
 
-namespace VentasApp.Desktop.ViewModels.Ventas;
+namespace VentasApp.Desktop.ViewModels.Ventas.VentaViewModel;
 
 public partial class VentaViewModel : ObservableObject
 {
+    private readonly ListarVentasUseCase _listar;
+    private readonly ObtenerVentaUseCase _obtener;
+    private readonly CrearVentaUseCase _crear;
+    private readonly AnularVentaUseCase _anular;
+
     [ObservableProperty]
     private ObservableCollection<VentaCardDto> _ventas = new();
 
-    public VentaViewModel()
+    public VentaViewModel(
+        ListarVentasUseCase listar,
+        ObtenerVentaUseCase obtener,
+        CrearVentaUseCase crear,
+        AnularVentaUseCase anular)
     {
-        CargarMock();
+        _listar = listar;
+        _obtener = obtener;
+        _crear = crear;
+        _anular = anular;
+
+        _ = CargarAsync();
     }
 
-    // =====================================================
-    // VER DETALLE
-    // =====================================================
+    private async Task CargarAsync()
+    {
+        var lista = await _listar.EjecutarAsync();
+
+        Ventas = new ObservableCollection<VentaCardDto>(
+            lista.Select(v => new VentaCardDto
+            {
+                Id = v.Id,
+                Codigo = v.Codigo,
+                Fecha = v.Fecha,
+                EstadoVenta = v.EstadoVenta,
+                EstadoPago = v.EstadoPago
+             }));
+    }
 
     [RelayCommand]
-    private void VerDetalle(VentaCardDto? venta)
+    private async Task VerDetalle(VentaCardDto card)
     {
-        if (venta is null)
-            return;
+        var detalle = await _obtener.EjecutarAsync(card.Id);
+        if (detalle is null) return;
 
-        var window = new Views.Ventas.DetalleVentaWindow(venta.Detalle)
-        {
-            Owner = System.Windows.Application.Current.MainWindow
-        };
-
-        window.ShowDialog();
-
-        // 🔥 notificar refresco visual
-        OnPropertyChanged(nameof(Ventas));
+        var win = new DetalleVentaWindow(detalle);
+        win.ShowDialog();
     }
-
-    // =====================================================
-    // ELIMINAR
-    // =====================================================
 
     [RelayCommand]
-    private void EliminarVenta(VentaCardDto? venta)
+    private async Task AgregarVenta()
     {
-        if (venta is null)
-            return;
+        var id = await _crear.EjecutarAsync(new CrearVentaDto());
 
-        Ventas.Remove(venta);
+        await CargarAsync();
     }
-
-    // =====================================================
-    // NUEVA VENTA
-    // =====================================================
 
     [RelayCommand]
-    private void AgregarVenta()
+    private async Task EliminarVenta(VentaCardDto card)
     {
-        var detalle = new VentaDetalleDto
-        {
-            Codigo = $"V-{Ventas.Count + 1:0000}"
-        };
-
-        var window = new Views.Ventas.DetalleVentaWindow(detalle)
-        {
-            Owner = System.Windows.Application.Current.MainWindow
-        };
-
-        var ok = window.ShowDialog();
-
-        if (ok != true)
-            return;
-
-        Ventas.Add(new VentaCardDto
-        {
-            Id = Ventas.Count + 1,
-            Codigo = detalle.Codigo,
-            Fecha = DateTime.Today,
-            EstadoVenta = "Nueva",
-            EstadoPago = detalle.Restante > 0 ? "Pendiente" : "Pagado",
-            Cliente = detalle.Cliente,
-            Detalle = detalle
-        });
-    }
-
-    // =====================================================
-    // MOCK
-    // =====================================================
-
-    private void CargarMock()
-    {
-        var d1 = new VentaDetalleDto
-        {
-            Codigo = "V-0001",
-            Cliente = "María González"
-        };
-
-        d1.Items.Add(new VentaItemDto { Producto = "Leche", Cantidad = 2, PrecioUnitario = 900 });
-        d1.Pagos.Add(new PagoDto { Fecha = DateTime.Today, MedioPago = "Efectivo", Monto = 1800 });
-
-        Ventas.Add(new VentaCardDto
-        {
-            Id = 1,
-            Codigo = d1.Codigo,
-            Fecha = DateTime.Today,
-            EstadoVenta = "Completada",
-            EstadoPago = "Pagado",
-            Cliente = d1.Cliente,
-            Detalle = d1
-        });
+        await _anular.EjecutarAsync(card.Id);
+        await CargarAsync();
     }
 }

@@ -12,8 +12,20 @@ public class ListarVentasUseCase
         _ventaRepository = ventaRepository;
     }
 
-    public async Task<List<Venta>> EjecutarAsync()
+    public async Task<List<VentaResumenDto>> EjecutarAsync()
     {
-        return await _ventaRepository.ObtenerTodas();
+        var ventas = await _ventaRepository.ObtenerTodas();
+
+        return ventas.Select(v => new VentaResumenDto
+        {
+            Id = v.Id,
+            Codigo = $"V-{v.Id:0000}",
+            Fecha = v.FechaVenta,
+            Total = v.MontoTotal,
+            Restante = v.SaldoPendiente,
+            EstadoVenta = v.Estado.ToString(),
+            EstadoPago = v.SaldoPendiente == 0 ? "Pagado" : "Pendiente"
+        }).ToList();
     }
+
 }
