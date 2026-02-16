@@ -97,7 +97,7 @@
                 </StackPanel>
 
                 <!-- Acciones -->
-                <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right">
+                <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="15,0,0,0">
                     <Button Style="{StaticResource MaterialDesignRaisedButton}"
                             Background="{StaticResource SecondaryPastel}"
                             BorderBrush="{StaticResource SecondaryPastel}"

@@ -55,7 +55,25 @@ namespace VentasApp.Desktop.ViewModels.Productos
             }
         }
 
-        
+        [RelayCommand]
+        private void EditarProducto(ProductoCardDto? producto)
+        {
+            if (producto is null) return;
+            // TODO: abrir ventana/flujo de edición real
+            // Por ahora, ejemplo simple: cambiar nombre para visualizar acción
+            producto.Nombre = producto.Nombre + " (editado)";
+            OnPropertyChanged(nameof(Productos));
+        }
+
+        [RelayCommand]
+        private void EliminarProducto(ProductoCardDto? producto)
+        {
+            if (producto is null) return;
+            if (Productos.Contains(producto))
+            {
+                Productos.Remove(producto);
+            }
+        }
 
         private async void CargarProductos()
         {
