@@ -16,6 +16,7 @@ public class ClienteRepository(DatabaseContext context) : IClienteRepository
     public async Task Agregar(Cliente cliente)
     {
         await _context.AddAsync(cliente);
+        await _context.SaveChangesAsync();
     }
 
     public async Task<Cliente?> ObtenerClientePorId(int id)
@@ -67,6 +68,7 @@ public class ClienteRepository(DatabaseContext context) : IClienteRepository
     public async Task Actualizar(Cliente cliente)
     {
         _context.Update(cliente);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Eliminar(int id)
@@ -74,6 +76,7 @@ public class ClienteRepository(DatabaseContext context) : IClienteRepository
         var cliente = await _context.Clientes.FindAsync(id);
         if (cliente == null) return;
         _context.Remove(cliente);
+        await _context.SaveChangesAsync();
     }
 
     public async Task Desactivar(int id)
@@ -87,5 +90,7 @@ public class ClienteRepository(DatabaseContext context) : IClienteRepository
         {
             t.Desactivar();
         }
+
+        await _context.SaveChangesAsync();
     }
 }

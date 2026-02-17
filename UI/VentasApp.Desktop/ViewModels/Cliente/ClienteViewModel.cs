@@ -42,7 +42,7 @@ public partial class ClienteViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private void AgregarCliente()
+    private async void AgregarCliente()
     {
         var win = new Views.Cliente.AgregarClienteWindow
         {
@@ -51,15 +51,24 @@ public partial class ClienteViewModel : ObservableObject
         var ok = win.ShowDialog();
         if (ok == true)
         {
-            // TODO: mapear valores y llamar caso de uso CrearCliente
-            // Por ahora, agregar mock
-            Clientes.Add(new ClienteCardDto
-            {
-                Id = Clientes.Count + 1,
-                Nombre = win.FindName("TxtNombre") is System.Windows.Controls.TextBox t1 ? t1.Text : string.Empty,
-                Dni = win.FindName("TxtDni") is System.Windows.Controls.TextBox t2 ? t2.Text : string.Empty,
-                Telefonos = win.FindName("TxtTelefonos") is System.Windows.Controls.TextBox t3 ? t3.Text : string.Empty
-            });
+            var nombre = win.FindName("TxtNombre") is System.Windows.Controls.TextBox t1 ? t1.Text?.Trim() : string.Empty;
+            var dni = win.FindName("TxtDni") is System.Windows.Controls.TextBox t2 ? t2.Text?.Trim() : string.Empty;
+            var telefonosStr = win.FindName("TxtTelefonos") is System.Windows.Controls.TextBox t3 ? t3.Text : string.Empty;
+
+            var cliente = new VentasApp.Domain.Modelo.Cliente.Cliente(nombre, dni);
+            var numeros = string.IsNullOrWhiteSpace(telefonosStr)
+                ? Enumerable.Empty<string>()
+                : telefonosStr
+                    .Split(',', ';', '\n')
+                    .Select(s => s.Trim())
+                    .Where(s => !string.IsNullOrWhiteSpace(s));
+
+            cliente.ReemplazarTelefonos(numeros);
+
+            await _clienteRepository.Agregar(cliente);
+
+            // Refrescar desde DB para asegurar consistencia
+            CargarClientes();
         }
     }
 
