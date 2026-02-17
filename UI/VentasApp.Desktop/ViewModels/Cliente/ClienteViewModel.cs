@@ -72,10 +72,10 @@ public partial class ClienteViewModel : ObservableObject
                 Dni = "30.123.456",
                 Telefonos = "2241-554433",
                 DeudaTotal = 0,
-                UltimasCompras = new ObservableCollection<VentaResumenDto>
+                UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>
                 {
-                    new VentaResumenDto { IdVenta = 1001, Fecha = DateTime.Today.AddDays(-7), Estado = "Pagada", Total = 15200 },
-                    new VentaResumenDto { IdVenta = 1002, Fecha = DateTime.Today.AddDays(-30), Estado = "Anulada", Total = 8200 },
+                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 1001, Fecha = DateTime.Today.AddDays(-7), EstadoVenta = "Pagada", Total = 15200 },
+                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 1002, Fecha = DateTime.Today.AddDays(-30), EstadoVenta = "Anulada", Total = 8200 },
                 }
             },
             new ClienteCardDto
@@ -84,11 +84,11 @@ public partial class ClienteViewModel : ObservableObject
                 Nombre = "Carlos 'El Moroso' Pérez",
                 Dni = "25.987.654",
                 DeudaTotal = 45200.50m, // Deudor
-                UltimasCompras = new ObservableCollection<VentaResumenDto>
+                UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>
                 {
-                    new VentaResumenDto { IdVenta = 2001, Fecha = DateTime.Today.AddDays(-3), Estado = "Pendiente", Total = 12000 },
-                    new VentaResumenDto { IdVenta = 2002, Fecha = DateTime.Today.AddDays(-15), Estado = "Pagada", Total = 9800 },
-                    new VentaResumenDto { IdVenta = 2003, Fecha = DateTime.Today.AddDays(-20), Estado = "Pendiente", Total = 23400 },
+                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 2001, Fecha = DateTime.Today.AddDays(-3), EstadoVenta = "Pendiente", Total = 12000 },
+                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 2002, Fecha = DateTime.Today.AddDays(-15), EstadoVenta = "Pagada", Total = 9800 },
+                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 2003, Fecha = DateTime.Today.AddDays(-20), EstadoVenta = "Pendiente", Total = 23400 },
                 }
             },
             new ClienteCardDto
@@ -97,9 +97,9 @@ public partial class ClienteViewModel : ObservableObject
                 Nombre = "Escuela N° 1 (Cooperadora)",
                 Dni = "30-11111111-9",
                 DeudaTotal = 0,
-                UltimasCompras = new ObservableCollection<VentaResumenDto>
+                UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>
                 {
-                    new VentaResumenDto { IdVenta = 3001, Fecha = DateTime.Today.AddDays(-2), Estado = "Pagada", Total = 45200 },
+                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 3001, Fecha = DateTime.Today.AddDays(-2), EstadoVenta = "Pagada", Total = 45200 },
                 }
             }
         };

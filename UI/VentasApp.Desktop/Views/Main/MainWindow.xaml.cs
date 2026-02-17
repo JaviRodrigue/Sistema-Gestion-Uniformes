@@ -19,22 +19,22 @@ public partial class MainWindow : Window
         _provider = provider;
 
         // Vista inicial (evita pantalla vacía)
-        ContentHost.Content = _provider.GetRequiredService<VentaView>();
+        ContentHost.Content = _provider.GetRequiredService<VentaView>(); // Initialize with VentaView
     }
 
     private void OnBtnVentasClick(object sender, RoutedEventArgs e)
     {
-        ContentHost.Content = _provider.GetRequiredService<VentaView>();
+        ContentHost.Content = _provider.GetRequiredService<VentaView>(); // Load VentaView
     }
 
     private void OnBtnClientesClick(object sender, RoutedEventArgs e)
     {
-        ContentHost.Content = _provider.GetRequiredService<ClienteView>();
+        ContentHost.Content = _provider.GetRequiredService<ClienteView>(); // Load ClienteView
     }
 
     private void OnBtnProductosClick(object sender, RoutedEventArgs e)
     {
-        ContentHost.Content = _provider.GetRequiredService<ProductoView>();
+        ContentHost.Content = _provider.GetRequiredService<ProductoView>(); // Load ProductoView
     }
 
     private void OnBtnConfigClick(object sender, RoutedEventArgs e)

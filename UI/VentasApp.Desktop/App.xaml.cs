@@ -5,8 +5,16 @@ using System.Diagnostics;
 using System.Windows;
 using VentasApp.Desktop.ViewModels.Productos;
 using VentasApp.Desktop.ViewModels.Ventas;
+using VentasApp.Desktop.ViewModels.Cliente;
 using VentasApp.Desktop.Views.Productos;
 using VentasApp.Desktop.Views.Ventas;
+using VentasApp.Desktop.Views.Cliente;
+using VentasApp.Desktop.Views.Main;
+using Microsoft.EntityFrameworkCore;
+using VentasApp.Infrastructure.Persistencia.Contexto;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Infrastructure.Persistencia.Repositorios;
+using VentasApp.Application.CasoDeUso.Venta;
 // Asegúrate de importar tus otros namespaces si los necesitas
 // using VentasApp.Infrastructure.Persistence; 
 // using VentasApp.Application.UseCases...
@@ -35,13 +43,25 @@ public partial class App : System.Windows.Application
 
                 // 2. REGISTRAR VIEWMODELS
                 services.AddTransient<ProductoViewModel>();
+                services.AddTransient<ClienteViewModel>();
 
-                // 3. REGISTRAR SERVICIOS Y CASOS DE USO (Aquí irán los de tu backend luego)
-                // services.AddDbContext<VentasContext>();
-                // services.AddScoped<IVentaRepository, VentaRepository>();
+                // 3. REGISTRAR SERVICIOS, DB CONTEXT, REPOS Y CASOS DE USO
+                services.AddDbContext<DatabaseContext>(opt =>
+                    opt.UseInMemoryDatabase("VentasDb"));
+
+                services.AddScoped<IVentaRepository, VentaRepository>();
+                services.AddScoped<IUnitOfWork, UnitOfWork>();
+                services.AddScoped<IStockRepository, StockRepository>();
+
+                services.AddTransient<ListarVentasUseCase>();
+                services.AddTransient<ObtenerVentaUseCase>();
+                services.AddTransient<CrearVentaUseCase>();
+                services.AddTransient<AnularVentaUseCase>();
 
                 services.AddTransient<VentaViewModel>();
                 services.AddTransient<VentaView>();
+                services.AddTransient<ProductoView>();
+                services.AddTransient<ClienteView>();
 
 
             })

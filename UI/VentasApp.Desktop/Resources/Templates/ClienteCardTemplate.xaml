@@ -96,7 +96,7 @@
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Binding="{Binding DataContext.TieneDeuda, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="True"/>
-                                                <Condition Binding="{Binding Estado}" Value="Pendiente"/>
+                                                <Condition Binding="{Binding EstadoVenta}" Value="Pendiente"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Background" Value="{StaticResource DangerSoft}"/>
                                         </MultiDataTrigger>
@@ -104,7 +104,7 @@
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
                                                 <Condition Binding="{Binding DataContext.TieneDeuda, RelativeSource={RelativeSource AncestorType=DataGrid}}" Value="True"/>
-                                                <Condition Binding="{Binding Estado}" Value="Anulada"/>
+                                                <Condition Binding="{Binding EstadoVenta}" Value="Anulada"/>
                                             </MultiDataTrigger.Conditions>
                                             <Setter Property="Background" Value="{StaticResource WarningSoft}"/>
                                         </MultiDataTrigger>
@@ -112,14 +112,14 @@
                                 </Style>
                             </DataGrid.RowStyle>
                             <DataGrid.Columns>
-                                <DataGridTextColumn Header="ID" Binding="{Binding IdVenta}"/>
+                                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                                 <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha, StringFormat=d}"/>
                                 <DataGridTextColumn Header="Total" Binding="{Binding Total, StringFormat=C}"/>
                                 <DataGridTemplateColumn Header="Estado">
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
                                              <Border Background="{StaticResource SurfaceLight}" CornerRadius="10" Padding="8,2">
-                                                <TextBlock Text="{Binding Estado}" FontSize="10"/>
+                                                 <TextBlock Text="{Binding EstadoVenta}" FontSize="10"/>
                                             </Border>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>

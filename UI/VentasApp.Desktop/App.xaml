@@ -16,6 +16,7 @@
                 <ResourceDictionary Source="Resources/Styles/Colors.xaml"/>
                 <ResourceDictionary Source="Resources/Templates/ClienteCardTemplate.xaml"/>
                 <ResourceDictionary Source="Resources/Templates/ProductoCardTemplate.xaml"/>
+                <ResourceDictionary Source="Resources/Templates/VentaCardTemplate.xaml"/>
                 
 
             </ResourceDictionary.MergedDictionaries>

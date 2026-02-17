@@ -16,8 +16,8 @@ public class ClienteCardDto
 public class VentaResumenDto
 
 {
-    public int IdVenta { get; set; }
+    public int Id { get; set; }
     public DateTime Fecha { get; set; }
-    public string Estado { get; set; }
+    public string EstadoVenta { get; set; }
     public decimal Total { get; set; }
 }
