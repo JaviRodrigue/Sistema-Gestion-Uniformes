@@ -4,7 +4,7 @@ namespace VentasApp.Domain.Modelo.Cliente;
 
 public class Telefono : Entidad
 {
-    public string Numero { get; private set; }
+    public string Numero { get; private set; } = "";
     public int IdCliente { get; private set; }
     public Cliente? Cliente { get; private set; }
     public bool Activado { get; private set; }

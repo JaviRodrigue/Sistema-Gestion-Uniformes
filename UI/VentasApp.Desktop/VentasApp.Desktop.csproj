@@ -23,4 +23,9 @@
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.2" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Bootstrap\" />
+    <Folder Include="ViewModels\Main\" />
+  </ItemGroup>
+
 </Project>
