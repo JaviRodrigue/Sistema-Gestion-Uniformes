@@ -47,7 +47,7 @@ public partial class App : System.Windows.Application
 
                 // 3. REGISTRAR SERVICIOS, DB CONTEXT, REPOS Y CASOS DE USO
                 services.AddDbContext<DatabaseContext>(opt =>
-                    opt.UseInMemoryDatabase("VentasDb"));
+                    opt.UseSqlite("Data Source=Database.sqlite"));
 
                 services.AddScoped<IVentaRepository, VentaRepository>();
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -93,11 +93,18 @@ public partial class App : System.Windows.Application
             // 1. Iniciar el Host
             await AppHost!.StartAsync();
 
-            // 2. Pedirle al contenedor que cree la MainWindow
+            // 2. Asegurar creación de la base de datos
+            using (var scope = AppHost.Services.CreateScope())
+            {
+                var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+                await db.Database.EnsureCreatedAsync();
+            }
+
+            // 3. Pedirle al contenedor que cree la MainWindow
             // (Esto inyectará automáticamente todo lo que la MainWindow necesite)
             var startupForm = AppHost.Services.GetRequiredService<MainWindow>();
             
-            // 3. Mostrar la ventana
+            // 4. Mostrar la ventana
             startupForm.Show();
 
             base.OnStartup(e);
