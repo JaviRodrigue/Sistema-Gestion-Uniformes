@@ -6,7 +6,7 @@ using VentasApp.Application.DTOs.Venta;
 using VentasApp.Desktop.ViewModels.DTOs;
 using VentasApp.Desktop.Views.Ventas;
 
-namespace VentasApp.Desktop.ViewModels.Ventas.VentaViewModel;
+namespace VentasApp.Desktop.ViewModels.Ventas;
 
 public partial class VentaViewModel : ObservableObject
 {

@@ -1,50 +1,48 @@
-﻿using System.Text;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using VentasApp.Desktop.Views.Ventas;
 using VentasApp.Desktop.Views.Cliente;
 using VentasApp.Desktop.Views.Productos;
-using VentasApp.Desktop.Converters; // Added DTO namespace import
+using VentasApp.Desktop.Views.Ventas;
 
-namespace VentasApp.Desktop;
+namespace VentasApp.Desktop.Views.Main;
 
-/// <summary>
-/// Interaction logic for MainWindow.xaml
-/// </summary>
 public partial class MainWindow : Window
 {
-	public MainWindow()
-	{
-		InitializeComponent();
-        // Cargar vista inicial
-        ContentHost.Content = new VentasApp.Desktop.Views.Productos.ProductoView();
-	}
+    private readonly IServiceProvider _provider;
+
+    public MainWindow(IServiceProvider provider)
+    {
+        InitializeComponent();
+
+        _provider = provider;
+
+        // Vista inicial (evita pantalla vacía)
+        ContentHost.Content = _provider.GetRequiredService<VentaView>();
+    }
 
     private void OnBtnVentasClick(object sender, RoutedEventArgs e)
     {
-        ContentHost.Content = new VentasApp.Desktop.Views.Ventas.VentaView(); // Adjusted to match new namespace
+        ContentHost.Content = _provider.GetRequiredService<VentaView>();
     }
 
     private void OnBtnClientesClick(object sender, RoutedEventArgs e)
     {
-        ContentHost.Content = new VentasApp.Desktop.Views.Cliente.ClienteView();
+        ContentHost.Content = _provider.GetRequiredService<ClienteView>();
     }
 
     private void OnBtnProductosClick(object sender, RoutedEventArgs e)
     {
-        ContentHost.Content = new VentasApp.Desktop.Views.Productos.ProductoView();
+        ContentHost.Content = _provider.GetRequiredService<ProductoView>();
     }
 
     private void OnBtnConfigClick(object sender, RoutedEventArgs e)
     {
-        // Placeholder de configuración
-        ContentHost.Content = new TextBlock { Text = "Configuración (próximamente)", FontSize = 24 };
+        ContentHost.Content = new TextBlock
+        {
+            Text = "Configuración (próximamente)",
+            FontSize = 24
+        };
     }
 }

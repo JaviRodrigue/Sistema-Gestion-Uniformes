@@ -1,9 +1,5 @@
-<Application.Resources>
-    <DataTemplate DataType="{x:Type vm:VentaViewModel}">
-        <views:VentaView />
-    </DataTemplate>
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <DataTemplate DataType="{x:Type vm:ProductoViewModel}">
-        <views:ProductoView />
-    </DataTemplate>
-</Application.Resources>
+</ResourceDictionary>

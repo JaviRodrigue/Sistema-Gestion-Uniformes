@@ -4,7 +4,7 @@ using System;
 using System.Diagnostics;
 using System.Windows;
 using VentasApp.Desktop.ViewModels.Productos;
-using VentasApp.Desktop.ViewModels.Ventas.VentaViewModel;
+using VentasApp.Desktop.ViewModels.Ventas;
 using VentasApp.Desktop.Views.Productos;
 using VentasApp.Desktop.Views.Ventas;
 // Asegúrate de importar tus otros namespaces si los necesitas
@@ -28,7 +28,9 @@ public partial class App : System.Windows.Application
             .ConfigureServices((hostContext, services) =>
             {
                 // 1. REGISTRAR VENTANAS Y VISTAS
-                services.AddSingleton<MainWindow>(); // Ventana Principal
+                services.AddSingleton<MainWindow>(sp =>
+                    new MainWindow(sp));
+                // Ventana Principal
                 // (Opcional si usas inyección en vistas, por ahora MainWindow es suficiente)
 
                 // 2. REGISTRAR VIEWMODELS
