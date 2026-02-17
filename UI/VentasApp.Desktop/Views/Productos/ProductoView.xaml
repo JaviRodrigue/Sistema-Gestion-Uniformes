@@ -8,9 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.DataContext>
-        <vm:ProductoViewModel/>
-    </UserControl.DataContext>
+    <!-- DataContext set via constructor injection in code-behind -->
 
     <Grid Background="{StaticResource SecondaryPastel}" Margin="10">
         <Grid.RowDefinitions>

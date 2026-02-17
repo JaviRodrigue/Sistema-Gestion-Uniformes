@@ -1,7 +1,9 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System;
-using System.Collections.ObjectModel;
+using System.Linq;
+using System.Collections.Generic;
 using VentasApp.Desktop.ViewModels.DTOs;
 using VentasApp.Domain.Modelo.Cliente;
 
@@ -9,13 +11,14 @@ namespace VentasApp.Desktop.ViewModels.Cliente;
 
 public partial class ClienteViewModel : ObservableObject
 {
-    // private readonly IGetAllClientesUseCase _getAllClientesUseCase;
+    private readonly VentasApp.Application.Interfaces.Repositorios.IClienteRepository _clienteRepository;
 
     [ObservableProperty]
     private ObservableCollection<ClienteCardDto> _clientes;
 
-    public ClienteViewModel()
+    public ClienteViewModel(VentasApp.Application.Interfaces.Repositorios.IClienteRepository clienteRepository)
     {
+        _clienteRepository = clienteRepository;
         CargarClientes();
     }
 
@@ -60,48 +63,19 @@ public partial class ClienteViewModel : ObservableObject
         }
     }
 
-    private void CargarClientes()
+    private async void CargarClientes()
     {
-        // Aquí llamarías a _getAllClientesUseCase.Execute();
-        Clientes = new ObservableCollection<ClienteCardDto>
+        var list = await _clienteRepository.ListarClientes();
+        var mapped = list.Select(c => new ClienteCardDto
         {
-            new ClienteCardDto
-            {
-                Id = 1,
-                Nombre = "María González",
-                Dni = "30.123.456",
-                Telefonos = "2241-554433",
-                DeudaTotal = 0,
-                UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>
-                {
-                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 1001, Fecha = DateTime.Today.AddDays(-7), EstadoVenta = "Pagada", Total = 15200 },
-                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 1002, Fecha = DateTime.Today.AddDays(-30), EstadoVenta = "Anulada", Total = 8200 },
-                }
-            },
-            new ClienteCardDto
-            {
-                Id = 2,
-                Nombre = "Carlos 'El Moroso' Pérez",
-                Dni = "25.987.654",
-                DeudaTotal = 45200.50m, // Deudor
-                UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>
-                {
-                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 2001, Fecha = DateTime.Today.AddDays(-3), EstadoVenta = "Pendiente", Total = 12000 },
-                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 2002, Fecha = DateTime.Today.AddDays(-15), EstadoVenta = "Pagada", Total = 9800 },
-                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 2003, Fecha = DateTime.Today.AddDays(-20), EstadoVenta = "Pendiente", Total = 23400 },
-                }
-            },
-            new ClienteCardDto
-            {
-                Id = 3,
-                Nombre = "Escuela N° 1 (Cooperadora)",
-                Dni = "30-11111111-9",
-                DeudaTotal = 0,
-                UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>
-                {
-                    new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto { Id = 3001, Fecha = DateTime.Today.AddDays(-2), EstadoVenta = "Pagada", Total = 45200 },
-                }
-            }
-        };
+            Id = c.Id,
+            Nombre = c.Nombre ?? string.Empty,
+            Dni = c.DNI ?? string.Empty,
+            Telefonos = string.Join(" / ", (c.Telefonos ?? new List<VentasApp.Domain.Modelo.Cliente.Telefono>()).Select(t => t.Numero)),
+            DeudaTotal = 0, // TODO: map from ventas/pagos
+            UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>()
+        });
+
+        Clientes = new ObservableCollection<ClienteCardDto>(mapped);
     }
 }

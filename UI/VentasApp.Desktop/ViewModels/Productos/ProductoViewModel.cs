@@ -1,26 +1,23 @@
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input; // Necesario para los botones
+using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using VentasApp.Desktop.ViewModels.DTOs;
-// using VentasApp.Application.UseCases.Productos; // Descomentar cuando tengas tus interfaces
+using System.Linq;
 
 namespace VentasApp.Desktop.ViewModels.Productos
 {
     public partial class ProductoViewModel : ObservableObject
     {
-        // Aquí inyectarías tu caso de uso real
-        // private readonly IGetAllProductosUseCase _getAllProductosUseCase;
+        private readonly VentasApp.Application.Interfaces.Repositorios.IProductoRepository _productoRepository;
 
         [ObservableProperty]
         private ObservableCollection<ProductoCardDto> _productos;
 
-        public ProductoViewModel(/* IGetAllProductosUseCase getAllProductosUseCase */)
+        public ProductoViewModel(VentasApp.Application.Interfaces.Repositorios.IProductoRepository productoRepository)
         {
-            // _getAllProductosUseCase = getAllProductosUseCase;
+            _productoRepository = productoRepository;
             Productos = new ObservableCollection<ProductoCardDto>();
-
-            // Simulamos la llamada al caso de uso
             CargarProductos();
         }
 
@@ -59,8 +56,6 @@ namespace VentasApp.Desktop.ViewModels.Productos
         private void EditarProducto(ProductoCardDto? producto)
         {
             if (producto is null) return;
-            // TODO: abrir ventana/flujo de edición real
-            // Por ahora, ejemplo simple: cambiar nombre para visualizar acción
             producto.Nombre = producto.Nombre + " (editado)";
             OnPropertyChanged(nameof(Productos));
         }
@@ -77,17 +72,18 @@ namespace VentasApp.Desktop.ViewModels.Productos
 
         private async void CargarProductos()
         {
-            // var listaReal = await _getAllProductosUseCase.ExecuteAsync();
-            // Por ahora, usamos los datos Mock:
-
-            await Task.Delay(500); // Simulamos tiempo de carga de DB
-
-            Productos = new ObservableCollection<ProductoCardDto>
+            var lista = await _productoRepository.ListarProductos();
+            var mapped = lista.Select(p => new ProductoCardDto
             {
-                new ProductoCardDto { Id = 1, Nombre = "Chomba Escolar Talle 12", Categoria = "Uniforme", Precio = 15000, StockTotal = 50, CodigoBarraReferencia = "779123456789" },
-                new ProductoCardDto { Id = 2, Nombre = "Cuaderno A4 Rayado", Categoria = "Librería", Precio = 4500, StockTotal = 120, CodigoBarraReferencia = "LIB-001" },
-                new ProductoCardDto { Id = 3, Nombre = "Pantalón Jogging Talle 10", Categoria = "Uniforme", Precio = 18000, StockTotal = 0, CodigoBarraReferencia = "779987654321" }
-            };
+                Id = p.Id,
+                Nombre = p.Nombre ?? string.Empty,
+                Categoria = string.Empty, // no existe Categoria en Producto dominio
+                Precio = p.PrecioVenta,
+                StockTotal = 0, // no existe StockTotal en Producto dominio
+                CodigoBarraReferencia = p.ItemsVendibles?.FirstOrDefault()?.CodigoBarra ?? string.Empty
+            });
+
+            Productos = new ObservableCollection<ProductoCardDto>(mapped);
         }
     }
 }

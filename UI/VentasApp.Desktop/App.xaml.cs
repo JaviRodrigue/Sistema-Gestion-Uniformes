@@ -52,6 +52,8 @@ public partial class App : System.Windows.Application
                 services.AddScoped<IVentaRepository, VentaRepository>();
                 services.AddScoped<IUnitOfWork, UnitOfWork>();
                 services.AddScoped<IStockRepository, StockRepository>();
+                services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IClienteRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ClienteRepository>();
+                services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IProductoRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ProductoRepository>();
 
                 services.AddTransient<ListarVentasUseCase>();
                 services.AddTransient<ObtenerVentaUseCase>();
