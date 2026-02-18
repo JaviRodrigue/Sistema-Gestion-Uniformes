@@ -11,16 +11,19 @@ namespace VentasApp.Desktop.ViewModels.Productos
     {
         private readonly VentasApp.Application.Interfaces.Repositorios.IProductoRepository _productoRepository;
         private readonly VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase _crearProductoUseCase;
+        private readonly VentasApp.Application.CasoDeUso.Productos.ActualizarProductoUseCase _actualizarProductoUseCase;
 
         [ObservableProperty]
         private ObservableCollection<ProductoCardDto> _productos;
 
         public ProductoViewModel(
             VentasApp.Application.Interfaces.Repositorios.IProductoRepository productoRepository,
-            VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase crearProductoUseCase)
+            VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase crearProductoUseCase,
+            VentasApp.Application.CasoDeUso.Productos.ActualizarProductoUseCase actualizarProductoUseCase)
         {
             _productoRepository = productoRepository;
             _crearProductoUseCase = crearProductoUseCase;
+            _actualizarProductoUseCase = actualizarProductoUseCase;
             Productos = new ObservableCollection<ProductoCardDto>();
             CargarProductos();
         }
@@ -67,11 +70,39 @@ namespace VentasApp.Desktop.ViewModels.Productos
         }
 
         [RelayCommand]
-        private void EditarProducto(ProductoCardDto? producto)
+        private async void EditarProducto(ProductoCardDto? producto)
         {
             if (producto is null) return;
-            producto.Nombre = producto.Nombre + " (editado)";
-            OnPropertyChanged(nameof(Productos));
+            var win = new Views.Productos.EditarProductoWindow
+            {
+                Owner = System.Windows.Application.Current.MainWindow
+            };
+            // Prefill fields
+            (win.FindName("TxtNombre") as System.Windows.Controls.TextBox)!.Text = producto.Nombre;
+            (win.FindName("TxtCosto") as System.Windows.Controls.TextBox)!.Text = producto.Precio.ToString();
+            (win.FindName("TxtPrecioVenta") as System.Windows.Controls.TextBox)!.Text = producto.Precio.ToString();
+
+            var ok = win.ShowDialog();
+            if (ok == true)
+            {
+                var nombre = (win.FindName("TxtNombre") as System.Windows.Controls.TextBox)?.Text ?? producto.Nombre;
+                var costoText = (win.FindName("TxtCosto") as System.Windows.Controls.TextBox)?.Text ?? producto.Precio.ToString();
+                var precioVentaText = (win.FindName("TxtPrecioVenta") as System.Windows.Controls.TextBox)?.Text ?? producto.Precio.ToString();
+
+                decimal.TryParse(costoText, out var costo);
+                decimal.TryParse(precioVentaText, out var precioVenta);
+
+                var dto = new VentasApp.Application.DTOs.Productos.ActualizarProductoDto
+                {
+                    Nombre = nombre,
+                    Costo = costo,
+                    PrecioVenta = precioVenta
+                };
+
+                await _actualizarProductoUseCase.EjecutarAsync(producto.Id, dto);
+
+                CargarProductos();
+            }
         }
 
         [RelayCommand]

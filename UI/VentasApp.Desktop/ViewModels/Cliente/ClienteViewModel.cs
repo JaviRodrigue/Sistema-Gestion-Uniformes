@@ -12,23 +12,56 @@ namespace VentasApp.Desktop.ViewModels.Cliente;
 public partial class ClienteViewModel : ObservableObject
 {
     private readonly VentasApp.Application.Interfaces.Repositorios.IClienteRepository _clienteRepository;
+    private readonly VentasApp.Application.CasoDeUso.Cliente.ActualizarClienteCasoDeUso _actualizarClienteCasoDeUso;
 
     [ObservableProperty]
     private ObservableCollection<ClienteCardDto> _clientes;
 
-    public ClienteViewModel(VentasApp.Application.Interfaces.Repositorios.IClienteRepository clienteRepository)
+    public ClienteViewModel(VentasApp.Application.Interfaces.Repositorios.IClienteRepository clienteRepository,
+        VentasApp.Application.CasoDeUso.Cliente.ActualizarClienteCasoDeUso actualizarClienteCasoDeUso)
     {
         _clienteRepository = clienteRepository;
+        _actualizarClienteCasoDeUso = actualizarClienteCasoDeUso;
         CargarClientes();
     }
 
     [RelayCommand]
-    private void EditarCliente(ClienteCardDto? cliente)
+    private async void EditarCliente(ClienteCardDto? cliente)
     {
         if (cliente is null) return;
-        // TODO: abrir ventana/flujo de edición real
-        cliente.Nombre = cliente.Nombre + " (editado)";
-        OnPropertyChanged(nameof(Clientes));
+        var win = new Views.Cliente.EditarClienteWindow
+        {
+            Owner = System.Windows.Application.Current.MainWindow
+        };
+
+        // Prefill fields
+        (win.FindName("TxtNombre") as System.Windows.Controls.TextBox)!.Text = cliente.Nombre;
+        (win.FindName("TxtDni") as System.Windows.Controls.TextBox)!.Text = cliente.Dni;
+        (win.FindName("TxtTelefonos") as System.Windows.Controls.TextBox)!.Text = cliente.Telefonos;
+
+        var ok = win.ShowDialog();
+        if (ok == true)
+        {
+            var nombre = (win.FindName("TxtNombre") as System.Windows.Controls.TextBox)?.Text?.Trim() ?? cliente.Nombre;
+            var dni = (win.FindName("TxtDni") as System.Windows.Controls.TextBox)?.Text?.Trim() ?? cliente.Dni;
+            var telefonosStr = (win.FindName("TxtTelefonos") as System.Windows.Controls.TextBox)?.Text ?? cliente.Telefonos ?? string.Empty;
+
+            var telefonos = string.IsNullOrWhiteSpace(telefonosStr)
+                ? new System.Collections.Generic.List<string>()
+                : telefonosStr.Split(',', ';', '\n').Select(s => s.Trim()).Where(s => !string.IsNullOrWhiteSpace(s)).ToList();
+
+            var dto = new VentasApp.Application.DTOs.Cliente.ActualizarClienteDto
+            {
+                Id = cliente.Id,
+                Nombre = nombre,
+                Dni = dni,
+                Telefonos = telefonos
+            };
+
+            await _actualizarClienteCasoDeUso.EjecutarAsync(dto);
+
+            CargarClientes();
+        }
     }
 
     [RelayCommand]

@@ -16,6 +16,8 @@ using VentasApp.Infrastructure.Persistencia.Contexto;
 using VentasApp.Application.Interfaces.Repositorios;
 using VentasApp.Infrastructure.Persistencia.Repositorios;
 using VentasApp.Application.CasoDeUso.Venta;
+using VentasApp.Application.CasoDeUso.Productos;
+using VentasApp.Application.CasoDeUso.Cliente;
 // Asegúrate de importar tus otros namespaces si los necesitas
 // using VentasApp.Infrastructure.Persistence; 
 // using VentasApp.Application.UseCases...
@@ -71,6 +73,13 @@ public partial class App : System.Windows.Application
                 services.AddTransient<ObtenerVentaUseCase>();
                 services.AddTransient<CrearVentaUseCase>();
                 services.AddTransient<AnularVentaUseCase>();
+                
+                // Productos UseCases
+                services.AddTransient<CrearProductoUseCase>();
+                services.AddTransient<ActualizarProductoUseCase>();
+
+                // Cliente UseCases
+                services.AddTransient<ActualizarClienteCasoDeUso>();
 
                 services.AddTransient<VentaView>();
                 services.AddTransient<ProductoView>();
