@@ -8,5 +8,7 @@ public class ProductoCardDto
     public string Categoria { get; set; } = string.Empty;
     public decimal Precio { get; set; }
     public int StockTotal { get; set; }
+    public int StockMinimo { get; set; }
+    public bool BajoStock => StockMinimo > 0 && StockTotal < StockMinimo;
     public string CodigoBarraReferencia { get; set; } = string.Empty;
 }

@@ -18,6 +18,8 @@ using VentasApp.Infrastructure.Persistencia.Repositorios;
 using VentasApp.Application.CasoDeUso.Venta;
 using VentasApp.Application.CasoDeUso.Productos;
 using VentasApp.Application.CasoDeUso.Cliente;
+using VentasApp.Application.CasoDeUso.Stocks;
+using VentasApp.Application.CasoDeUso.ItemVendibles;
 // Asegúrate de importar tus otros namespaces si los necesitas
 // using VentasApp.Infrastructure.Persistence; 
 // using VentasApp.Application.UseCases...
@@ -68,6 +70,7 @@ public partial class App : System.Windows.Application
                 services.AddScoped<IStockRepository, StockRepository>();
                 services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IClienteRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ClienteRepository>();
                 services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IProductoRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ProductoRepository>();
+                services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IItemVendibleRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ItemVendibleRepository>();
 
                 services.AddTransient<ListarVentasUseCase>();
                 services.AddTransient<ObtenerVentaUseCase>();
@@ -77,9 +80,17 @@ public partial class App : System.Windows.Application
                 // Productos UseCases
                 services.AddTransient<CrearProductoUseCase>();
                 services.AddTransient<ActualizarProductoUseCase>();
+                services.AddTransient<CrearItemVendibleUseCase>();
 
                 // Cliente UseCases
                 services.AddTransient<ActualizarClienteCasoDeUso>();
+
+                // Stocks UseCases
+                services.AddTransient<CrearStockUseCase>();
+                services.AddTransient<ObtenerStockUseCase>();
+                services.AddTransient<AumentarStockUseCase>();
+                services.AddTransient<DescontarStockUseCase>();
+                services.AddTransient<ActualizarStockMinimoUseCase>();
 
                 services.AddTransient<VentaView>();
                 services.AddTransient<ProductoView>();

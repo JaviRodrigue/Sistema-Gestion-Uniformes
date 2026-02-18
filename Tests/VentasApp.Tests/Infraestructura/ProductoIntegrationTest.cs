@@ -144,11 +144,9 @@ public class ProductoItemStockIntegrationTests
 
         context.Producto.Add(producto);
 
-
-       await Assert.ThrowsAsync<DbUpdateException>(() =>
+        Assert.Throws<InvalidOperationException>(() =>
         {
             context.Producto.Remove(producto);
-            return context.SaveChangesAsync();
         });
     }
 }

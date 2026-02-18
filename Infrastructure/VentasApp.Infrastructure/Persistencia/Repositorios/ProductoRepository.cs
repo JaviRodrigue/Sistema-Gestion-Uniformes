@@ -28,6 +28,8 @@ public class ProductoRepository : IProductoRepository
 
     public async Task<List<Producto>> ListarProductos()
     {
-        return await _context.Producto.ToListAsync();
+        return await _context.Producto
+            .Include(p => p.ItemsVendibles)
+            .ToListAsync();
     }
 }

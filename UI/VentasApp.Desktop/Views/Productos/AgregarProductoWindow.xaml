@@ -51,6 +51,16 @@
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
                                  Margin="0,0,0,12"/>
 
+                        <!-- Stock inicial -->
+                        <TextBox x:Name="TxtCantidadInicial"
+                                 materialDesign:HintAssist.Hint="Cantidad inicial de stock (opcional)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,12"/>
+                        <TextBox x:Name="TxtStockMinimo"
+                                 materialDesign:HintAssist.Hint="Stock mínimo (opcional)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,12"/>
+
                         <TextBox x:Name="TxtCodigoBarra"
                                  materialDesign:HintAssist.Hint="Código de barras (opcional)"
                                  Style="{StaticResource MaterialDesignOutlinedTextBox}"
