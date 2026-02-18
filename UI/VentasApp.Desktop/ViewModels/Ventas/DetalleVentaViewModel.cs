@@ -10,8 +10,29 @@ public partial class DetalleVentaViewModel : ObservableObject
 
     public DetalleVentaViewModel(VentaDetalleDto venta)
     {
-        Venta = venta;
+        Venta = venta ?? new VentaDetalleDto();
+
+        // subscribe to collection changes so totals update
+        Venta.Items.CollectionChanged += (_, __) => RaiseTotalsChanged();
+        Venta.Pagos.CollectionChanged += (_, __) => RaiseTotalsChanged();
+
+        foreach (var item in Venta.Items)
+            item.PropertyChanged += (_, __) => RaiseTotalsChanged();
+
+        foreach (var pago in Venta.Pagos)
+            pago.PropertyChanged += (_, __) => RaiseTotalsChanged();
     }
+
+    private void RaiseTotalsChanged()
+    {
+        OnPropertyChanged(nameof(Total));
+        OnPropertyChanged(nameof(Pagado));
+        OnPropertyChanged(nameof(Restante));
+    }
+
+    public decimal Total => Venta.Total;
+    public decimal Pagado => Venta.Pagado;
+    public decimal Restante => Venta.Restante;
 
     // ================= ITEMS =================
 
@@ -20,6 +41,7 @@ public partial class DetalleVentaViewModel : ObservableObject
     {
         Venta.Items.Add(new VentaItemDto
         {
+            IdDetalle = 0,
             Producto = "Nuevo producto",
             Cantidad = 1,
             PrecioUnitario = 0

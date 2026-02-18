@@ -6,6 +6,9 @@ namespace VentasApp.Desktop.ViewModels.DTOs;
 public partial class VentaItemDto : ObservableObject
 {
     [ObservableProperty]
+    private int _idDetalle;
+
+    [ObservableProperty]
     private string _producto = "";
 
     [ObservableProperty]
