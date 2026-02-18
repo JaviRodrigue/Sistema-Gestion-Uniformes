@@ -21,7 +21,15 @@ public class CrearVentaUseCase
     {
         var venta = new Venta(VentaDto.TipoVenta);
         await _ventaRepository.Agregar(venta);
-        await _unitOfWork.SaveChanges();
+        try
+        {
+            await _unitOfWork.SaveChanges();
+        }
+        catch (Exception ex)
+        {
+            System.Diagnostics.Debug.WriteLine(ex.ToString());
+            throw;
+        }
         return venta.Id;
     }
 }

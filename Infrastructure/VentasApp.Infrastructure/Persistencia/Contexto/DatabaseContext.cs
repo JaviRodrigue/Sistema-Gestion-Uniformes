@@ -11,7 +11,6 @@ namespace VentasApp.Infrastructure.Persistencia.Contexto;
 
 public class DatabaseContext : DbContext
 {
-    public DatabaseContext() { }
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
@@ -41,18 +40,18 @@ public class DatabaseContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            // Guardar la base de datos fuera de bin, en Infrastructure/VentasApp.Infrastructure/Archivo
-            // Localizar la raíz del repositorio (carpeta 'Sistema-Gestion-Uniformes') desde AppContext.BaseDirectory
-            var root = GetRepositoryRoot(AppContext.BaseDirectory, "Sistema-Gestion-Uniformes");
-            var folder = root is not null
-                ? Path.Combine(root, "Infrastructure", "VentasApp.Infrastructure", "Archivo")
-                : Path.Combine(AppContext.BaseDirectory, "Archivo");
+            var folder = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                "VentasApp");
 
             Directory.CreateDirectory(folder);
+
             var dbPath = Path.Combine(folder, "Database.sqlite");
+
             optionsBuilder.UseSqlite($"Data Source={dbPath}");
         }
     }
+
 
     private static string? GetRepositoryRoot(string startPath, string repoFolderName)
     {
