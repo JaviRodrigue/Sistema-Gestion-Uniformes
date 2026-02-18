@@ -14,6 +14,7 @@ public partial class VentaViewModel : ObservableObject
     private readonly ObtenerVentaUseCase _obtener;
     private readonly CrearVentaUseCase _crear;
     private readonly AnularVentaUseCase _anular;
+    private readonly VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase _guardarDetalle;
 
     [ObservableProperty]
     private ObservableCollection<VentaCardDto> _ventas = new();
@@ -22,12 +23,14 @@ public partial class VentaViewModel : ObservableObject
         ListarVentasUseCase listar,
         ObtenerVentaUseCase obtener,
         CrearVentaUseCase crear,
-        AnularVentaUseCase anular)
+        AnularVentaUseCase anular,
+        VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase guardarDetalle)
     {
         _listar = listar;
         _obtener = obtener;
         _crear = crear;
         _anular = anular;
+        _guardarDetalle = guardarDetalle;
 
         _ = CargarAsync();
     }
@@ -43,7 +46,9 @@ public partial class VentaViewModel : ObservableObject
                 Codigo = v.Codigo,
                 Fecha = v.Fecha,
                 EstadoVenta = v.EstadoVenta,
-                EstadoPago = v.EstadoPago
+                EstadoPago = v.EstadoPago,
+                Total = v.Total,
+                Restante = v.Restante
              }));
     }
 
@@ -54,8 +59,15 @@ public partial class VentaViewModel : ObservableObject
         if (detalle is null) return;
 
         var uiDetalle = MapDetalle(detalle);
-        var win = new DetalleVentaWindow(uiDetalle);
-        win.ShowDialog();
+        uiDetalle.Id = detalle.Id;
+        var win = new DetalleVentaWindow(uiDetalle, _guardarDetalle);
+        var result = win.ShowDialog();
+
+        // Si el usuario guardó cambios, recargar la lista para actualizar totales en el listado
+        if (result == true)
+        {
+            await CargarAsync();
+        }
     }
 
     private static VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto MapDetalle(VentasApp.Application.DTOs.Venta.VentaDetalleDto src)
@@ -68,6 +80,7 @@ public partial class VentaViewModel : ObservableObject
             Items = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaItemDto>(
                 src.Items.Select(i => new VentasApp.Desktop.ViewModels.DTOs.VentaItemDto
                 {
+                    IdDetalle = i.IdDetalle,
                     Producto = i.Descripcion,
                     PrecioUnitario = i.PrecioUnitario,
                     Cantidad = i.Cantidad

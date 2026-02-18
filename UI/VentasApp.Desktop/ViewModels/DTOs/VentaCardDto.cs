@@ -23,9 +23,21 @@ public class VentaCardDto
     // PROPIEDADES CALCULADAS
     // ===============================
 
-    public decimal Total => Detalle.Total;
+    // Backing fields used when Detalle no tiene items (cargado desde listado)
+    private decimal _total;
+    private decimal _restante;
 
-    public decimal Restante => Detalle.Restante;
+    public decimal Total
+    {
+        get => (Detalle?.Items != null && Detalle.Items.Any()) ? Detalle.Total : _total;
+        set => _total = value;
+    }
+
+    public decimal Restante
+    {
+        get => (Detalle?.Pagos != null && Detalle.Items != null && Detalle.Items.Any()) ? Detalle.Restante : _restante;
+        set => _restante = value;
+    }
 
     public DateTime? FechaEstimada => Detalle.FechaEstimada;
 

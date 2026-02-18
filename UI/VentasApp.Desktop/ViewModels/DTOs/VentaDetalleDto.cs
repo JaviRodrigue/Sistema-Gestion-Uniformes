@@ -6,6 +6,7 @@ namespace VentasApp.Desktop.ViewModels.DTOs;
 
 public class VentaDetalleDto
 {
+    public int Id { get; set; }
     public string Codigo { get; set; } = "";
     public string Cliente { get; set; } = "";
 

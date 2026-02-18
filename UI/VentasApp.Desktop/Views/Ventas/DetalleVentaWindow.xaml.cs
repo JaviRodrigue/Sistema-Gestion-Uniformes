@@ -1,26 +1,57 @@
 using System.Windows;
 using VentasApp.Desktop.ViewModels.DTOs;
 using VentasApp.Desktop.ViewModels.Ventas;
+using VentasApp.Application.CasoDeUso.DetalleVenta;
 
 namespace VentasApp.Desktop.Views.Ventas;
 
-public partial class DetalleVentaWindow : Window
-{
-    public DetalleVentaWindow(VentaDetalleDto dto)
+    public partial class DetalleVentaWindow : Window
     {
-        InitializeComponent();
-        DataContext = new DetalleVentaViewModel(dto);
-    }
+        private readonly GuardarDetalleVentaUseCase _guardar;
+        private readonly VentaDetalleDto _dto;
 
-    private void Guardar_Click(object sender, RoutedEventArgs e)
-    {
-        DialogResult = true;
-        Close();
-    }
+        public DetalleVentaWindow(VentaDetalleDto dto, GuardarDetalleVentaUseCase guardar)
+        {
+            InitializeComponent();
+            _dto = dto;
+            _guardar = guardar;
+            DataContext = new DetalleVentaViewModel(dto);
+        }
 
-    private void Cancelar_Click(object sender, RoutedEventArgs e)
-    {
-        DialogResult = false;
-        Close();
+        private async void Guardar_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Map UI DTO to application DTO
+                var appDto = new VentasApp.Application.DTOs.Venta.VentaDetalleDto
+                {
+                    Id = _dto.Id,
+                    Codigo = _dto.Codigo,
+                    Cliente = _dto.Cliente,
+                    Items = _dto.Items.Select(i => new VentasApp.Application.DTOs.Venta.VentaItemDto
+                    {
+                        IdDetalle = i.IdDetalle,
+                        Descripcion = i.Producto,
+                        Cantidad = i.Cantidad,
+                        PrecioUnitario = i.PrecioUnitario
+                    }).ToList(),
+                    Pagos = new List<VentasApp.Application.DTOs.Pago.PagoDto>()
+                };
+
+                await _guardar.EjecutarAsync(_dto.Id, appDto);
+
+                DialogResult = true;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al guardar detalle", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Cancelar_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
     }
-}
