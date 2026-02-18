@@ -54,12 +54,9 @@ public partial class App : System.Windows.Application
                 // 3. REGISTRAR SERVICIOS, DB CONTEXT, REPOS Y CASOS DE USO
                 services.AddDbContext<DatabaseContext>(opt =>
                 {
-                    // Ubicar la raíz del repositorio
-                    var root = GetRepositoryRoot(AppContext.BaseDirectory, "Sistema-Gestion-Uniformes");
-                    var folder = root is not null
-                        ? Path.Combine(root, "Infrastructure", "VentasApp.Infrastructure", "Archivo")
-                        : Path.Combine(AppContext.BaseDirectory, "Archivo");
-                    
+                    var folder = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "VentasApp");
                     Directory.CreateDirectory(folder);
                     var dbPath = Path.Combine(folder, "Database.sqlite");
                     opt.UseSqlite($"Data Source={dbPath}");
@@ -154,23 +151,5 @@ public partial class App : System.Windows.Application
         // Limpiar recursos al cerrar
         await AppHost!.StopAsync();
         base.OnExit(e);
-    }
-
-    private static string? GetRepositoryRoot(string startPath, string repoFolderName)
-    {
-        var dir = new DirectoryInfo(startPath);
-        while (dir is not null)
-        {
-            if (string.Equals(dir.Name, repoFolderName, StringComparison.OrdinalIgnoreCase))
-            {
-                return dir.FullName;
-            }
-
-            // Parar si llegamos a la raíz
-            if (dir.Parent is null) break;
-            dir = dir.Parent;
-        }
-
-        return null;
     }
 }
