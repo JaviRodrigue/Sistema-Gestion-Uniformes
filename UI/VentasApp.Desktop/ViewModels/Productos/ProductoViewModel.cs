@@ -10,20 +10,38 @@ namespace VentasApp.Desktop.ViewModels.Productos
     public partial class ProductoViewModel : ObservableObject
     {
         private readonly VentasApp.Application.Interfaces.Repositorios.IProductoRepository _productoRepository;
+        private readonly VentasApp.Application.Interfaces.Repositorios.IStockRepository _stockRepository;
         private readonly VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase _crearProductoUseCase;
         private readonly VentasApp.Application.CasoDeUso.Productos.ActualizarProductoUseCase _actualizarProductoUseCase;
+        private readonly VentasApp.Application.CasoDeUso.ItemVendibles.CrearItemVendibleUseCase _crearItemVendibleUseCase;
+        private readonly VentasApp.Application.CasoDeUso.Stocks.CrearStockUseCase _crearStockUseCase;
+        private readonly VentasApp.Application.CasoDeUso.Stocks.AumentarStockUseCase _aumentarStockUseCase;
+        private readonly VentasApp.Application.CasoDeUso.Stocks.DescontarStockUseCase _descontarStockUseCase;
+        private readonly VentasApp.Application.CasoDeUso.Stocks.ActualizarStockMinimoUseCase _actualizarStockMinimoUseCase;
 
         [ObservableProperty]
         private ObservableCollection<ProductoCardDto> _productos;
 
         public ProductoViewModel(
             VentasApp.Application.Interfaces.Repositorios.IProductoRepository productoRepository,
+            VentasApp.Application.Interfaces.Repositorios.IStockRepository stockRepository,
             VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase crearProductoUseCase,
-            VentasApp.Application.CasoDeUso.Productos.ActualizarProductoUseCase actualizarProductoUseCase)
+            VentasApp.Application.CasoDeUso.Productos.ActualizarProductoUseCase actualizarProductoUseCase,
+            VentasApp.Application.CasoDeUso.ItemVendibles.CrearItemVendibleUseCase crearItemVendibleUseCase,
+            VentasApp.Application.CasoDeUso.Stocks.CrearStockUseCase crearStockUseCase,
+            VentasApp.Application.CasoDeUso.Stocks.AumentarStockUseCase aumentarStockUseCase,
+            VentasApp.Application.CasoDeUso.Stocks.DescontarStockUseCase descontarStockUseCase,
+            VentasApp.Application.CasoDeUso.Stocks.ActualizarStockMinimoUseCase actualizarStockMinimoUseCase)
         {
             _productoRepository = productoRepository;
+            _stockRepository = stockRepository;
             _crearProductoUseCase = crearProductoUseCase;
             _actualizarProductoUseCase = actualizarProductoUseCase;
+            _crearItemVendibleUseCase = crearItemVendibleUseCase;
+            _crearStockUseCase = crearStockUseCase;
+            _aumentarStockUseCase = aumentarStockUseCase;
+            _descontarStockUseCase = descontarStockUseCase;
+            _actualizarStockMinimoUseCase = actualizarStockMinimoUseCase;
             Productos = new ObservableCollection<ProductoCardDto>();
             CargarProductos();
         }
@@ -62,7 +80,35 @@ namespace VentasApp.Desktop.ViewModels.Productos
                     PrecioVenta = precioVenta
                 };
 
-                await _crearProductoUseCase.EjecutarAsync(dto);
+                var nuevoId = await _crearProductoUseCase.EjecutarAsync(dto);
+
+                // Crear un ItemVendible base para el producto (requerido para asignar stock)
+                var codigoBarra = (win.FindName("TxtCodigoBarra") as System.Windows.Controls.TextBox)?.Text?.Trim();
+                if (string.IsNullOrWhiteSpace(codigoBarra))
+                    codigoBarra = $"PROD-{nuevoId}";
+
+                var itemDto = new VentasApp.Application.DTOs.ItemVendible.CrearItemVendibleDto
+                {
+                    IdProducto = nuevoId,
+                    nombre = nombre,
+                    CodigoBarra = codigoBarra,
+                    Talle = null
+                };
+                var nuevoItemId = await _crearItemVendibleUseCase.EjecutarAsync(itemDto);
+
+                // Crear stock si el usuario ingresó valores
+                var cantidadInicialText = (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
+                var stockMinimoText = (win.FindName("TxtStockMinimo") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
+                int.TryParse(cantidadInicialText, out var cantidadInicial);
+                int.TryParse(stockMinimoText, out var stockMinimo);
+
+                var stockDto = new VentasApp.Application.DTOs.Stocks.CrearStockDto
+                {
+                    IdItemVendible = nuevoItemId,
+                    CantidadInicial = cantidadInicial,
+                    StockMinimo = stockMinimo
+                };
+                await _crearStockUseCase.EjecutarAsync(stockDto);
 
                 // Recargar desde base de datos
                 CargarProductos();
@@ -81,6 +127,8 @@ namespace VentasApp.Desktop.ViewModels.Productos
             (win.FindName("TxtNombre") as System.Windows.Controls.TextBox)!.Text = producto.Nombre;
             (win.FindName("TxtCosto") as System.Windows.Controls.TextBox)!.Text = producto.Precio.ToString();
             (win.FindName("TxtPrecioVenta") as System.Windows.Controls.TextBox)!.Text = producto.Precio.ToString();
+            (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)!.Text = producto.StockTotal.ToString();
+            (win.FindName("TxtStockMinimo") as System.Windows.Controls.TextBox)!.Text = "";
 
             var ok = win.ShowDialog();
             if (ok == true)
@@ -101,6 +149,72 @@ namespace VentasApp.Desktop.ViewModels.Productos
 
                 await _actualizarProductoUseCase.EjecutarAsync(producto.Id, dto);
 
+                // Ajustar stock si el usuario ingresó un valor de cantidad
+                var cantidadText = (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
+                var stockMinimoText = (win.FindName("TxtStockMinimo") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
+                int.TryParse(cantidadText, out var nuevaCantidad);
+                int.TryParse(stockMinimoText, out var nuevoMinimo);
+                var cantidadIngresada = !string.IsNullOrWhiteSpace(cantidadText) && int.TryParse(cantidadText, out _);
+                var minimoIngresado = !string.IsNullOrWhiteSpace(stockMinimoText) && int.TryParse(stockMinimoText, out _);
+
+                if (cantidadIngresada || minimoIngresado)
+                {
+                    var productoDb = await _productoRepository.ObtenerProducto(producto.Id);
+                    var item = productoDb?.ItemsVendibles?.FirstOrDefault();
+
+                    // Si no existe ItemVendible, crear uno base
+                    if (item is null)
+                    {
+                        var codigoBarra = $"PROD-{producto.Id}";
+                        var existe = await _crearItemVendibleUseCase._repository.ObtenerItemPorCodigoBarra(codigoBarra);
+                        if (existe is null)
+                        {
+                            var nuevoItemId = await _crearItemVendibleUseCase.EjecutarAsync(new VentasApp.Application.DTOs.ItemVendible.CrearItemVendibleDto
+                            {
+                                IdProducto = producto.Id,
+                                nombre = producto.Nombre,
+                                CodigoBarra = codigoBarra,
+                                Talle = null
+                            });
+                            item = await _crearItemVendibleUseCase._repository.ObtenerItem(nuevoItemId);
+                        }
+                        else
+                        {
+                            item = existe;
+                        }
+                    }
+
+                    if (item is not null)
+                    {
+                        var stock = await _stockRepository.ObtenerPorItemVendible(item.Id);
+                        if (stock is null)
+                        {
+                            // No tiene stock todavía, crear con los valores indicados
+                            await _crearStockUseCase.EjecutarAsync(new VentasApp.Application.DTOs.Stocks.CrearStockDto
+                            {
+                                IdItemVendible = item.Id,
+                                CantidadInicial = cantidadIngresada ? nuevaCantidad : 0,
+                                StockMinimo = minimoIngresado ? nuevoMinimo : 0
+                            });
+                        }
+                        else
+                        {
+                            // Ajustar cantidad si se ingresó
+                            if (cantidadIngresada)
+                            {
+                                var diferencia = nuevaCantidad - stock.CantidadDisponible;
+                                if (diferencia > 0)
+                                    await _aumentarStockUseCase.EjecutarAsync(item.Id, new VentasApp.Application.DTOs.Stocks.ActualizarStockDto { Cantidad = diferencia });
+                                else if (diferencia < 0)
+                                    await _descontarStockUseCase.EjecutarAsync(item.Id, -diferencia);
+                            }
+                            // Actualizar stock mínimo si se ingresó
+                            if (minimoIngresado)
+                                await _actualizarStockMinimoUseCase.EjecutarAsync(item.Id, nuevoMinimo);
+                        }
+                    }
+                }
+
                 CargarProductos();
             }
         }
@@ -118,17 +232,37 @@ namespace VentasApp.Desktop.ViewModels.Productos
         private async void CargarProductos()
         {
             var lista = await _productoRepository.ListarProductos();
-            var mapped = lista.Select(p => new ProductoCardDto
+            var result = new List<ProductoCardDto>();
+            foreach (var p in lista)
             {
-                Id = p.Id,
-                Nombre = p.Nombre ?? string.Empty,
-                Categoria = string.Empty, // no existe Categoria en Producto dominio
-                Precio = p.PrecioVenta,
-                StockTotal = 0, // no existe StockTotal en Producto dominio
-                CodigoBarraReferencia = p.ItemsVendibles?.FirstOrDefault()?.CodigoBarra ?? string.Empty
-            });
+                var item = p.ItemsVendibles?.FirstOrDefault();
+                int stockTotal = 0;
+                int stockMinimo = 0;
+                if (item is not null)
+                {
+                    var stock = await _stockRepository.ObtenerPorItemVendible(item.Id);
+                    stockTotal = stock?.CantidadDisponible ?? 0;
+                    stockMinimo = stock?.StockMinimo ?? 0;
+                }
 
-            Productos = new ObservableCollection<ProductoCardDto>(mapped);
+                result.Add(new ProductoCardDto
+                {
+                    Id = p.Id,
+                    Nombre = p.Nombre ?? string.Empty,
+                    Categoria = p.IdCategoria switch
+                    {
+                        1 => "Uniforme",
+                        2 => "Librería",
+                        _ => "Otro"
+                    },
+                    Precio = p.PrecioVenta,
+                    StockTotal = stockTotal,
+                    StockMinimo = stockMinimo,
+                    CodigoBarraReferencia = item?.CodigoBarra ?? string.Empty
+                });
+            }
+
+            Productos = new ObservableCollection<ProductoCardDto>(result);
         }
     }
 }

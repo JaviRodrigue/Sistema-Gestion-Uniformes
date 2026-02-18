@@ -18,6 +18,8 @@ using VentasApp.Infrastructure.Persistencia.Repositorios;
 using VentasApp.Application.CasoDeUso.Venta;
 using VentasApp.Application.CasoDeUso.Productos;
 using VentasApp.Application.CasoDeUso.Cliente;
+using VentasApp.Application.CasoDeUso.Stocks;
+using VentasApp.Application.CasoDeUso.ItemVendibles;
 // Asegúrate de importar tus otros namespaces si los necesitas
 // using VentasApp.Infrastructure.Persistence; 
 // using VentasApp.Application.UseCases...
@@ -52,12 +54,9 @@ public partial class App : System.Windows.Application
                 // 3. REGISTRAR SERVICIOS, DB CONTEXT, REPOS Y CASOS DE USO
                 services.AddDbContext<DatabaseContext>(opt =>
                 {
-                    // Ubicar la raíz del repositorio
-                    var root = GetRepositoryRoot(AppContext.BaseDirectory, "Sistema-Gestion-Uniformes");
-                    var folder = root is not null
-                        ? Path.Combine(root, "Infrastructure", "VentasApp.Infrastructure", "Archivo")
-                        : Path.Combine(AppContext.BaseDirectory, "Archivo");
-                    
+                    var folder = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                        "VentasApp");
                     Directory.CreateDirectory(folder);
                     var dbPath = Path.Combine(folder, "Database.sqlite");
                     opt.UseSqlite($"Data Source={dbPath}");
@@ -68,6 +67,7 @@ public partial class App : System.Windows.Application
                 services.AddScoped<IStockRepository, StockRepository>();
                 services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IClienteRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ClienteRepository>();
                 services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IProductoRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ProductoRepository>();
+                services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IItemVendibleRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ItemVendibleRepository>();
 
                 services.AddTransient<ListarVentasUseCase>();
                 services.AddTransient<ObtenerVentaUseCase>();
@@ -77,9 +77,17 @@ public partial class App : System.Windows.Application
                 // Productos UseCases
                 services.AddTransient<CrearProductoUseCase>();
                 services.AddTransient<ActualizarProductoUseCase>();
+                services.AddTransient<CrearItemVendibleUseCase>();
 
                 // Cliente UseCases
                 services.AddTransient<ActualizarClienteCasoDeUso>();
+
+                // Stocks UseCases
+                services.AddTransient<CrearStockUseCase>();
+                services.AddTransient<ObtenerStockUseCase>();
+                services.AddTransient<AumentarStockUseCase>();
+                services.AddTransient<DescontarStockUseCase>();
+                services.AddTransient<ActualizarStockMinimoUseCase>();
 
                 services.AddTransient<VentaView>();
                 services.AddTransient<ProductoView>();
@@ -143,23 +151,5 @@ public partial class App : System.Windows.Application
         // Limpiar recursos al cerrar
         await AppHost!.StopAsync();
         base.OnExit(e);
-    }
-
-    private static string? GetRepositoryRoot(string startPath, string repoFolderName)
-    {
-        var dir = new DirectoryInfo(startPath);
-        while (dir is not null)
-        {
-            if (string.Equals(dir.Name, repoFolderName, StringComparison.OrdinalIgnoreCase))
-            {
-                return dir.FullName;
-            }
-
-            // Parar si llegamos a la raíz
-            if (dir.Parent is null) break;
-            dir = dir.Parent;
-        }
-
-        return null;
     }
 }

@@ -32,7 +32,7 @@ using VentasApp.Domain.Modelo.Productos;
 
             // Relación con Producto (muchos ItemVendible → un Producto)
             builder.HasOne(i => i.Producto)
-                .WithMany()
+                .WithMany(p => p.ItemsVendibles)
                 .HasForeignKey(i => i.IdProducto)
                 .OnDelete(DeleteBehavior.Restrict);
 

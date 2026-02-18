@@ -1,37 +1,83 @@
 <Window x:Class="VentasApp.Desktop.Views.Cliente.AgregarClienteWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Nuevo Cliente" Height="420" Width="520"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        Title="Nuevo Cliente" Height="560" Width="640"
         WindowStartupLocation="CenterOwner"
         Background="{StaticResource SecondaryPastel}">
-    <Grid Margin="16">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
+    <Grid>
+        <Border CornerRadius="12" Background="White" Padding="16" Margin="16">
+            <Border.Effect>
+                <DropShadowEffect Color="#DDDDDD" BlurRadius="12" Opacity="0.45"/>
+            </Border.Effect>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-        <StackPanel>
-            <TextBlock Text="Alta de Cliente" FontSize="20" FontWeight="Bold" Margin="0,0,0,12"/>
+                <!-- Header -->
+                <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,12">
+                    <Border Width="40" Height="40" CornerRadius="20" Background="{StaticResource SecondaryPastel}" DockPanel.Dock="Left">
+                        <materialDesign:PackIcon Kind="AccountPlus" Width="22" Height="22" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource TextDark}"/>
+                    </Border>
+                    <TextBlock Text="Alta de Cliente" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{StaticResource TextDark}"/>
+                </DockPanel>
 
-            <TextBlock Text="Nombre (obligatorio)"/>
-            <TextBox x:Name="TxtNombre" Margin="0,4,0,10" AutomationProperties.Name="Nombre"/>
+                <!-- Content -->
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <TextBox x:Name="TxtNombre"
+                                 materialDesign:HintAssist.Hint="Nombre (obligatorio)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,12"/>
 
-            <TextBlock Text="DNI / CUIT (obligatorio)"/>
-            <TextBox x:Name="TxtDni" Margin="0,4,0,10" AutomationProperties.Name="DNI"/>
+                        <TextBox x:Name="TxtDni"
+                                 materialDesign:HintAssist.Hint="DNI / CUIT (obligatorio)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,12"/>
 
-            <TextBlock Text="Telefonos (opcional)"/>
-            <TextBox x:Name="TxtTelefonos" Margin="0,4,0,10" AutomationProperties.Name="Telefonos"/>
+                        <TextBox x:Name="TxtTelefonos"
+                                 materialDesign:HintAssist.Hint="Telefonos (opcional)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,12"/>
 
-            <TextBlock Text="Email (opcional)"/>
-            <TextBox x:Name="TxtEmail" Margin="0,4,0,10" AutomationProperties.Name="Email"/>
+                        <TextBox x:Name="TxtEmail"
+                                 materialDesign:HintAssist.Hint="Email (opcional)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,12"/>
 
-            <TextBlock Text="Dirección (opcional)"/>
-            <TextBox x:Name="TxtDireccion" Margin="0,4,0,10" AutomationProperties.Name="Direccion"/>
-        </StackPanel>
+                        <TextBox x:Name="TxtDireccion"
+                                 materialDesign:HintAssist.Hint="Dirección (opcional)"
+                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Margin="0,0,0,0"/>
+                    </StackPanel>
+                </ScrollViewer>
 
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="Cancelar" Margin="0,0,8,0" Width="90" IsCancel="True"/>
-            <Button Content="Guardar" Width="90" IsDefault="True" Click="OnGuardarClick"/>
-        </StackPanel>
+                <!-- Actions -->
+                <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="{StaticResource AccentRed}"
+                            BorderBrush="{StaticResource AccentRed}"
+                            Margin="0,0,8,0"
+                            IsCancel="True">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Close" Width="16" Height="16" Foreground="White"/>
+                            <TextBlock Text="Cancelar" Margin="6,0,0,0" Foreground="White"/>
+                        </StackPanel>
+                    </Button>
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="{StaticResource AccentBlue}"
+                            BorderBrush="{StaticResource AccentBlue}"
+                            IsDefault="True" Click="OnGuardarClick">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ContentSave" Width="16" Height="16" Foreground="White"/>
+                            <TextBlock Text="Guardar" Margin="6,0,0,0" Foreground="White"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
     </Grid>
 </Window>
