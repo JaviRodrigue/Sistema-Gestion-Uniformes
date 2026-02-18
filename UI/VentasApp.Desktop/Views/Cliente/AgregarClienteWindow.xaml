@@ -14,19 +14,19 @@
             <TextBlock Text="Alta de Cliente" FontSize="20" FontWeight="Bold" Margin="0,0,0,12"/>
 
             <TextBlock Text="Nombre (obligatorio)"/>
-            <TextBox x:Name="TxtNombre" Margin="0,4,0,10"/>
+            <TextBox x:Name="TxtNombre" Margin="0,4,0,10" AutomationProperties.Name="Nombre"/>
 
             <TextBlock Text="DNI / CUIT (obligatorio)"/>
-            <TextBox x:Name="TxtDni" Margin="0,4,0,10"/>
+            <TextBox x:Name="TxtDni" Margin="0,4,0,10" AutomationProperties.Name="DNI"/>
 
             <TextBlock Text="Telefonos (opcional)"/>
-            <TextBox x:Name="TxtTelefonos" Margin="0,4,0,10"/>
+            <TextBox x:Name="TxtTelefonos" Margin="0,4,0,10" AutomationProperties.Name="Telefonos"/>
 
             <TextBlock Text="Email (opcional)"/>
-            <TextBox x:Name="TxtEmail" Margin="0,4,0,10"/>
+            <TextBox x:Name="TxtEmail" Margin="0,4,0,10" AutomationProperties.Name="Email"/>
 
             <TextBlock Text="Dirección (opcional)"/>
-            <TextBox x:Name="TxtDireccion" Margin="0,4,0,10"/>
+            <TextBox x:Name="TxtDireccion" Margin="0,4,0,10" AutomationProperties.Name="Direccion"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">

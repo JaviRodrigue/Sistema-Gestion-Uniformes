@@ -25,7 +25,8 @@
                        FontWeight="Bold"/>
 
             <TextBox Margin="0,10,0,0"
-                     Text="{Binding Cliente, UpdateSourceTrigger=PropertyChanged}"/>
+                     Text="{Binding Cliente, UpdateSourceTrigger=PropertyChanged}"
+                     AutomationProperties.Name="Cliente"/>
         </StackPanel>
 
 
@@ -35,11 +36,10 @@
             <DockPanel>
 
                 <Button Content="Agregar item"
-                        Command="{Binding AgregarItemCommand}"
                         Background="{StaticResource AccentBlue}"
                         DockPanel.Dock="Top"/>
 
-                <DataGrid ItemsSource="{Binding Venta.Items}"
+                <DataGrid ItemsSource="{Binding Items}"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False">
 
@@ -74,11 +74,10 @@
             <DockPanel>
 
                 <Button Content="Agregar pago"
-                        Command="{Binding AgregarPagoCommand}"
                         Background="{StaticResource AccentBlue}"
                         DockPanel.Dock="Top"/>
 
-                <DataGrid ItemsSource="{Binding Venta.Pagos}"
+                <DataGrid ItemsSource="{Binding Pagos}"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False">
 

@@ -27,7 +27,7 @@ public class VentaCardDto
 
     public decimal Restante => Detalle.Restante;
 
-    //public DateTime? FechaEstimada => Detalle.FechaEstimada;
+    public DateTime? FechaEstimada => Detalle.FechaEstimada;
 
     public bool TieneDeuda => Restante > 0;
 }

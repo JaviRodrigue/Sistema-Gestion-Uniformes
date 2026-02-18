@@ -14,22 +14,22 @@
             <TextBlock Text="Alta de Producto" FontSize="20" FontWeight="Bold" Margin="0,0,0,12"/>
 
             <TextBlock Text="Nombre (obligatorio)"/>
-            <TextBox x:Name="TxtNombre" Margin="0,4,0,10"/>
+            <TextBox x:Name="TxtNombre" Margin="0,4,0,10" AutomationProperties.Name="Nombre"/>
 
             <TextBlock Text="Categoria (obligatorio)"/>
-            <ComboBox x:Name="CmbCategoria" Margin="0,4,0,10">
+            <ComboBox x:Name="CmbCategoria" Margin="0,4,0,10" AutomationProperties.Name="Categoria">
                 <ComboBoxItem Content="Uniforme"/>
                 <ComboBoxItem Content="Librería"/>
             </ComboBox>
 
             <TextBlock Text="Costo (obligatorio)"/>
-            <TextBox x:Name="TxtCosto" Margin="0,4,0,10"/>
+            <TextBox x:Name="TxtCosto" Margin="0,4,0,10" AutomationProperties.Name="Costo"/>
 
             <TextBlock Text="Precio de Venta (obligatorio)"/>
-            <TextBox x:Name="TxtPrecioVenta" Margin="0,4,0,10"/>
+            <TextBox x:Name="TxtPrecioVenta" Margin="0,4,0,10" AutomationProperties.Name="PrecioVenta"/>
 
             <TextBlock Text="Código de barras (opcional)"/>
-            <TextBox x:Name="TxtCodigoBarra" Margin="0,4,0,10"/>
+            <TextBox x:Name="TxtCodigoBarra" Margin="0,4,0,10" AutomationProperties.Name="CodigoBarra"/>
         </StackPanel>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">

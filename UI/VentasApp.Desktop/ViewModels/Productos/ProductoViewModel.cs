@@ -10,19 +10,23 @@ namespace VentasApp.Desktop.ViewModels.Productos
     public partial class ProductoViewModel : ObservableObject
     {
         private readonly VentasApp.Application.Interfaces.Repositorios.IProductoRepository _productoRepository;
+        private readonly VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase _crearProductoUseCase;
 
         [ObservableProperty]
         private ObservableCollection<ProductoCardDto> _productos;
 
-        public ProductoViewModel(VentasApp.Application.Interfaces.Repositorios.IProductoRepository productoRepository)
+        public ProductoViewModel(
+            VentasApp.Application.Interfaces.Repositorios.IProductoRepository productoRepository,
+            VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase crearProductoUseCase)
         {
             _productoRepository = productoRepository;
+            _crearProductoUseCase = crearProductoUseCase;
             Productos = new ObservableCollection<ProductoCardDto>();
             CargarProductos();
         }
 
         [RelayCommand]
-        private void AgregarProducto()
+        private async void AgregarProducto()
         {
             var win = new Views.Productos.AgregarProductoWindow
             {
@@ -32,23 +36,33 @@ namespace VentasApp.Desktop.ViewModels.Productos
             if (ok == true)
             {
                 var nombre = (win.FindName("TxtNombre") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
-                var categoria = (win.FindName("CmbCategoria") as System.Windows.Controls.ComboBox)?.SelectedItem as System.Windows.Controls.ComboBoxItem;
-                var precioText = (win.FindName("TxtPrecio") as System.Windows.Controls.TextBox)?.Text ?? "0";
-                var stockText = (win.FindName("TxtStock") as System.Windows.Controls.TextBox)?.Text ?? "0";
-                var codigoBarra = (win.FindName("TxtCodigoBarra") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
+                var categoriaItem = (win.FindName("CmbCategoria") as System.Windows.Controls.ComboBox)?.SelectedItem as System.Windows.Controls.ComboBoxItem;
+                var costoText = (win.FindName("TxtCosto") as System.Windows.Controls.TextBox)?.Text ?? "0";
+                var precioVentaText = (win.FindName("TxtPrecioVenta") as System.Windows.Controls.TextBox)?.Text ?? "0";
 
-                decimal.TryParse(precioText, out var precio);
-                int.TryParse(stockText, out var stock);
+                decimal.TryParse(costoText, out var costo);
+                decimal.TryParse(precioVentaText, out var precioVenta);
 
-                Productos.Add(new ProductoCardDto
+                // IdCategoria: determinar según selección simple (Uniforme=1, Librería=2) como mínimo viable
+                var idCategoria = categoriaItem?.Content?.ToString() switch
                 {
-                    Id = Productos.Count + 1,
+                    "Uniforme" => 1,
+                    "Librería" => 2,
+                    _ => 1
+                };
+
+                var dto = new VentasApp.Application.DTOs.Productos.CrearProductoDto
+                {
+                    IdCategoria = idCategoria,
                     Nombre = nombre,
-                    Categoria = categoria?.Content?.ToString() ?? "Uniforme",
-                    Precio = precio,
-                    StockTotal = stock,
-                    CodigoBarraReferencia = codigoBarra
-                });
+                    Costo = costo,
+                    PrecioVenta = precioVenta
+                };
+
+                await _crearProductoUseCase.EjecutarAsync(dto);
+
+                // Recargar desde base de datos
+                CargarProductos();
             }
         }
 

@@ -1,6 +1,5 @@
 using System.Windows;
-using VentasApp.Application.DTOs.Venta;
-using VentasApp.Desktop.ViewModels.Ventas;
+using VentasApp.Desktop.ViewModels.DTOs;
 
 namespace VentasApp.Desktop.Views.Ventas;
 

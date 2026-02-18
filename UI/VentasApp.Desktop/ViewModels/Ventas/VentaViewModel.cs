@@ -53,8 +53,33 @@ public partial class VentaViewModel : ObservableObject
         var detalle = await _obtener.EjecutarAsync(card.Id);
         if (detalle is null) return;
 
-        var win = new DetalleVentaWindow(detalle);
+        var uiDetalle = MapDetalle(detalle);
+        var win = new DetalleVentaWindow(uiDetalle);
         win.ShowDialog();
+    }
+
+    private static VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto MapDetalle(VentasApp.Application.DTOs.Venta.VentaDetalleDto src)
+    {
+        return new VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto
+        {
+            Codigo = src.Codigo,
+            Cliente = src.Cliente,
+            // FechaEstimada no existe en el DTO de aplicación
+            Items = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaItemDto>(
+                src.Items.Select(i => new VentasApp.Desktop.ViewModels.DTOs.VentaItemDto
+                {
+                    Producto = i.Descripcion,
+                    PrecioUnitario = i.PrecioUnitario,
+                    Cantidad = i.Cantidad
+                })),
+            Pagos = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.PagoDto>(
+                src.Pagos.SelectMany(p => p.Metodos.Select(m => new VentasApp.Desktop.ViewModels.DTOs.PagoDto
+                {
+                    Fecha = p.FechaPago,
+                    Monto = m.Monto,
+                    MedioPago = m.MedioPago
+                })))
+        };
     }
 
     [RelayCommand]
