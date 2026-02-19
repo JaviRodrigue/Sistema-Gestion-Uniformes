@@ -8,6 +8,8 @@ public partial class DetalleVentaViewModel : ObservableObject
 {
     public VentaDetalleDto Venta { get; }
 
+        public System.Collections.ObjectModel.ObservableCollection<VentasApp.Application.DTOs.Productos.ListadoProductoDto> Productos { get; set; } = new();
+
     public string Cliente
     {
         get => Venta.Cliente;
@@ -37,7 +39,19 @@ public partial class DetalleVentaViewModel : ObservableObject
         Venta.Pagos.CollectionChanged += Pagos_CollectionChanged;
 
         foreach (var item in Venta.Items)
+        {
             item.PropertyChanged += Item_PropertyChanged;
+            // if the item already has a product selected, update price from Productos
+            if (item.ProductId != 0)
+            {
+                var prod = Productos.FirstOrDefault(p => p.Id == item.ProductId);
+                if (prod is not null)
+                {
+                    item.PrecioUnitario = prod.PrecioVenta;
+                    item.Producto = prod.Nombre;
+                }
+            }
+        }
 
         foreach (var pago in Venta.Pagos)
             pago.PropertyChanged += Pago_PropertyChanged;
@@ -136,6 +150,19 @@ public partial class DetalleVentaViewModel : ObservableObject
         // when price or quantity change, subtotal changes
         if (e.PropertyName is nameof(VentaItemDto.Subtotal) or nameof(VentaItemDto.PrecioUnitario) or nameof(VentaItemDto.Cantidad))
         {
+            RaiseTotalsChanged();
+        }
+        // react to product selection changes
+        if (e.PropertyName == nameof(VentaItemDto.ProductId))
+        {
+            var item = sender as VentaItemDto;
+            if (item is null) return;
+            var prod = Productos.FirstOrDefault(p => p.Id == item.ProductId);
+            if (prod is not null)
+            {
+                item.PrecioUnitario = prod.PrecioVenta;
+                item.Producto = prod.Nombre;
+            }
             RaiseTotalsChanged();
         }
     }

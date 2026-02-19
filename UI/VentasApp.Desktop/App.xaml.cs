@@ -77,6 +77,7 @@ public partial class App : System.Windows.Application
                 
                 // Productos UseCases
                 services.AddTransient<CrearProductoUseCase>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Productos.ListarProductoUseCase>();
                 services.AddTransient<ActualizarProductoUseCase>();
                 services.AddTransient<CrearItemVendibleUseCase>();
 

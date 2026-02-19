@@ -1,7 +1,10 @@
 using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using VentasApp.Desktop.ViewModels.DTOs;
 using VentasApp.Desktop.ViewModels.Ventas;
 using VentasApp.Application.CasoDeUso.DetalleVenta;
+using System.Collections.ObjectModel;
+using VentasApp.Application.DTOs.Productos;
 
 namespace VentasApp.Desktop.Views.Ventas;
 
@@ -10,12 +13,34 @@ namespace VentasApp.Desktop.Views.Ventas;
         private readonly GuardarDetalleVentaUseCase _guardar;
         private readonly VentaDetalleDto _dto;
 
+        public static readonly DependencyProperty ProductsProperty = DependencyProperty.Register(
+            "Productos", typeof(System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto>), typeof(DetalleVentaWindow), new PropertyMetadata(null));
+
+        public System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto> Productos
+        {
+            get => (System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto>)GetValue(ProductsProperty);
+            set => SetValue(ProductsProperty, value);
+        }
+
         public DetalleVentaWindow(VentaDetalleDto dto, GuardarDetalleVentaUseCase guardar)
         {
             InitializeComponent();
             _dto = dto;
             _guardar = guardar;
-            DataContext = new DetalleVentaViewModel(dto);
+            var vm = new DetalleVentaViewModel(dto);
+            DataContext = vm;
+
+            // cargar lista de productos en la ventana para el ComboBox
+            // Obtener la lista de productos desde el contenedor de servicios
+            var provider = App.AppHost!.Services;
+            var listarProductos = provider.GetRequiredService<VentasApp.Application.CasoDeUso.Productos.ListarProductoUseCase>();
+            var productos = listarProductos.EjecutarAsync().GetAwaiter().GetResult();
+            // Exponer en la ventana un campo Productos usando code-behind (DetalleVentaViewModel no tiene lista de productos)
+            this.Productos = productos;
+            // Add items into existing collection so binding is notified
+            vm.Productos.Clear();
+            foreach (var p in productos)
+                vm.Productos.Add(p);
         }
 
         private async void Guardar_Click(object sender, RoutedEventArgs e)
@@ -32,6 +57,7 @@ namespace VentasApp.Desktop.Views.Ventas;
                     {
                         IdDetalle = i.IdDetalle,
                         Descripcion = i.Producto,
+                        IdItemVendible = i.ProductId,
                         Cantidad = i.Cantidad,
                         PrecioUnitario = i.PrecioUnitario
                     }).ToList(),

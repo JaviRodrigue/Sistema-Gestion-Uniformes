@@ -46,8 +46,18 @@
                           CanUserAddRows="False">
 
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Producto" Binding="{Binding Producto, Mode=TwoWay}" Width="*"/>
-                        <DataGridTextColumn Header="Precio" Binding="{Binding PrecioUnitario, Mode=TwoWay}" Width="120"/>
+                        <DataGridTemplateColumn Header="Producto" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox IsEditable="False"
+                                              ItemsSource="{Binding DataContext.Productos, RelativeSource={RelativeSource AncestorType=Window}}"
+                                              DisplayMemberPath="Nombre"
+                                              SelectedValuePath="Id"
+                                              SelectedValue="{Binding ProductId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTextColumn Header="Precio" Binding="{Binding PrecioUnitario, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Width="120"/>
                         <DataGridTextColumn Header="Cantidad" Binding="{Binding Cantidad, Mode=TwoWay}" Width="100"/>
                         <DataGridTextColumn Header="Subtotal" Binding="{Binding Subtotal, StringFormat=C}" IsReadOnly="True"/>
 
