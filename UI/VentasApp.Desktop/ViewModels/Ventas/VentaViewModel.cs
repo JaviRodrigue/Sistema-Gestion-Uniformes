@@ -105,15 +105,25 @@ public partial class VentaViewModel : ObservableObject
     [RelayCommand]
     private async Task AgregarVenta()
     {
+        // 1. Crear venta
         var id = await _crear.EjecutarAsync(new CrearVentaDto());
 
-        await CargarAsync();
-    }
+        // 2. Obtener detalle recién creado (evita listar todo)
+        var detalle = await _obtener.EjecutarAsync(id);
+        if (detalle is null) return;
 
-    [RelayCommand]
-    private async Task EliminarVenta(VentaCardDto card)
-    {
-        await _anular.EjecutarAsync(card.Id);
-        await CargarAsync();
+        // 3. Mapear
+        var uiDetalle = MapDetalle(detalle);
+        uiDetalle.Id = detalle.Id;
+
+        // 4. Abrir ventana directamente
+        var win = new DetalleVentaWindow(uiDetalle, _guardarDetalle);
+        var result = win.ShowDialog();
+
+        // 5. Solo si guardó, refrescar listado
+        if (result == true)
+        {
+            await CargarAsync();
+        }
     }
 }
