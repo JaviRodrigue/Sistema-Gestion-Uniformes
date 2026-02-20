@@ -19,6 +19,19 @@ public class ClienteRepository(DatabaseContext context) : IClienteRepository
         await _context.SaveChangesAsync();
     }
 
+    public async Task<Cliente?> ObtenerClientePorVenta(int idVenta)
+    {
+        var idCliente = await _context.Compras
+            .Where(c => c.IdVenta == idVenta)
+            .Select(c => (int?)c.IdCliente)
+            .FirstOrDefaultAsync();
+
+        if (idCliente == null) return null;
+
+        return await _context.Clientes
+            .FirstOrDefaultAsync(c => c.Id == idCliente && c.Activado);
+    }
+
     public async Task<Cliente?> ObtenerClientePorId(int id)
     {
         return await _context.Clientes

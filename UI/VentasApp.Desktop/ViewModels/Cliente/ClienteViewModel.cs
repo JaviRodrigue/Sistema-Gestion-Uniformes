@@ -4,8 +4,11 @@ using CommunityToolkit.Mvvm.Input;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using Microsoft.Extensions.DependencyInjection;
 using VentasApp.Desktop.ViewModels.DTOs;
 using VentasApp.Domain.Modelo.Cliente;
+using VentasApp.Application.CasoDeUso.Venta;
+using VentasApp.Application.CasoDeUso.DetalleVenta;
 
 namespace VentasApp.Desktop.ViewModels.Cliente;
 
@@ -13,15 +16,22 @@ public partial class ClienteViewModel : ObservableObject
 {
     private readonly VentasApp.Application.Interfaces.Repositorios.IClienteRepository _clienteRepository;
     private readonly VentasApp.Application.CasoDeUso.Cliente.ActualizarClienteCasoDeUso _actualizarClienteCasoDeUso;
+    private readonly ObtenerVentaUseCase _obtenerVenta;
+    private readonly VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase _guardarDetalle;
 
     [ObservableProperty]
     private ObservableCollection<ClienteCardDto> _clientes;
 
-    public ClienteViewModel(VentasApp.Application.Interfaces.Repositorios.IClienteRepository clienteRepository,
-        VentasApp.Application.CasoDeUso.Cliente.ActualizarClienteCasoDeUso actualizarClienteCasoDeUso)
+    public ClienteViewModel(
+        VentasApp.Application.Interfaces.Repositorios.IClienteRepository clienteRepository,
+        VentasApp.Application.CasoDeUso.Cliente.ActualizarClienteCasoDeUso actualizarClienteCasoDeUso,
+        ObtenerVentaUseCase obtenerVenta,
+        VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase guardarDetalle)
     {
         _clienteRepository = clienteRepository;
         _actualizarClienteCasoDeUso = actualizarClienteCasoDeUso;
+        _obtenerVenta = obtenerVenta;
+        _guardarDetalle = guardarDetalle;
         CargarClientes();
     }
 
@@ -75,6 +85,66 @@ public partial class ClienteViewModel : ObservableObject
     }
 
     [RelayCommand]
+    private async Task VerDetalleVenta(object? parameter)
+    {
+        if (parameter is not VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto venta) return;
+
+        try
+        {
+            var detalle = await _obtenerVenta.EjecutarAsync(venta.Id);
+            if (detalle is null) return;
+
+            var uiDetalle = MapVentaDetalle(detalle);
+            uiDetalle.Id = detalle.Id;
+
+            var win = new VentasApp.Desktop.Views.Ventas.DetalleVentaWindow(uiDetalle, _guardarDetalle)
+            {
+                Owner = System.Windows.Application.Current.MainWindow
+            };
+            if (win.ShowDialog() == true)
+                await RecargarAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(ex.Message, "Error al abrir detalle",
+                System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+        }
+    }
+
+    private static VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto MapVentaDetalle(
+        VentasApp.Application.DTOs.Venta.VentaDetalleDto src)
+    {
+        return new VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto
+        {
+            Codigo = src.Codigo,
+            Cliente = src.Cliente,
+            IdCliente = src.IdCliente,
+            Items = new ObservableCollection<VentaItemDto>(
+                src.Items.Select(i => new VentaItemDto
+                {
+                    IdDetalle = i.IdDetalle,
+                    ProductId = i.IdItemVendible,
+                    Producto = i.Descripcion,
+                    PrecioUnitario = i.PrecioUnitario,
+                    Cantidad = i.Cantidad
+                })),
+            Pagos = new ObservableCollection<PagoDto>(
+                src.Pagos.Select(p =>
+                {
+                    var metodo = p.Metodos.FirstOrDefault();
+                    return new PagoDto
+                    {
+                        Id = p.Id,
+                        Fecha = p.FechaPago,
+                        Monto = p.Total,
+                        MedioPago = metodo?.MedioPago ?? string.Empty,
+                        MedioPagoId = metodo?.IdMedioPago ?? 0
+                    };
+                }))
+        };
+    }
+
+    [RelayCommand]
     private async void AgregarCliente()
     {
         var win = new Views.Cliente.AgregarClienteWindow
@@ -107,16 +177,51 @@ public partial class ClienteViewModel : ObservableObject
 
     private async void CargarClientes()
     {
+        await RecargarAsync();
+    }
+
+    public async Task RecargarAsync()
+    {
         var list = await _clienteRepository.ListarClientes();
-        var mapped = list.Select(c => new ClienteCardDto
+        var mapped = new List<ClienteCardDto>();
+
+        using var scope = App.AppHost!.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
+
+        foreach (var c in list)
         {
-            Id = c.Id,
-            Nombre = c.Nombre ?? string.Empty,
-            Dni = c.DNI ?? string.Empty,
-            Telefonos = string.Join(" / ", (c.Telefonos ?? new List<VentasApp.Domain.Modelo.Cliente.Telefono>()).Select(t => t.Numero)),
-            DeudaTotal = 0, // TODO: map from ventas/pagos
-            UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>()
-        });
+            var ventas = db.Compras
+                .Where(comp => comp.IdCliente == c.Id)
+                .Join(db.Ventas,
+                    comp => comp.IdVenta,
+                    v => v.Id,
+                    (comp, v) => new VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto
+                    {
+                        Id = v.Id,
+                        Fecha = v.FechaVenta,
+                        Total = v.MontoTotal,
+                        EstadoVenta = v.Estado.ToString()
+                    })
+                .OrderByDescending(v => v.Fecha)
+                .Take(5)
+                .ToList();
+
+            var deudaTotal = (decimal)db.Compras
+                .Where(comp => comp.IdCliente == c.Id)
+                .Join(db.Ventas, comp => comp.IdVenta, v => v.Id, (comp, v) => (double)v.SaldoPendiente)
+                .Sum();
+
+            mapped.Add(new ClienteCardDto
+            {
+                Id = c.Id,
+                Nombre = c.Nombre ?? string.Empty,
+                Dni = c.DNI ?? string.Empty,
+                Telefonos = string.Join(" / ", (c.Telefonos ?? new List<VentasApp.Domain.Modelo.Cliente.Telefono>()).Select(t => t.Numero)),
+                DeudaTotal = deudaTotal,
+                UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>(ventas),
+                VerDetalleVentaCommand = VerDetalleVentaCommand
+            });
+        }
 
         Clientes = new ObservableCollection<ClienteCardDto>(mapped);
     }

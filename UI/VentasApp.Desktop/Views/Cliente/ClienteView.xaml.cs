@@ -8,6 +8,7 @@ namespace VentasApp.Desktop.Views.Cliente
         {
             InitializeComponent();
             DataContext = vm;
+            _ = vm.RecargarAsync();
         }
     }
 }

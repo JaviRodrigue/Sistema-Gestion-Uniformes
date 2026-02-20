@@ -161,12 +161,39 @@ namespace VentasApp.Desktop.Views.Ventas;
                 var guardarCompleto = App.AppHost!.Services.GetRequiredService<VentasApp.Application.CasoDeUso.Venta.GuardarVentaCompletaUseCase>();
                 await guardarCompleto.EjecutarAsync(appDto);
 
+                // Vincular cliente a la venta via Compra si fue seleccionado
+                var vm2 = DataContext as DetalleVentaViewModel;
+                if (vm2?.IdCliente > 0)
+                {
+                    var db = App.AppHost!.Services.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
+                    var existeCompra = db.Compras.Any(c => c.IdVenta == _dto.Id && c.IdCliente == vm2.IdCliente);
+                    if (!existeCompra)
+                    {
+                        db.Compras.Add(new VentasApp.Domain.Modelo.Venta.Compra(_dto.Id, vm2.IdCliente));
+                        await db.SaveChangesAsync();
+                    }
+                }
+
                 DialogResult = true;
                 Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error al guardar detalle", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void OnAgregarClienteClick(object sender, RoutedEventArgs e)
+        {
+            var selector = new VentasApp.Desktop.Views.Cliente.ListarClienteVentas { Owner = this };
+            if (selector.ShowDialog() == true && selector.ClienteNombre != null)
+            {
+                var vm = DataContext as DetalleVentaViewModel;
+                if (vm != null)
+                {
+                    vm.Cliente = selector.ClienteNombre;
+                    vm.IdCliente = selector.IdCliente;
+                }
             }
         }
 

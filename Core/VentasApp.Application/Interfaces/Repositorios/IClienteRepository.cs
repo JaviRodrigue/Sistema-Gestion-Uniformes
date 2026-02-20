@@ -7,6 +7,7 @@ namespace VentasApp.Application.Interfaces.Repositorios;
 public interface IClienteRepository
 {
     Task Agregar(Cliente cliente);
+    Task<Cliente?> ObtenerClientePorVenta(int idVenta);
     Task<Cliente?> ObtenerClientePorId(int id);
     Task<Cliente?> ObtenerClientePorDni(string dni);
     Task<Cliente?> ObtenerClientePorTelefono(string telefono);

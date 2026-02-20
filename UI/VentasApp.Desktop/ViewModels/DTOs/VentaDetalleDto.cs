@@ -9,6 +9,7 @@ public class VentaDetalleDto
     public int Id { get; set; }
     public string Codigo { get; set; } = "";
     public string Cliente { get; set; } = "";
+    public int IdCliente { get; set; }
 
     public DateTime? FechaEstimada { get; set; }
 

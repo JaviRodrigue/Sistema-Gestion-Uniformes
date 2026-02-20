@@ -21,6 +21,16 @@ public partial class DetalleVentaViewModel : ObservableObject
         }
     }
 
+    public int IdCliente
+    {
+        get => Venta.IdCliente;
+        set
+        {
+            Venta.IdCliente = value;
+            OnPropertyChanged();
+        }
+    }
+
     public DateTime? FechaEstimada
     {
         get => Venta.FechaEstimada;

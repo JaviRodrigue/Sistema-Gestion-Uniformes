@@ -128,8 +128,10 @@
                                 <DataGridTemplateColumn>
                                     <DataGridTemplateColumn.CellTemplate>
                                         <DataTemplate>
-                                            <Button Style="{StaticResource MaterialDesignFlatButton}" 
-                                                    Content="Ver" Height="25" FontSize="10"/>
+                                            <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                                    Content="Ver" Height="25" FontSize="10"
+                                                    Command="{Binding DataContext.VerDetalleVentaCommand, RelativeSource={RelativeSource AncestorType=Expander}}"
+                                                    CommandParameter="{Binding}"/>
                                         </DataTemplate>
                                     </DataGridTemplateColumn.CellTemplate>
                                 </DataGridTemplateColumn>

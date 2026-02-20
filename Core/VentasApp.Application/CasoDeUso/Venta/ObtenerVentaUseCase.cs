@@ -13,12 +13,14 @@ public class ObtenerVentaUseCase
     private readonly IVentaRepository _ventaRepository;
     private readonly IPagoRepository _pagoRepository;
     private readonly IItemVendibleRepository _itemRepository;
+    private readonly IClienteRepository _clienteRepository;
 
-    public ObtenerVentaUseCase(IVentaRepository ventaRepository, IPagoRepository pagoRepository, IItemVendibleRepository itemRepository)
+    public ObtenerVentaUseCase(IVentaRepository ventaRepository, IPagoRepository pagoRepository, IItemVendibleRepository itemRepository, IClienteRepository clienteRepository)
     {
         _ventaRepository = ventaRepository;
         _pagoRepository = pagoRepository;
         _itemRepository = itemRepository;
+        _clienteRepository = clienteRepository;
     }
 
     public async Task<VentaDetalleDto?> EjecutarAsync(int id)
@@ -26,10 +28,14 @@ public class ObtenerVentaUseCase
         var v = await _ventaRepository.ObtenerPorId(id);
         if (v == null) return null;
 
+        var clienteVenta = await _clienteRepository.ObtenerClientePorVenta(v.Id);
+
         var dto = new VentaDetalleDto
         {
             Id = v.Id,
             Codigo = $"V-{v.Id:0000}",
+            Cliente = clienteVenta?.Nombre ?? string.Empty,
+            IdCliente = clienteVenta?.Id ?? 0,
             Total = v.MontoTotal,
             Restante = v.SaldoPendiente,
             Items = v.Detalles.Select(d => new VentaItemDto

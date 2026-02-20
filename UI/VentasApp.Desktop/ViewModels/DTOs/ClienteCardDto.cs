@@ -1,4 +1,6 @@
 ﻿using System.Collections.ObjectModel;
+using System.Windows.Input;
+
 namespace VentasApp.Desktop.ViewModels.DTOs;
 
 public class ClienteCardDto
@@ -12,6 +14,8 @@ public class ClienteCardDto
 
     // Lista para el "Ver más"
     public ObservableCollection<VentaResumenDto> UltimasCompras { get; set; } = new();
+
+    public ICommand? VerDetalleVentaCommand { get; set; }
 }
 public class VentaResumenDto
 

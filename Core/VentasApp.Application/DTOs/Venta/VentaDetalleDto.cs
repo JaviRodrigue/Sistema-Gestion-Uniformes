@@ -14,6 +14,7 @@ public class VentaDetalleDto
     public int Id { get; set; }
     public string Codigo { get; set; } = "";
     public string Cliente { get; set; } = "";
+    public int IdCliente { get; set; }
     public decimal Total { get; set; }
     public decimal Restante { get; set; }
 

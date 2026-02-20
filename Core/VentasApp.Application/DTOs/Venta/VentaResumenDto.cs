@@ -1,4 +1,6 @@
 
+namespace VentasApp.Application.DTOs.Venta;
+
 public class VentaResumenDto
 {
     public int Id { get; set; }

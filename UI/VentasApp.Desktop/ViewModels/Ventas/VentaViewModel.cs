@@ -70,12 +70,23 @@ public partial class VentaViewModel : ObservableObject
         }
     }
 
+    [RelayCommand]
+    private async Task EliminarVenta(VentaCardDto card)
+    {
+        var result = System.Windows.MessageBox.Show($"¿Anular la venta {card.Codigo}?", "Confirmar anulación", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+        if (result != System.Windows.MessageBoxResult.Yes) return;
+
+        await _anular.EjecutarAsync(card.Id);
+        await CargarAsync();
+    }
+
     private static VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto MapDetalle(VentasApp.Application.DTOs.Venta.VentaDetalleDto src)
     {
         return new VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto
         {
             Codigo = src.Codigo,
             Cliente = src.Cliente,
+            IdCliente = src.IdCliente,
             // FechaEstimada no existe en el DTO de aplicación
             Items = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaItemDto>(
                 src.Items.Select(i => new VentasApp.Desktop.ViewModels.DTOs.VentaItemDto

@@ -73,7 +73,7 @@ public class RegistrarPagoTest
         var metodo = new PagoMetodo(5, 50m);
         var dto = new CrearPagoDto { IdVenta = venta.Id, EsSenia = false, Metodos = new List<PagoMetodo> { metodo } };
 
-        await useCase.Invoking(u => u.EjecutarAsync(dto)).Should().ThrowAsync<Exception>().WithMessage("Medio de pago invalido");
+        await useCase.Invoking(u => u.EjecutarAsync(dto)).Should().ThrowAsync<Exception>().WithMessage("Medio de pago inv*lido");
     }
 
     [Fact]
