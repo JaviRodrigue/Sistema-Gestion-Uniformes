@@ -77,13 +77,28 @@ public class GuardarVentaCompletaUseCase
             await _pagoRepo.Eliminar(idEl);
         }
 
-        // Recalcular monto pagado desde la tabla de pagos para evitar inconsistencias
-        var pagosFinales = await _pagoRepo.ObtenerPorVenta(venta.Id);
-        var totalPagos = pagosFinales.Sum(p => p.Total);
+        // Calcular el total pagado teniendo en cuenta pagos persistidos (excluyendo los eliminados)
+        // y los nuevos pagos incluidos en el DTO. Evita depender de una nueva consulta que
+        // podría no incluir los pagos añadidos al contexto antes de SaveChanges.
+        var totalPersistidos = pagosPersistidos.Where(p => !idsAEliminar.Contains(p.Id)).Sum(p => p.Total);
+        var totalNuevos = dto.Pagos.Where(p => p.Id == 0).Sum(p => p.Total);
+        var totalPagos = totalPersistidos + totalNuevos;
         venta.RecalcularMontosDesdePagos(totalPagos);
 
         // Actualizar venta y guardar todo en una sola transaccion
         await _ventaRepo.Actualizar(venta);
         await _unitOfWork.SaveChanges();
+        
+        // Asegurar que el monto pagado en la venta refleje exactamente los pagos
+        // persistidos (por si hubiera discrepancias entre el contexto y la consulta)
+        var pagosFinales = await _pagoRepo.ObtenerPorVenta(venta.Id);
+        var totalPersistido = pagosFinales.Sum(p => p.Total);
+        // Si difiere, recalculamos y persistimos de nuevo.
+        if (totalPersistido != venta.MontoPagado)
+        {
+            venta.RecalcularMontosDesdePagos(totalPersistido);
+            await _ventaRepo.Actualizar(venta);
+            await _unitOfWork.SaveChanges();
+        }
     }
 }

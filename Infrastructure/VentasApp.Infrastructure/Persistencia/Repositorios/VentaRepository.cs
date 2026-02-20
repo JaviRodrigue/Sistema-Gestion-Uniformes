@@ -26,8 +26,13 @@ public class VentaRepository : IVentaRepository
 
     public async Task<List<Venta>> ObtenerTodas()
     {
-        return await _context.Ventas.OrderByDescending(v => v.FechaVenta)
-                                    .ToListAsync();
+        // Use AsNoTracking so callers (UI) get fresh values and EF doesn't return
+        // tracked instances from a long-lived DbContext. This helps avoid stale
+        // values in desktop scenarios where multiple DbContext instances may exist.
+        return await _context.Ventas
+                             .AsNoTracking()
+                             .OrderByDescending(v => v.FechaVenta)
+                             .ToListAsync();
     }
 
     public Task Actualizar(Venta venta)

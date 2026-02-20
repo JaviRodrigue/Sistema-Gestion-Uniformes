@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using VentasApp.Application.CasoDeUso.Venta;
 using VentasApp.Application.DTOs.Venta;
@@ -10,34 +11,33 @@ namespace VentasApp.Desktop.ViewModels.Ventas;
 
 public partial class VentaViewModel : ObservableObject
 {
-    private readonly ListarVentasUseCase _listar;
-    private readonly ObtenerVentaUseCase _obtener;
-    private readonly CrearVentaUseCase _crear;
-    private readonly AnularVentaUseCase _anular;
-    private readonly VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase _guardarDetalle;
+    private readonly IServiceProvider _provider;
+
+    // note: use-cases are resolved per-operation from a scoped provider to avoid capturing
+    // a scoped DbContext inside a long-lived singleton ViewModel which causes stale data.
 
     [ObservableProperty]
     private ObservableCollection<VentaCardDto> _ventas = new();
 
-    public VentaViewModel(
-        ListarVentasUseCase listar,
-        ObtenerVentaUseCase obtener,
-        CrearVentaUseCase crear,
-        AnularVentaUseCase anular,
-        VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase guardarDetalle)
+    public VentaViewModel(IServiceProvider provider)
     {
-        _listar = listar;
-        _obtener = obtener;
-        _crear = crear;
-        _anular = anular;
-        _guardarDetalle = guardarDetalle;
+        _provider = provider;
 
         _ = CargarAsync();
     }
 
+    // Public helper to allow external callers (e.g. detail window) to request a refresh
+    public Task RefreshAsync()
+    {
+        return CargarAsync();
+    }
+
     private async Task CargarAsync()
     {
-        var lista = await _listar.EjecutarAsync();
+        // Resolve use case from a scoped provider to ensure a fresh DbContext is used
+        using var scope = _provider.CreateScope();
+        var listar = scope.ServiceProvider.GetRequiredService<ListarVentasUseCase>();
+        var lista = await listar.EjecutarAsync();
 
         Ventas = new ObservableCollection<VentaCardDto>(
             lista.Select(v => new VentaCardDto
@@ -55,12 +55,16 @@ public partial class VentaViewModel : ObservableObject
     [RelayCommand]
     private async Task VerDetalle(VentaCardDto card)
     {
-        var detalle = await _obtener.EjecutarAsync(card.Id);
+        using var scope = _provider.CreateScope();
+        var obtener = scope.ServiceProvider.GetRequiredService<ObtenerVentaUseCase>();
+        var detalle = await obtener.EjecutarAsync(card.Id);
         if (detalle is null) return;
 
         var uiDetalle = MapDetalle(detalle);
         uiDetalle.Id = detalle.Id;
-        var win = new DetalleVentaWindow(uiDetalle, _guardarDetalle);
+        // Resolve the GuardarDetalle usecase from transient scope and pass it to the window
+        var guardar = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
+        var win = new DetalleVentaWindow(uiDetalle, guardar);
         var result = win.ShowDialog();
 
         // Si el usuario guardó cambios, recargar la lista para actualizar totales en el listado
@@ -76,7 +80,9 @@ public partial class VentaViewModel : ObservableObject
         var result = System.Windows.MessageBox.Show($"¿Anular la venta {card.Codigo}?", "Confirmar anulación", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
         if (result != System.Windows.MessageBoxResult.Yes) return;
 
-        await _anular.EjecutarAsync(card.Id);
+        using var scope = _provider.CreateScope();
+        var anular = scope.ServiceProvider.GetRequiredService<AnularVentaUseCase>();
+        await anular.EjecutarAsync(card.Id);
         await CargarAsync();
     }
 
@@ -117,10 +123,13 @@ public partial class VentaViewModel : ObservableObject
     private async Task AgregarVenta()
     {
         // 1. Crear venta
-        var id = await _crear.EjecutarAsync(new CrearVentaDto());
+        using var scope = _provider.CreateScope();
+        var crear = scope.ServiceProvider.GetRequiredService<CrearVentaUseCase>();
+        var id = await crear.EjecutarAsync(new CrearVentaDto());
 
         // 2. Obtener detalle recién creado (evita listar todo)
-        var detalle = await _obtener.EjecutarAsync(id);
+        var obtener = scope.ServiceProvider.GetRequiredService<ObtenerVentaUseCase>();
+        var detalle = await obtener.EjecutarAsync(id);
         if (detalle is null) return;
 
         // 3. Mapear
@@ -128,7 +137,8 @@ public partial class VentaViewModel : ObservableObject
         uiDetalle.Id = detalle.Id;
 
         // 4. Abrir ventana directamente
-        var win = new DetalleVentaWindow(uiDetalle, _guardarDetalle);
+        var guardar = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
+        var win = new DetalleVentaWindow(uiDetalle, guardar);
         var result = win.ShowDialog();
 
         // 5. Solo si guardó, refrescar listado

@@ -34,7 +34,6 @@ namespace VentasApp.Desktop.Views.Ventas;
             // Obtener la lista de productos desde el contenedor de servicios
             var provider = App.AppHost!.Services;
             // Obtener ItemVendible para seleccionar el item concreto (id de ItemVendible)
-            var db = provider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
             using (var scope = provider.CreateScope())
             {
                 var scopedDb = scope.ServiceProvider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
@@ -56,25 +55,25 @@ namespace VentasApp.Desktop.Views.Ventas;
             // nothing to do here during construction
 
             // Cargar medios de pago para el ComboBox de pagos
-            var mediosRepo = provider.GetRequiredService<VentasApp.Application.Interfaces.Repositorios.IMedioPagoRepository>();
-            // No existe un usecase de listar medios; haremos una consulta directa rápida via context (repo solo trae por id),
-            // por simplicidad leemos desde el DbContext
-            // var db = provider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
-            var medios = db.MedioPagos.Select(m => new { m.Id, m.Nombre }).ToList();
-            // Ensure common medios exist: Efectivo, Tarjeta, Transferencia
-            var needSave = false;
-            if (!db.MedioPagos.Any(m => m.Nombre == "Efectivo")) { db.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Efectivo", false)); needSave = true; }
-            if (!db.MedioPagos.Any(m => m.Nombre == "Tarjeta")) { db.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Tarjeta", true)); needSave = true; }
-            if (!db.MedioPagos.Any(m => m.Nombre == "Transferencia")) { db.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Transferencia", false)); needSave = true; }
-            if (needSave) db.SaveChanges();
+            // No existe un usecase de listar medios; usamos un scope para el DbContext
+            using (var scopeMed = provider.CreateScope())
+            {
+                var dbMed = scopeMed.ServiceProvider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
+                var medios = dbMed.MedioPagos.Select(m => new { m.Id, m.Nombre }).ToList();
+                // Ensure common medios exist: Efectivo, Tarjeta, Transferencia
+                var needSave = false;
+                if (!dbMed.MedioPagos.Any(m => m.Nombre == "Efectivo")) { dbMed.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Efectivo", false)); needSave = true; }
+                if (!dbMed.MedioPagos.Any(m => m.Nombre == "Tarjeta")) { dbMed.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Tarjeta", true)); needSave = true; }
+                if (!dbMed.MedioPagos.Any(m => m.Nombre == "Transferencia")) { dbMed.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Transferencia", false)); needSave = true; }
+                if (needSave) dbMed.SaveChanges();
 
-            medios = db.MedioPagos.Select(m => new { m.Id, m.Nombre }).ToList();
-
-            var mediosDto = medios.Select(m => new VentasApp.Application.DTOs.Productos.ListadoProductoDto { Id = m.Id, Nombre = m.Nombre }).ToList();
-            // Exponer en DataContext: actualizar la colección existente para notificar bindings
-            vm.MediosPago.Clear();
-            foreach (var m in mediosDto)
-                vm.MediosPago.Add(m);
+                medios = dbMed.MedioPagos.Select(m => new { m.Id, m.Nombre }).ToList();
+                var mediosDto = medios.Select(m => new VentasApp.Application.DTOs.Productos.ListadoProductoDto { Id = m.Id, Nombre = m.Nombre }).ToList();
+                // Exponer en DataContext: actualizar la colección existente para notificar bindings
+                vm.MediosPago.Clear();
+                foreach (var m in mediosDto)
+                    vm.MediosPago.Add(m);
+            }
 
             // No inline edit/auto-complete for products: ComboBox is non-editable and binding handles selection
         }
@@ -124,6 +123,26 @@ namespace VentasApp.Desktop.Views.Ventas;
         {
             try
             {
+                // Ensure any in-progress edits are committed before reading DTOs.
+                // Move focus away from current editor then commit DataGrid edits.
+                try
+                {
+                    this.MoveFocus(new System.Windows.Input.TraversalRequest(System.Windows.Input.FocusNavigationDirection.Next));
+                }
+                catch { }
+
+                try
+                {
+                    ItemsDataGrid.CommitEdit(System.Windows.Controls.DataGridEditingUnit.Row, true);
+                    ItemsDataGrid.CommitEdit();
+                }
+                catch { }
+                try
+                {
+                    PagosDataGrid.CommitEdit(System.Windows.Controls.DataGridEditingUnit.Row, true);
+                    PagosDataGrid.CommitEdit();
+                }
+                catch { }
                 // Map UI DTO to application DTO
                 // Validaciones: todos los items deben tener un producto seleccionado
                 if (_dto.Items.Any(i => i.ProductId == 0))
@@ -158,8 +177,13 @@ namespace VentasApp.Desktop.Views.Ventas;
                 };
 
                 // Guardar todo (detalles y pagos) usando el caso de uso que unifica la operación
-                var guardarCompleto = App.AppHost!.Services.GetRequiredService<VentasApp.Application.CasoDeUso.Venta.GuardarVentaCompletaUseCase>();
-                await guardarCompleto.EjecutarAsync(appDto);
+                // Use a scoped provider so all repos/DbContext used by the use case are
+                // from the same scope and see in-memory tracked entities before SaveChanges.
+                using (var scope = App.AppHost!.Services.CreateScope())
+                {
+                    var guardarCompleto = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.Venta.GuardarVentaCompletaUseCase>();
+                    await guardarCompleto.EjecutarAsync(appDto);
+                }
 
                 // Vincular cliente a la venta via Compra si fue seleccionado
                 var vm2 = DataContext as DetalleVentaViewModel;
@@ -172,6 +196,19 @@ namespace VentasApp.Desktop.Views.Ventas;
                         db.Compras.Add(new VentasApp.Domain.Modelo.Venta.Compra(_dto.Id, vm2.IdCliente));
                         await db.SaveChangesAsync();
                     }
+                }
+
+                // Force the main VentaViewModel to refresh so the list reflects the
+                // changes immediately (some DbContext lifetimes may cause slight
+                // timing issues when multiple contexts are used).
+                try
+                {
+                    var ventaVm = App.AppHost!.Services.GetRequiredService<VentasApp.Desktop.ViewModels.Ventas.VentaViewModel>();
+                    await ventaVm.RefreshAsync();
+                }
+                catch
+                {
+                    // ignore failures here; refresh is best-effort
                 }
 
                 DialogResult = true;

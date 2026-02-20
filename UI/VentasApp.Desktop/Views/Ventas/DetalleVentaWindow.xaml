@@ -178,7 +178,7 @@
                             DockPanel.Dock="Top"
                             Command="{Binding AgregarPagoCommand}"/>
 
-                    <DataGrid ItemsSource="{Binding Venta.Pagos}"
+                    <DataGrid x:Name="PagosDataGrid" ItemsSource="{Binding Venta.Pagos}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False">
 
