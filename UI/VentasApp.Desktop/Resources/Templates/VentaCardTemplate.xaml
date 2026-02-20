@@ -86,7 +86,7 @@
                                     Command="{Binding DataContext.VerDetalleCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                     CommandParameter="{Binding}">
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Eye" Margin="0,0,5,0" />
+                                    <materialDesign:PackIcon Kind="Eye" Margin="0,0,0,0" />
                                     <TextBlock  Foreground="White"/>
                                 </StackPanel>
                             </Button>
@@ -97,7 +97,7 @@
                                     Command="{Binding DataContext.EliminarVentaCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                     CommandParameter="{Binding}">
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Delete" Margin="0,0,5,0" />
+                                    <materialDesign:PackIcon Kind="Delete" Margin="0,0,0,0" />
                                     <TextBlock  Foreground="White"/>
                                 </StackPanel>
                             </Button>
