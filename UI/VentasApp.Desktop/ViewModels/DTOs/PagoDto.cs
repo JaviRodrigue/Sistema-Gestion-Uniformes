@@ -6,11 +6,18 @@ namespace VentasApp.Desktop.ViewModels.DTOs;
 public partial class PagoDto : ObservableObject
 {
     [ObservableProperty]
+    private int _id;
+
+    [ObservableProperty]
     private DateTime _fecha = DateTime.Today;
 
     [ObservableProperty]
     private decimal _monto;
 
     [ObservableProperty]
-    private string _medioPago = "Efectivo";
+    private int _medioPagoId;
+
+    [ObservableProperty]
+    private string _medioPago = "";
+
 }

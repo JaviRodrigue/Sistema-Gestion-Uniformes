@@ -66,7 +66,9 @@
                         <!-- TOTALES -->
                         <StackPanel Grid.Column="2"
                                     HorizontalAlignment="Right"
-                                    VerticalAlignment="Center">
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,10,0">
+                            
                             <TextBlock Text="{Binding Total, StringFormat='Total ${0:N2}'}"
                                        FontWeight="Bold"
                                        Foreground="{StaticResource AccentBlue}"
@@ -78,14 +80,14 @@
                         </StackPanel>
 
                         <!-- BOTONES -->
-                        <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,0,0">
                             <Button Style="{StaticResource MaterialDesignRaisedButton}"
                                     Background="{StaticResource AccentBlue}"
                                     Command="{Binding DataContext.VerDetalleCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                     CommandParameter="{Binding}">
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Eye" Margin="0,0,6,0" />
-                                    <TextBlock Text="Detalle" Foreground="White"/>
+                                    <materialDesign:PackIcon Kind="Eye" Margin="0,0,5,0" />
+                                    <TextBlock  Foreground="White"/>
                                 </StackPanel>
                             </Button>
 
@@ -95,8 +97,8 @@
                                     Command="{Binding DataContext.EliminarVentaCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                                     CommandParameter="{Binding}">
                                 <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Delete" Margin="0,0,6,0" />
-                                    <TextBlock Text="Eliminar" Foreground="White"/>
+                                    <materialDesign:PackIcon Kind="Delete" Margin="0,0,5,0" />
+                                    <TextBlock  Foreground="White"/>
                                 </StackPanel>
                             </Button>
                         </StackPanel>

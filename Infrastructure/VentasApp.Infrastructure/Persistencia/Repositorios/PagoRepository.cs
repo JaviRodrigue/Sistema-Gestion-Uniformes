@@ -19,6 +19,20 @@ public class PagoRepository : IPagoRepository
         await _context.Pagos.AddAsync(pago);
     }
 
+    public async Task<Pago?> ObtenerPorId(int idPago)
+    {
+        return await _context.Pagos.Include(p => p.Metodos).FirstOrDefaultAsync(p => p.Id == idPago);
+    }
+
+    public async Task Eliminar(int idPago)
+    {
+        var pago = await ObtenerPorId(idPago);
+        if (pago is null) return;
+        // No ajustar montos aquí. El flujo de aplicación debe recalcular montos desde los pagos
+        // para mantener la consistencia y evitar excepciones por desincronización de estados.
+        _context.Pagos.Remove(pago);
+    }
+
     public async Task<List<Pago>> ObtenerPorVenta(int idVenta)
     {
         return await _context.Pagos

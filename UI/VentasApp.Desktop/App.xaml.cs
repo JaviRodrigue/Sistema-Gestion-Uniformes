@@ -68,12 +68,17 @@ public partial class App : System.Windows.Application
                 services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IClienteRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ClienteRepository>();
                 services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IProductoRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ProductoRepository>();
                 services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IItemVendibleRepository, VentasApp.Infrastructure.Persistencia.Repositorios.ItemVendibleRepository>();
+                services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IMedioPagoRepository, VentasApp.Infrastructure.Persistencia.Repositorios.MedioPagoRepository>();
+                services.AddScoped<VentasApp.Application.Interfaces.Repositorios.IPagoRepository, VentasApp.Infrastructure.Persistencia.Repositorios.PagoRepository>();
 
                 services.AddTransient<ListarVentasUseCase>();
                 services.AddTransient<ObtenerVentaUseCase>();
                 services.AddTransient<CrearVentaUseCase>();
                 services.AddTransient<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Venta.GuardarVentaCompletaUseCase>();
                 services.AddTransient<AnularVentaUseCase>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Pago.RegistrarPagoUseCase>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Pago.EliminarPagoUseCase>();
                 
                 // Productos UseCases
                 services.AddTransient<CrearProductoUseCase>();

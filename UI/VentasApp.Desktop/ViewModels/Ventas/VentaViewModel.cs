@@ -81,17 +81,24 @@ public partial class VentaViewModel : ObservableObject
                 src.Items.Select(i => new VentasApp.Desktop.ViewModels.DTOs.VentaItemDto
                 {
                     IdDetalle = i.IdDetalle,
+                    ProductId = i.IdItemVendible,
                     Producto = i.Descripcion,
                     PrecioUnitario = i.PrecioUnitario,
                     Cantidad = i.Cantidad
                 })),
             Pagos = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.PagoDto>(
-                src.Pagos.SelectMany(p => p.Metodos.Select(m => new VentasApp.Desktop.ViewModels.DTOs.PagoDto
-                {
-                    Fecha = p.FechaPago,
-                    Monto = m.Monto,
-                    MedioPago = m.MedioPago
-                })))
+                src.Pagos.Select(p =>
+                    {
+                        var metodo = p.Metodos.FirstOrDefault();
+                        return new VentasApp.Desktop.ViewModels.DTOs.PagoDto
+                        {
+                            Id = p.Id,
+                            Fecha = p.FechaPago,
+                            Monto = p.Total,
+                            MedioPago = metodo?.MedioPago ?? string.Empty,
+                            MedioPagoId = metodo?.IdMedioPago ?? 0
+                        };
+                    }))
         };
     }
 

@@ -27,6 +27,48 @@ public class Venta : Entidad
         this.FechaVenta = DateTime.Now;
     }
 
+    public void RecalcularMontosDesdePagos(decimal montoPagado)
+    {
+        if (montoPagado < 0)
+        {
+            throw new ExcepcionDominio("El monto pagado no puede ser negativo");
+        }
+
+        this.MontoPagado = montoPagado;
+        this.SaldoPendiente = this.MontoTotal - this.MontoPagado;
+
+        if (this.MontoPagado >= this.MontoTotal && this.MontoTotal > 0)
+        {
+            this.Estado = EstadoVenta.Pagada;
+        }
+        else if (this.Estado == EstadoVenta.Pagada && this.MontoPagado < this.MontoTotal)
+        {
+            this.Estado = EstadoVenta.Pendiente;
+        }
+    }
+
+    public void QuitarPago(decimal monto)
+    {
+        if (monto < 0)
+        {
+            throw new ExcepcionDominio("El monto debe ser mayor a 0");
+        }
+
+        if (this.MontoPagado - monto < 0)
+        {
+            throw new ExcepcionDominio("El monto a quitar excede el total pagado");
+        }
+
+        this.MontoPagado -= monto;
+        this.SaldoPendiente = this.MontoTotal - this.MontoPagado;
+
+        if (this.MontoPagado < this.MontoTotal)
+        {
+            // Si ya no está completamente pagada, volver a Pendiente
+            this.Estado = EstadoVenta.Pendiente;
+        }
+    }
+
     public void AgregarDetalle(int itemVendible, int cantidad, decimal precioUnitario)
     {
         if(Estado != EstadoVenta.Pendiente)

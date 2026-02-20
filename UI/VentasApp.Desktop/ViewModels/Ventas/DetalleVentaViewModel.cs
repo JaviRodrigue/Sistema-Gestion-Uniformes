@@ -9,6 +9,7 @@ public partial class DetalleVentaViewModel : ObservableObject
     public VentaDetalleDto Venta { get; }
 
         public System.Collections.ObjectModel.ObservableCollection<VentasApp.Application.DTOs.Productos.ListadoProductoDto> Productos { get; set; } = new();
+        public System.Collections.ObjectModel.ObservableCollection<VentasApp.Application.DTOs.Productos.ListadoProductoDto> MediosPago { get; set; } = new();
 
     public string Cliente
     {
@@ -76,7 +77,8 @@ public partial class DetalleVentaViewModel : ObservableObject
         var it = new VentaItemDto
         {
             IdDetalle = 0,
-            Producto = "Nuevo producto",
+            ProductId = 0,
+            Producto = string.Empty,
             Cantidad = 1,
             PrecioUnitario = 0
         };

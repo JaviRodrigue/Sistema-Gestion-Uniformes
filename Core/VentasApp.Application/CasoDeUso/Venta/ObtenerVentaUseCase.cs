@@ -11,10 +11,14 @@ namespace VentasApp.Application.CasoDeUso.Venta;
 public class ObtenerVentaUseCase
 {
     private readonly IVentaRepository _ventaRepository;
+    private readonly IPagoRepository _pagoRepository;
+    private readonly IItemVendibleRepository _itemRepository;
 
-    public ObtenerVentaUseCase(IVentaRepository ventaRepository)
+    public ObtenerVentaUseCase(IVentaRepository ventaRepository, IPagoRepository pagoRepository, IItemVendibleRepository itemRepository)
     {
         _ventaRepository = ventaRepository;
+        _pagoRepository = pagoRepository;
+        _itemRepository = itemRepository;
     }
 
     public async Task<VentaDetalleDto?> EjecutarAsync(int id)
@@ -22,7 +26,7 @@ public class ObtenerVentaUseCase
         var v = await _ventaRepository.ObtenerPorId(id);
         if (v == null) return null;
 
-        return new VentaDetalleDto
+        var dto = new VentaDetalleDto
         {
             Id = v.Id,
             Codigo = $"V-{v.Id:0000}",
@@ -31,10 +35,42 @@ public class ObtenerVentaUseCase
             Items = v.Detalles.Select(d => new VentaItemDto
             {
                 IdDetalle = d.Id,
+                IdItemVendible = d.IdItemVendible,
                 Descripcion = $"Item {d.IdItemVendible}",
                 Cantidad = d.Cantidad,
                 PrecioUnitario = d.PrecioUnitario
             }).ToList()
         };
+
+        // Cargar descripciones reales de ItemVendible si existen
+        foreach (var item in dto.Items)
+        {
+            if (item.IdItemVendible > 0)
+            {
+                var iv = await _itemRepository.ObtenerItem(item.IdItemVendible);
+                if (iv != null)
+                {
+                    item.Descripcion = iv.Nombre ?? iv.CodigoBarra ?? $"Item {iv.Id}";
+                }
+            }
+        }
+
+        // Cargar pagos asociados
+        var pagos = await _pagoRepository.ObtenerPorVenta(v.Id);
+        dto.Pagos = pagos.Select(p => new VentasApp.Application.DTOs.Pago.PagoDto
+        {
+            Id = p.Id,
+            IdVenta = p.IdVenta,
+            FechaPago = p.FechaPago,
+            Total = p.Total,
+            Metodos = p.Metodos.Select(m => new VentasApp.Application.DTOs.Pago.PagoMetodoDetalleDto
+            {
+                IdMedioPago = m.IdMedioPago,
+                MedioPago = m.MedioPago?.Nombre ?? "",
+                Monto = m.Monto
+            }).ToList()
+        }).ToList();
+
+        return dto;
     }
 }

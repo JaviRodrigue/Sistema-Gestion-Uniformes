@@ -26,9 +26,8 @@ public class GuardarDetalleVentaUseCase
         {
             if (item.IdDetalle == 0)
             {
-                // Agregar directamente al agregado Venta. IdItemVendible no está disponible desde la UI actualmente,
-                // por eso guardamos con IdItemVendible = 0. Esto persiste el detalle pero no afecta stock.
-                venta.AgregarDetalle(0, item.Cantidad, item.PrecioUnitario);
+                // Agregar directamente al agregado Venta usando el IdItemVendible proporcionado por la UI
+                venta.AgregarDetalle(item.IdItemVendible, item.Cantidad, item.PrecioUnitario);
             }
             else
             {
@@ -50,6 +49,11 @@ public class GuardarDetalleVentaUseCase
         {
             venta.EliminarDetalle(idToRemove);
         }
+
+        // Notificar al repositorio que la venta fue actualizada para que EF la rastree
+        await _ventaRepo.Actualizar(venta);
+
+        // Procesar pagos: eliminar pagos que no se encuentren en dto (se manejan en usecases externos)
 
         await _unitOfWork.SaveChanges();
     }

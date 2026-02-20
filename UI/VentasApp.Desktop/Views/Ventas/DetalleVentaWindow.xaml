@@ -41,7 +41,7 @@
                         DockPanel.Dock="Top"
                         Command="{Binding AgregarItemCommand}"/>
 
-                <DataGrid ItemsSource="{Binding Venta.Items}"
+                <DataGrid x:Name="ItemsDataGrid" ItemsSource="{Binding Venta.Items}"
                           AutoGenerateColumns="False"
                           CanUserAddRows="False">
 
@@ -97,7 +97,16 @@
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Fecha" Binding="{Binding Fecha, Mode=TwoWay, StringFormat=d}" Width="140"/>
                         <DataGridTextColumn Header="Monto" Binding="{Binding Monto, Mode=TwoWay}" Width="120"/>
-                        <DataGridTextColumn Header="Medio" Binding="{Binding MedioPago, Mode=TwoWay}" Width="*"/>
+                        <DataGridTemplateColumn Header="Medio" Width="200">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding DataContext.MediosPago, RelativeSource={RelativeSource AncestorType=Window}}"
+                                              DisplayMemberPath="Nombre"
+                                              SelectedValuePath="Id"
+                                              SelectedValue="{Binding MedioPagoId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
                         <DataGridTemplateColumn Width="80">
                             <DataGridTemplateColumn.CellTemplate>

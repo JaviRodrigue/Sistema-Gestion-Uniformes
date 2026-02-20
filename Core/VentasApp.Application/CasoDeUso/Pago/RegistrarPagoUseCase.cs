@@ -35,7 +35,7 @@ public class RegistrarPagoUseCase(IPagoRepository pago, IVentaRepository venta, 
 
         foreach(var metodo in dto.Metodos)
         {
-            var medio = await _repositoryMedioPago.ObtenerPorId(metodo.IdMedioPago) ?? throw new Exception("Medio de pago invalido");
+            var medio = await _repositoryMedioPago.ObtenerPorId(metodo.IdMedioPago) ?? throw new Exception("Medio de pago inválido");
             pago.AgregarPago(medio.Id, metodo.Monto);
         }
 
@@ -47,8 +47,10 @@ public class RegistrarPagoUseCase(IPagoRepository pago, IVentaRepository venta, 
             throw new Exception("El pago supera el monto total de la venta");
         }
 
-        venta.RegistrarPago(pago.Total);
-        await _repositoryPago.Agregar(pago);
-        await _unit.SaveChanges();
+        venta.RegistrarPago(pago.Total); // Registro el pago total
+        await _repositoryPago.Agregar(pago); // Agrego el pago al repositorio
+        // Asegurar que la venta actualizada sea conocida por el repositorio
+        await _repositoryVenta.Actualizar(venta);
+        await _unit.SaveChanges(); // Guardar cambios en la unidad de trabajo
     }
 }
