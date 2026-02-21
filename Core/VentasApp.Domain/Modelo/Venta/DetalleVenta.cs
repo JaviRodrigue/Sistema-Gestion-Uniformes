@@ -8,6 +8,7 @@ public class DetalleVenta : Entidad
     public int Cantidad {get ; private set;}
     public decimal PrecioUnitario {get; private set;}
     public decimal SubTotal { get; private set; }
+    public bool Entregado { get; private set; }
 
     protected DetalleVenta(){}
     public DetalleVenta(int idItem, int cantidad, decimal precioUnitario)
@@ -23,6 +24,7 @@ public class DetalleVenta : Entidad
         this.IdItemVendible = idItem;
         this.Cantidad = cantidad;
         this.PrecioUnitario = precioUnitario;
+        this.Entregado = false;
 
         CalcularSubTotal();
     }
@@ -52,4 +54,13 @@ public class DetalleVenta : Entidad
         CalcularSubTotal();
     }
 
+    public void MarcarComoEntregado()
+    {
+        this.Entregado = true;
+    }
+
+    public void DesmarcarEntrega()
+    {
+        this.Entregado = false;
+    }
 }

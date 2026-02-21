@@ -20,4 +20,7 @@ public partial class PagoDto : ObservableObject
     [ObservableProperty]
     private string _medioPago = "";
 
+    [ObservableProperty]
+    private bool _verificado;
+
 }

@@ -24,6 +24,12 @@ namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
 
             builder.Property(d => d.SubTotal)
                    .HasColumnType("DOUBLE");
+
+            builder.Property(d => d.Entregado)
+                   .HasColumnName("entregado")
+                   .HasColumnType("INTEGER")
+                   .IsRequired()
+                   .HasDefaultValue(false);
                     
         }
     }

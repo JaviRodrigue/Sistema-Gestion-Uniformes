@@ -40,6 +40,20 @@ public class GuardarVentaCompletaUseCase
                     {
                         venta.ModificarDetalle(item.IdDetalle, item.Cantidad, item.PrecioUnitario);
                     }
+                    
+                    // Actualizar estado de entrega
+                    if (item.Entregado != original.Entregado)
+                    {
+                        if (item.Entregado)
+                        {
+                            venta.MarcarItemComoEntregado(item.IdDetalle);
+                        }
+                        else
+                        {
+                            venta.DesmarcarItemEntregado(item.IdDetalle);
+                        }
+                    }
+                    
                     existentes.Remove(item.IdDetalle);
                 }
             }
@@ -65,6 +79,10 @@ public class GuardarVentaCompletaUseCase
                 pago.AgregarPago(medio.Id, metodo.Monto);
             }
             pago.ValidarPago();
+            if (pagoDto.Verificado)
+            {
+                pago.MarcarComoVerificado();
+            }
             venta.RegistrarPago(pago.Total);
             await _pagoRepo.Agregar(pago);
         }

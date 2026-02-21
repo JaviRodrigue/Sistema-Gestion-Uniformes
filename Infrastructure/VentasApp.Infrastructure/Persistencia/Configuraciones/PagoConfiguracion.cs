@@ -28,6 +28,12 @@ namespace VentasApp.Infrastructure.Persistencia.Configuraciones;
                   .HasColumnName("id_venta")
                   .IsRequired();
 
+            builder.Property(p => p.Verificado)
+                  .HasColumnName("verificado")
+                  .HasColumnType("INTEGER")
+                  .IsRequired()
+                  .HasDefaultValue(false);
+
             builder.HasMany(p => p.Metodos)
             .WithOne(pm => pm.Pago)
             .HasForeignKey(pm => pm.IdPago)

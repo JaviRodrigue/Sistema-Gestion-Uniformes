@@ -134,6 +134,9 @@ public partial class App : System.Windows.Application
             {
                 var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
                 await db.Database.EnsureCreatedAsync();
+                
+                // Aplicar migraciones manuales (para cambios menores sin EF Migrations)
+                await VentasApp.Infrastructure.Persistencia.Migrations.DatabaseMigrationHelper.AplicarMigracionesAsync(db);
             }
 
             // 3. Pedirle al contenedor que cree la MainWindow

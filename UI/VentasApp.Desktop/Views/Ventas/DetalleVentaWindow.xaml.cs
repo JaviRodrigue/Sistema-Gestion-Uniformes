@@ -161,7 +161,8 @@ namespace VentasApp.Desktop.Views.Ventas;
                         Descripcion = i.Producto,
                         IdItemVendible = i.ProductId,
                         Cantidad = i.Cantidad,
-                        PrecioUnitario = i.PrecioUnitario
+                        PrecioUnitario = i.PrecioUnitario,
+                        Entregado = i.Entregado
                     }).ToList(),
                     Pagos = _dto.Pagos.Select(p => new VentasApp.Application.DTOs.Pago.PagoDto
                     {
@@ -169,6 +170,7 @@ namespace VentasApp.Desktop.Views.Ventas;
                         IdVenta = _dto.Id,
                         FechaPago = p.Fecha,
                         Total = p.Monto,
+                        Verificado = p.Verificado,
                         Metodos = new List<VentasApp.Application.DTOs.Pago.PagoMetodoDetalleDto>
                         {
                             new VentasApp.Application.DTOs.Pago.PagoMetodoDetalleDto { IdMedioPago = p.MedioPagoId, MedioPago = "", Monto = p.Monto }

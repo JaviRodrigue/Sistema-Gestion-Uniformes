@@ -174,7 +174,8 @@ public partial class VentaViewModel : ObservableObject, IBuscable
                     ProductId = i.IdItemVendible,
                     Producto = i.Descripcion,
                     PrecioUnitario = i.PrecioUnitario,
-                    Cantidad = i.Cantidad
+                    Cantidad = i.Cantidad,
+                    Entregado = i.Entregado
                 })),
             Pagos = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.PagoDto>(
                 src.Pagos.Select(p =>
@@ -185,6 +186,7 @@ public partial class VentaViewModel : ObservableObject, IBuscable
                             Id = p.Id,
                             Fecha = p.FechaPago,
                             Monto = p.Total,
+                            Verificado = p.Verificado,
                             MedioPago = metodo?.MedioPago ?? string.Empty,
                             MedioPagoId = metodo?.IdMedioPago ?? 0
                         };
@@ -195,29 +197,59 @@ public partial class VentaViewModel : ObservableObject, IBuscable
     [RelayCommand]
     private async Task AgregarVenta()
     {
-        // 1. Crear venta
-        using var scope = _provider.CreateScope();
-        var crear = scope.ServiceProvider.GetRequiredService<CrearVentaUseCase>();
-        var id = await crear.EjecutarAsync(new CrearVentaDto());
-
-        // 2. Obtener detalle recién creado (evita listar todo)
-        var obtener = scope.ServiceProvider.GetRequiredService<ObtenerVentaUseCase>();
-        var detalle = await obtener.EjecutarAsync(id);
-        if (detalle is null) return;
-
-        // 3. Mapear
-        var uiDetalle = MapDetalle(detalle);
-        uiDetalle.Id = detalle.Id;
-
-        // 4. Abrir ventana directamente
-        var guardar = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
-        var win = new DetalleVentaWindow(uiDetalle, guardar);
-        var result = win.ShowDialog();
-
-        // 5. Solo si guardó, refrescar listado
-        if (result == true)
+        int idVentaCreada = 0;
+        
+        try
         {
-            await CargarAsync();
+            // 1. Crear venta
+            using var scope = _provider.CreateScope();
+            var crear = scope.ServiceProvider.GetRequiredService<CrearVentaUseCase>();
+            idVentaCreada = await crear.EjecutarAsync(new CrearVentaDto());
+
+            // 2. Obtener detalle recién creado (evita listar todo)
+            var obtener = scope.ServiceProvider.GetRequiredService<ObtenerVentaUseCase>();
+            var detalle = await obtener.EjecutarAsync(idVentaCreada);
+            if (detalle is null) return;
+
+            // 3. Mapear
+            var uiDetalle = MapDetalle(detalle);
+            uiDetalle.Id = detalle.Id;
+
+            // 4. Abrir ventana directamente
+            var guardar = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
+            var win = new DetalleVentaWindow(uiDetalle, guardar);
+            var result = win.ShowDialog();
+
+            // 5. Solo si guardó, refrescar listado
+            if (result == true)
+            {
+                await CargarAsync();
+            }
+            else
+            {
+                // Si el usuario canceló, eliminar la venta vacía recién creada
+                var anular = scope.ServiceProvider.GetRequiredService<AnularVentaUseCase>();
+                await anular.EjecutarAsync(idVentaCreada);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Si hay error y se creó una venta, intentar limpiarla
+            if (idVentaCreada > 0)
+            {
+                try
+                {
+                    using var scope = _provider.CreateScope();
+                    var anular = scope.ServiceProvider.GetRequiredService<AnularVentaUseCase>();
+                    await anular.EjecutarAsync(idVentaCreada);
+                }
+                catch
+                {
+                    // Ignorar errores al limpiar
+                }
+            }
+            
+            System.Windows.MessageBox.Show($"Error al crear venta: {ex.Message}", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
         }
     }
 }

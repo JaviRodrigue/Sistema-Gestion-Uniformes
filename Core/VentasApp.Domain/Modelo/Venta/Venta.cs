@@ -71,10 +71,14 @@ public class Venta : Entidad
 
     public void AgregarDetalle(int itemVendible, int cantidad, decimal precioUnitario)
     {
-        if(Estado != EstadoVenta.Pendiente)
+        // Si la venta estaba Completada (todos los items entregados) y se agrega un nuevo item,
+        // el nuevo item no estará entregado, por lo que la venta debe volver a un estado activo
+        if (Estado == EstadoVenta.Completada)
         {
-            throw new ExcepcionDominio("Solo se puede agregar items a una venta pendiente");
+            // Volver a Confirmada si ya fue confirmada alguna vez, sino a Pendiente
+            Estado = _detalles.Any() ? EstadoVenta.Confirmada : EstadoVenta.Pendiente;
         }
+        
         var detalle = new DetalleVenta(itemVendible,cantidad,precioUnitario);
         _detalles.Add(detalle);
         RecalcularTotal();
@@ -136,26 +140,83 @@ public class Venta : Entidad
 
     public void EliminarDetalle(int idDetalle)
     {
-        if(Estado != EstadoVenta.Pendiente)
+        if(Estado != EstadoVenta.Pendiente && Estado != EstadoVenta.Completada)
         {
-            throw new ExcepcionDominio("No se puede eliminar un detalle de una venta confirmada");
+            throw new ExcepcionDominio("No se puede eliminar un detalle de una venta confirmada o pagada");
         }
 
         var detalle = _detalles.FirstOrDefault(d => d.Id == idDetalle) ?? throw new ExcepcionDominio("Detalle no encontrado");
         _detalles.Remove(detalle);
         RecalcularTotal();
+        
+        // Si la venta estaba Completada y eliminamos un item, verificar si sigue completa
+        if (Estado == EstadoVenta.Completada)
+        {
+            VerificarYCompletarSiTodoEntregado();
+        }
     }
 
     public void ModificarDetalle(int idDetalle, int cantidad, decimal precio)
     {
-        if(Estado != EstadoVenta.Pendiente)
+        if(Estado != EstadoVenta.Pendiente && Estado != EstadoVenta.Completada)
         {
-            throw new ExcepcionDominio("No se puede modificar un detalle de una venta confirmada");
+            throw new ExcepcionDominio("No se puede modificar un detalle de una venta confirmada o pagada");
         }
         var detalle = _detalles.FirstOrDefault(d => d.Id == idDetalle) ?? throw new ExcepcionDominio("El detalle no existe");
         detalle.ModificarPrecio(precio);
         detalle.ModificarCantidad(cantidad);
         RecalcularTotal();
+    }
+
+    public void MarcarItemComoEntregado(int idDetalle)
+    {
+        var detalle = _detalles.FirstOrDefault(d => d.Id == idDetalle) ?? throw new ExcepcionDominio("El detalle no existe");
+        detalle.MarcarComoEntregado();
+        VerificarYCompletarSiTodoEntregado();
+    }
+
+    public void DesmarcarItemEntregado(int idDetalle)
+    {
+        var detalle = _detalles.FirstOrDefault(d => d.Id == idDetalle) ?? throw new ExcepcionDominio("El detalle no existe");
+        detalle.DesmarcarEntrega();
+        
+        // Si la venta estaba Completada y se desmarca un item, volver al estado previo
+        if (Estado == EstadoVenta.Completada)
+        {
+            if (MontoPagado >= MontoTotal && MontoTotal > 0)
+            {
+                Estado = EstadoVenta.Pagada;
+            }
+            else
+            {
+                Estado = EstadoVenta.Confirmada;
+            }
+        }
+    }
+
+    private void VerificarYCompletarSiTodoEntregado()
+    {
+        if (!_detalles.Any())
+        {
+            return;
+        }
+
+        if (_detalles.All(d => d.Entregado))
+        {
+            Estado = EstadoVenta.Completada;
+        }
+        else if (Estado == EstadoVenta.Completada)
+        {
+            // Si no todos están entregados pero estaba Completada, volver a estado apropiado
+            if (MontoPagado >= MontoTotal && MontoTotal > 0)
+            {
+                Estado = EstadoVenta.Pagada;
+            }
+            else
+            {
+                Estado = EstadoVenta.Confirmada;
+            }
+        }
     }
 
 }

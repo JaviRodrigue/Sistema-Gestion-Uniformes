@@ -8,5 +8,6 @@ public class PagoDto
     public int IdVenta{get;set;}
     public DateTime FechaPago{get;set;}
     public decimal Total{get;set;}
+    public bool Verificado{get;set;}
     public List<PagoMetodoDetalleDto> Metodos{get;set;} =new();
 }

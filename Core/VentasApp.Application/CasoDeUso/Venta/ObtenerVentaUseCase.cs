@@ -44,7 +44,8 @@ public class ObtenerVentaUseCase
                 IdItemVendible = d.IdItemVendible,
                 Descripcion = $"Item {d.IdItemVendible}",
                 Cantidad = d.Cantidad,
-                PrecioUnitario = d.PrecioUnitario
+                PrecioUnitario = d.PrecioUnitario,
+                Entregado = d.Entregado
             }).ToList()
         };
 
@@ -69,6 +70,7 @@ public class ObtenerVentaUseCase
             IdVenta = p.IdVenta,
             FechaPago = p.FechaPago,
             Total = p.Total,
+            Verificado = p.Verificado,
             Metodos = p.Metodos.Select(m => new VentasApp.Application.DTOs.Pago.PagoMetodoDetalleDto
             {
                 IdMedioPago = m.IdMedioPago,

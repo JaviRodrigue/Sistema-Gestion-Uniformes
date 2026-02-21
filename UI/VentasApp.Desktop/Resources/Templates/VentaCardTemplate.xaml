@@ -24,8 +24,9 @@
                 <Style TargetType="Border">
                     <Setter Property="BorderBrush" Value="Transparent"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding EstadoVenta}" Value="Pagada">
-                            <Setter Property="BorderBrush" Value="{StaticResource SuccessSoft}"/>
+                        <DataTrigger Binding="{Binding EstadoVenta}" Value="Completada">
+                            <Setter Property="BorderBrush" Value="#4CAF50"/>
+                            <Setter Property="Background" Value="#E8F5E9"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding EstadoVenta}" Value="Pendiente">
                             <Setter Property="BorderBrush" Value="{StaticResource WarningSoft}"/>
@@ -98,9 +99,15 @@
                             Background="{StaticResource AccentBlue}"
                             Command="{Binding DataContext.VerDetalleCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                             CommandParameter="{Binding}"
-                            Width="44"
-                            Height="36">
-                        <materialDesign:PackIcon Kind="Eye" Foreground="White" />
+                            Width="42"
+                            Height="34"
+                            Padding="0">
+                        <materialDesign:PackIcon Kind="Eye" 
+                                                 Foreground="White" 
+                                                 Width="18" 
+                                                 Height="18"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"/>
                     </Button>
 
                     <Button Style="{StaticResource MaterialDesignRaisedButton}"
@@ -108,10 +115,16 @@
                             Foreground="White"
                             Command="{Binding DataContext.EliminarVentaCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
                             CommandParameter="{Binding}"
-                            Width="44"
-                            Height="36"
-                            Margin="6,0,0,0">
-                        <materialDesign:PackIcon Kind="Delete" Foreground="White" />
+                            Width="42"
+                            Height="34"
+                            Padding="0"
+                            Margin="8,0,0,0">
+                        <materialDesign:PackIcon Kind="Delete" 
+                                                 Foreground="White" 
+                                                 Width="18" 
+                                                 Height="18"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"/>
                     </Button>
                 </StackPanel>
 

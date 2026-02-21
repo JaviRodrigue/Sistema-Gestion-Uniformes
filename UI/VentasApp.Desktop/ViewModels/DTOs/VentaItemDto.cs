@@ -26,7 +26,11 @@ public partial class VentaItemDto : ObservableObject
     [ObservableProperty]
     private int _cantidad;
 
+    [ObservableProperty]
+    private bool _entregado;
+
     public decimal Subtotal => PrecioUnitario * Cantidad;
+
 
     partial void OnPrecioUnitarioChanged(decimal _) => OnPropertyChanged(nameof(Subtotal));
     partial void OnCantidadChanged(int _) => OnPropertyChanged(nameof(Subtotal));

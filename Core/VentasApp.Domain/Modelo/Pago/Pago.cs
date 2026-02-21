@@ -14,6 +14,7 @@ public class Pago : Entidad
     public Venta? Venta { get; private set; }
 
     public bool EsSenia{get;private set;}
+    public bool Verificado{get;private set;}
     
     public IReadOnlyCollection<PagoMetodo> Metodos => _metodos.AsReadOnly();
     protected Pago(){}
@@ -23,6 +24,7 @@ public class Pago : Entidad
         this.FechaPago = DateTime.Now;
         this.EsSenia = esSenia;
         this.Total = 0;
+        this.Verificado = false;
     }   
 
     public void AgregarPago(int idMedioPago, decimal monto)
@@ -48,5 +50,14 @@ public class Pago : Entidad
         
     }
 
+    public void MarcarComoVerificado()
+    {
+        this.Verificado = true;
+    }
+
+    public void DesmarcarVerificacion()
+    {
+        this.Verificado = false;
+    }
 
 }
