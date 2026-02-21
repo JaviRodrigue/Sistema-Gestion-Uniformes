@@ -17,10 +17,11 @@ public class CrearItemVendibleUseCase
     public async Task<int> EjecutarAsync(CrearItemVendibleDto dto)
     {
         var existe = await _repository.ObtenerItemPorCodigoBarra(dto.CodigoBarra);
-        if(existe != null)
-        {
+        if (existe != null)
             throw new Exception("Ya existe un item con ese codigo de barra");
-        }
+
+        if (await _repository.ExisteConNombreYTalle(dto.nombre, dto.Talle))
+            throw new Exception($"Ya existe un uniforme '{dto.nombre}' con talle '{dto.Talle}'");
 
         var item = new ItemVendible(
             dto.IdProducto,

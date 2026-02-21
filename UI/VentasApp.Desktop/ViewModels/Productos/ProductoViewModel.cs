@@ -144,24 +144,34 @@ namespace VentasApp.Desktop.ViewModels.Productos
                     CodigoBarra = codigoBarra,
                     Talle = win.TalleSeleccionado
                 };
-                var nuevoItemId = await _crearItemVendibleUseCase.EjecutarAsync(itemDto);
-
                 // Crear stock si el usuario ingresó valores
                 var cantidadInicialText = (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
                 var stockMinimoText = (win.FindName("TxtStockMinimo") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
                 int.TryParse(cantidadInicialText, out var cantidadInicial);
                 int.TryParse(stockMinimoText, out var stockMinimo);
 
-                var stockDto = new VentasApp.Application.DTOs.Stocks.CrearStockDto
+                try
                 {
-                    IdItemVendible = nuevoItemId,
-                    CantidadInicial = cantidadInicial,
-                    StockMinimo = stockMinimo
-                };
-                await _crearStockUseCase.EjecutarAsync(stockDto);
+                    var nuevoItemId = await _crearItemVendibleUseCase.EjecutarAsync(itemDto);
 
-                // Recargar desde base de datos
-                CargarProductos();
+                    var stockDto = new VentasApp.Application.DTOs.Stocks.CrearStockDto
+                    {
+                        IdItemVendible = nuevoItemId,
+                        CantidadInicial = cantidadInicial,
+                        StockMinimo = stockMinimo
+                    };
+                    await _crearStockUseCase.EjecutarAsync(stockDto);
+                }
+                catch (Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message, "Producto duplicado",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning);
+                }
+                finally
+                {
+                    CargarProductos();
+                }
             }
         }
 

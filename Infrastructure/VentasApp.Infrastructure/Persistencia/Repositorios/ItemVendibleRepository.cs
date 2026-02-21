@@ -38,4 +38,13 @@ public class ItemVendibleRepository : IItemVendibleRepository
                     .FirstOrDefaultAsync(i => i.CodigoBarra == codigo);
     }
 
+    public async Task<bool> ExisteConNombreYTalle(string nombre, string? talle)
+    {
+        var nombreNormalizado = nombre.Trim().ToLower();
+        return await _context.ItemVendible
+            .AnyAsync(i => i.Nombre == nombreNormalizado
+                        && i.Talle == talle
+                        && i.Activado);
+    }
+
 }
