@@ -1,13 +1,34 @@
 using System.Globalization;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace VentasApp.Desktop.Views.Productos
 {
     public partial class EditarProductoWindow : Window
     {
+        private static readonly string[] _talles =
+            ["SinTalle", "16", "18", "20", "22", "24", "26", "28", "30", "32", "XS", "S", "M", "L", "XL"];
+
+        public string? TalleSeleccionado { get; private set; }
+
         public EditarProductoWindow()
         {
             InitializeComponent();
+        }
+
+        public void SetTalle(string? talle)
+        {
+            var key = talle is null ? "SinTalle" : talle;
+            if (FindName($"Talle{key}") is RadioButton rb)
+                rb.IsChecked = true;
+        }
+
+        private string? ObtenerTalleSeleccionado()
+        {
+            foreach (var talle in _talles)
+                if (FindName($"Talle{talle}") is RadioButton rb && rb.IsChecked == true)
+                    return talle == "SinTalle" ? null : talle;
+            return null;
         }
 
         private void OnCancelarClick(object sender, RoutedEventArgs e)
@@ -45,6 +66,7 @@ namespace VentasApp.Desktop.Views.Productos
                 return;
             }
 
+            TalleSeleccionado = ObtenerTalleSeleccionado();
             DialogResult = true;
             Close();
         }

@@ -10,6 +10,7 @@ namespace VentasApp.Desktop.Views.Cliente
 {
     public partial class ListarClienteVentas : Window
     {
+        private readonly IServiceScope _scope;
         private readonly IClienteRepository _clienteRepository;
         private List<ClienteModel> _todosLosClientes = new();
 
@@ -19,8 +20,8 @@ namespace VentasApp.Desktop.Views.Cliente
         public ListarClienteVentas()
         {
             InitializeComponent();
-            using var scope = App.AppHost!.Services.CreateScope();
-            _clienteRepository = scope.ServiceProvider.GetRequiredService<IClienteRepository>();
+            _scope = App.AppHost!.Services.CreateScope();
+            _clienteRepository = _scope.ServiceProvider.GetRequiredService<IClienteRepository>();
             _ = CargarClientesAsync();
         }
 
@@ -93,7 +94,14 @@ namespace VentasApp.Desktop.Views.Cliente
             DialogResult = true;
             Close();
         }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            _scope.Dispose();
+            base.OnClosed(e);
+        }
     }
 }
+
 
 

@@ -11,4 +11,5 @@ public class ProductoCardDto
     public int StockMinimo { get; set; }
     public bool BajoStock => StockMinimo > 0 && StockTotal < StockMinimo;
     public string CodigoBarraReferencia { get; set; } = string.Empty;
+    public string? Talle { get; set; }
 }

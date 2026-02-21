@@ -1,23 +1,30 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using VentasApp.Desktop.ViewModels.DTOs;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using VentasApp.Desktop.ViewModels;
+using VentasApp.Desktop.ViewModels.DTOs;
 
 namespace VentasApp.Desktop.ViewModels.Productos
 {
-    public partial class ProductoViewModel : ObservableObject
+    public partial class ProductoViewModel : ObservableObject, IBuscable
     {
         private readonly VentasApp.Application.Interfaces.Repositorios.IProductoRepository _productoRepository;
         private readonly VentasApp.Application.Interfaces.Repositorios.IStockRepository _stockRepository;
         private readonly VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase _crearProductoUseCase;
         private readonly VentasApp.Application.CasoDeUso.Productos.ActualizarProductoUseCase _actualizarProductoUseCase;
         private readonly VentasApp.Application.CasoDeUso.ItemVendibles.CrearItemVendibleUseCase _crearItemVendibleUseCase;
+        private readonly VentasApp.Application.CasoDeUso.ItemVendibles.ActualizarItemVendibleUseCase _actualizarItemVendibleUseCase;
         private readonly VentasApp.Application.CasoDeUso.Stocks.CrearStockUseCase _crearStockUseCase;
         private readonly VentasApp.Application.CasoDeUso.Stocks.AumentarStockUseCase _aumentarStockUseCase;
         private readonly VentasApp.Application.CasoDeUso.Stocks.DescontarStockUseCase _descontarStockUseCase;
         private readonly VentasApp.Application.CasoDeUso.Stocks.ActualizarStockMinimoUseCase _actualizarStockMinimoUseCase;
+
+        private List<ProductoCardDto> _todosLosProductos = new();
+
+        private readonly VentasApp.Application.Interfaces.Repositorios.IItemVendibleRepository _itemVendibleRepository;
 
         [ObservableProperty]
         private ObservableCollection<ProductoCardDto> _productos;
@@ -25,9 +32,11 @@ namespace VentasApp.Desktop.ViewModels.Productos
         public ProductoViewModel(
             VentasApp.Application.Interfaces.Repositorios.IProductoRepository productoRepository,
             VentasApp.Application.Interfaces.Repositorios.IStockRepository stockRepository,
+            VentasApp.Application.Interfaces.Repositorios.IItemVendibleRepository itemVendibleRepository,
             VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase crearProductoUseCase,
             VentasApp.Application.CasoDeUso.Productos.ActualizarProductoUseCase actualizarProductoUseCase,
             VentasApp.Application.CasoDeUso.ItemVendibles.CrearItemVendibleUseCase crearItemVendibleUseCase,
+            VentasApp.Application.CasoDeUso.ItemVendibles.ActualizarItemVendibleUseCase actualizarItemVendibleUseCase,
             VentasApp.Application.CasoDeUso.Stocks.CrearStockUseCase crearStockUseCase,
             VentasApp.Application.CasoDeUso.Stocks.AumentarStockUseCase aumentarStockUseCase,
             VentasApp.Application.CasoDeUso.Stocks.DescontarStockUseCase descontarStockUseCase,
@@ -35,15 +44,56 @@ namespace VentasApp.Desktop.ViewModels.Productos
         {
             _productoRepository = productoRepository;
             _stockRepository = stockRepository;
+            _itemVendibleRepository = itemVendibleRepository;
             _crearProductoUseCase = crearProductoUseCase;
             _actualizarProductoUseCase = actualizarProductoUseCase;
             _crearItemVendibleUseCase = crearItemVendibleUseCase;
+            _actualizarItemVendibleUseCase = actualizarItemVendibleUseCase;
             _crearStockUseCase = crearStockUseCase;
             _aumentarStockUseCase = aumentarStockUseCase;
             _descontarStockUseCase = descontarStockUseCase;
             _actualizarStockMinimoUseCase = actualizarStockMinimoUseCase;
             Productos = new ObservableCollection<ProductoCardDto>();
             CargarProductos();
+        }
+
+        // ================= IBuscable =================
+
+        public async Task BuscarAsync(string texto)
+        {
+            if (string.IsNullOrWhiteSpace(texto)) { await RestablecerAsync(); return; }
+
+            var esNumero = texto.All(char.IsDigit);
+
+            if (esNumero)
+            {
+                if (texto.Length < 5)
+                {
+                    var id = int.Parse(texto);
+                    Productos = new ObservableCollection<ProductoCardDto>(
+                        _todosLosProductos.Where(p => p.Id == id));
+                }
+                else
+                {
+                    var item = await _itemVendibleRepository.ObtenerItemPorCodigoBarra(texto);
+                    var resultado = item is not null
+                        ? _todosLosProductos.Where(p => p.Id == item.IdProducto).ToList()
+                        : new List<ProductoCardDto>();
+                    Productos = new ObservableCollection<ProductoCardDto>(resultado);
+                }
+            }
+            else
+            {
+                Productos = new ObservableCollection<ProductoCardDto>(
+                    _todosLosProductos.Where(p =>
+                        p.Nombre.Contains(texto, System.StringComparison.OrdinalIgnoreCase)));
+            }
+        }
+
+        public Task RestablecerAsync()
+        {
+            Productos = new ObservableCollection<ProductoCardDto>(_todosLosProductos);
+            return Task.CompletedTask;
         }
 
         [RelayCommand]
@@ -92,7 +142,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
                     IdProducto = nuevoId,
                     nombre = nombre,
                     CodigoBarra = codigoBarra,
-                    Talle = null
+                    Talle = win.TalleSeleccionado
                 };
                 var nuevoItemId = await _crearItemVendibleUseCase.EjecutarAsync(itemDto);
 
@@ -129,6 +179,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
             (win.FindName("TxtPrecioVenta") as System.Windows.Controls.TextBox)!.Text = producto.Precio.ToString();
             (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)!.Text = producto.StockTotal.ToString();
             (win.FindName("TxtStockMinimo") as System.Windows.Controls.TextBox)!.Text = "";
+            win.SetTalle(producto.Talle);
 
             var ok = win.ShowDialog();
             if (ok == true)
@@ -148,6 +199,20 @@ namespace VentasApp.Desktop.ViewModels.Productos
                 };
 
                 await _actualizarProductoUseCase.EjecutarAsync(producto.Id, dto);
+
+                // Update talle on the item vendible
+                var productoParaTalle = await _productoRepository.ObtenerProducto(producto.Id);
+                var itemParaTalle = productoParaTalle?.ItemsVendibles?.FirstOrDefault();
+                if (itemParaTalle is not null)
+                {
+                    await _actualizarItemVendibleUseCase.EjecutarAsync(itemParaTalle.Id,
+                        new VentasApp.Application.DTOs.ItemVendible.ActualizarItemVendibleDto
+                        {
+                            Nombre = itemParaTalle.Nombre,
+                            CodigoBarra = itemParaTalle.CodigoBarra,
+                            Talle = win.TalleSeleccionado
+                        });
+                }
 
                 // Ajustar stock si el usuario ingresó un valor de cantidad
                 var cantidadText = (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
@@ -258,11 +323,13 @@ namespace VentasApp.Desktop.ViewModels.Productos
                     Precio = p.PrecioVenta,
                     StockTotal = stockTotal,
                     StockMinimo = stockMinimo,
-                    CodigoBarraReferencia = item?.CodigoBarra ?? string.Empty
+                    CodigoBarraReferencia = item?.CodigoBarra ?? string.Empty,
+                    Talle = item?.Talle
                 });
             }
 
-            Productos = new ObservableCollection<ProductoCardDto>(result);
+            _todosLosProductos = result;
+            Productos = new ObservableCollection<ProductoCardDto>(_todosLosProductos);
         }
     }
 }

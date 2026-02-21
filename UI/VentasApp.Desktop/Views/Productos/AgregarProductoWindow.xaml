@@ -36,10 +36,42 @@
                         <ComboBox x:Name="CmbCategoria" Margin="0,0,0,12" AutomationProperties.Name="Categoria"
                                   materialDesign:HintAssist.Hint="Categoría (obligatorio)"
                                   Style="{StaticResource MaterialDesignFilledComboBox}"
-                                  MinWidth="320">
+                                  MinWidth="320"
+                                  SelectionChanged="OnCategoriaChanged">
                             <ComboBoxItem Content="Uniforme"/>
                             <ComboBoxItem Content="Librería"/>
                         </ComboBox>
+
+                        <!-- Talle: solo visible cuando se elige Uniforme -->
+                        <StackPanel x:Name="PanelTalle" Visibility="Collapsed" Margin="0,0,0,12">
+                            <TextBlock Text="Talle (obligatorio para Uniforme)"
+                                       FontSize="11" Foreground="Gray" Margin="0,0,0,4"/>
+                            <StackPanel>
+                                <!-- Talles numéricos -->
+                                <WrapPanel>
+                                    <RadioButton x:Name="TalleSinTalle" Content="—"   GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}" ToolTip="Sin talle"/>
+                                </WrapPanel>
+                                <WrapPanel>
+                                    <RadioButton x:Name="Talle16"  Content="16"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="Talle18"  Content="18"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="Talle20"  Content="20"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="Talle22"  Content="22"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="Talle24"  Content="24"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="Talle26"  Content="26"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="Talle28"  Content="28"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="Talle30"  Content="30"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="Talle32"  Content="32"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                </WrapPanel>
+                                <!-- Talles con letra -->
+                                <WrapPanel Margin="0,4,0,0">
+                                    <RadioButton x:Name="TalleXS"  Content="XS"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="TalleS"   Content="S"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="TalleM"   Content="M"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="TalleL"   Content="L"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="TalleXL"  Content="XL"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                </WrapPanel>
+                            </StackPanel>
+                        </StackPanel>
 
                         <TextBox x:Name="TxtCosto"
                                  materialDesign:HintAssist.Hint="Costo (obligatorio)"
