@@ -1,10 +1,9 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
-<<<<<<< HEAD
-=======
+
 using System.Collections.Generic;
->>>>>>> 8b7f7a059e678575998d50a339c31319a19cf9c6
+
 using System.Collections.ObjectModel;
 using System.Linq;
 using VentasApp.Application.CasoDeUso.Venta;

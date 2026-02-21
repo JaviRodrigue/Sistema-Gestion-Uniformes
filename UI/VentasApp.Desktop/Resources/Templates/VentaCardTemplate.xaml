@@ -7,119 +7,115 @@
     <DataTemplate x:Key="VentaCardTemplate"
                   DataType="{x:Type dtos:VentaCardDto}">
 
-        <!-- Forzar estiramiento horizontal de la tarjeta -->
-        <Border CornerRadius="12"
-                Margin="0,0,0,0"
+        <!-- Compact card without dropdown. Border color indicates sale state. -->
+        <Border CornerRadius="8"
+                Margin="6"
                 Padding="8"
                 Background="{StaticResource CardBackground}"
-                HorizontalAlignment="Stretch">
+                HorizontalAlignment="Stretch"
+                MinHeight="72"
+                BorderThickness="3">
 
             <Border.Effect>
-                <DropShadowEffect BlurRadius="6" Opacity="0.18"/>
+                <DropShadowEffect BlurRadius="4" Opacity="0.12"/>
             </Border.Effect>
 
-            <Expander BorderThickness="0" HorizontalAlignment="Stretch">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding EstadoVenta}" Value="Pagada">
+                            <Setter Property="BorderBrush" Value="{StaticResource SuccessSoft}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding EstadoVenta}" Value="Pendiente">
+                            <Setter Property="BorderBrush" Value="{StaticResource WarningSoft}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding EstadoVenta}" Value="Confirmada">
+                            <Setter Property="BorderBrush" Value="{StaticResource AccentBlue}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding EstadoVenta}" Value="Cancelada">
+                            <Setter Property="BorderBrush" Value="{StaticResource AccentRed}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
 
-                <Expander.Header>
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="48"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="140"/>
+                    <ColumnDefinition Width="110"/>
+                </Grid.ColumnDefinitions>
 
-                    <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch">
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="60"/>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="160"/>
-                            <ColumnDefinition Width="140"/>
-                        </Grid.ColumnDefinitions>
-
-                        <!-- ICON -->
-                        <Border Grid.Column="0"
-                                Width="50"
-                                Height="50"
-                                CornerRadius="30"
-                                Background="{StaticResource PrimaryPastel}"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center">
-                            <materialDesign:PackIcon
-                                Kind="Cart"
-                                Width="26"
-                                Height="26"
-                                VerticalAlignment="Center"
-                                HorizontalAlignment="Center"/>
-                        </Border>
-
-                        <!-- INFO -->
-                        <StackPanel Grid.Column="1" Margin="10,0" VerticalAlignment="Center" HorizontalAlignment="Stretch">
-                            <TextBlock Text="{Binding Codigo}"
-                                       FontWeight="Bold"
-                                       FontSize="15"
-                                       Foreground="{StaticResource TextDark}"/>
-
-                            <TextBlock Text="{Binding Cliente}"
-                                       Foreground="{StaticResource TextLight}"
-                                       Margin="0,4,0,0"/>
-
-                            <TextBlock Text="{Binding Fecha, StringFormat='Fecha: {0:dd/MM/yyyy}'}"
-                                       Foreground="{StaticResource TextLight}"
-                                       Margin="0,2,0,0"/>
-                        </StackPanel>
-
-                        <!-- TOTALES -->
-                        <StackPanel Grid.Column="2"
-                                    HorizontalAlignment="Right"
-                                    VerticalAlignment="Center"
-                                    Margin="0,0,10,0">
-                            
-                            <TextBlock Text="{Binding Total, StringFormat='Total ${0:N2}'}"
-                                       FontWeight="Bold"
-                                       Foreground="{StaticResource AccentBlue}"
-                                       HorizontalAlignment="Right"/>
-                            <TextBlock Text="{Binding Restante, StringFormat='Restante ${0:N2}'}"
-                                       Foreground="Red"
-                                       HorizontalAlignment="Right"
-                                       Margin="0,4,0,0"/>
-                        </StackPanel>
-
-                        <!-- BOTONES -->
-                        <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="8,0,0,0">
-                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                                    Background="{StaticResource AccentBlue}"
-                                    Command="{Binding DataContext.VerDetalleCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                    CommandParameter="{Binding}">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Eye" Margin="0,0,0,0" />
-                                    <TextBlock  Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-
-                            <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                                    Background="{StaticResource AccentRed}"
-                                    Foreground="White"
-                                    Command="{Binding DataContext.EliminarVentaCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                    CommandParameter="{Binding}">
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="Delete" Margin="0,0,0,0" />
-                                    <TextBlock  Foreground="White"/>
-                                </StackPanel>
-                            </Button>
-                        </StackPanel>
-
-                    </Grid>
-
-                </Expander.Header>
-
-                <!-- RESUMEN -->
-                <Border Background="#F8F8F8" Padding="10" Margin="10,8,10,0">
-                    <StackPanel>
-                        <TextBlock Text="{Binding EstadoVenta}" FontWeight="SemiBold"/>
-                        <TextBlock Text="{Binding EstadoPago}" Foreground="{StaticResource TextLight}" Margin="0,4,0,0"/>
-                        <TextBlock Text="{Binding FechaEstimada, StringFormat='Entrega: {0:d}'}"
-                                   Foreground="{StaticResource TextLight}"
-                                   Margin="0,6,0,0"
-                                   Visibility="{Binding FechaEstimada, Converter={StaticResource BooleanToVisibilityConverter}, ConverterParameter='invert'}"/>
-                    </StackPanel>
+                <!-- ICON -->
+                <Border Grid.Column="0"
+                        Width="40"
+                        Height="40"
+                        CornerRadius="20"
+                        Background="{StaticResource PrimaryPastel}"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                    <materialDesign:PackIcon
+                        Kind="Cart"
+                        Width="20"
+                        Height="20"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"/>
                 </Border>
 
-            </Expander>
+                <!-- INFO -->
+                <StackPanel Grid.Column="1" Margin="8,0" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                    <TextBlock Text="{Binding Codigo}"
+                               FontWeight="Bold"
+                               FontSize="13"
+                               Foreground="{StaticResource TextDark}"/>
+                    <TextBlock Text="{Binding Cliente}"
+                               Foreground="{StaticResource TextLight}"
+                               FontSize="12"
+                               Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <!-- TOTALES -->
+                <StackPanel Grid.Column="2"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Center"
+                            Margin="0,0,10,0">
+                    <TextBlock Text="{Binding Total, StringFormat='${0:N2}'}"
+                               FontWeight="Bold"
+                               Foreground="{StaticResource AccentBlue}"
+                               HorizontalAlignment="Right"/>
+                    <TextBlock Text="{Binding Restante, StringFormat='${0:N2}'}"
+                               Foreground="Red"
+                               HorizontalAlignment="Right"
+                               FontSize="12"
+                               Margin="0,4,0,0"/>
+                </StackPanel>
+
+                <!-- BOTONES -->
+                <StackPanel Grid.Column="3" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="4,0,0,0">
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="{StaticResource AccentBlue}"
+                            Command="{Binding DataContext.VerDetalleCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            CommandParameter="{Binding}"
+                            Width="44"
+                            Height="36">
+                        <materialDesign:PackIcon Kind="Eye" Foreground="White" />
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="{StaticResource AccentRed}"
+                            Foreground="White"
+                            Command="{Binding DataContext.EliminarVentaCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            CommandParameter="{Binding}"
+                            Width="44"
+                            Height="36"
+                            Margin="6,0,0,0">
+                        <materialDesign:PackIcon Kind="Delete" Foreground="White" />
+                    </Button>
+                </StackPanel>
+
+            </Grid>
 
         </Border>
 

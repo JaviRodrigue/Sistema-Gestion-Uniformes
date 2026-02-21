@@ -50,28 +50,32 @@
         </DockPanel>
 
         <!-- LISTADO -->
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Padding="2">
+        <!-- Use ListView with virtualization to handle large numbers of ventas efficiently -->
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding Ventas}"
+                  ItemTemplate="{StaticResource VentaCardTemplate}"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                  ScrollViewer.CanContentScroll="True"
+                  HorizontalAlignment="Stretch"
+                  Margin="4">
 
-            <ItemsControl ItemsSource="{Binding Ventas}"
-                          ItemTemplate="{StaticResource VentaCardTemplate}"
-                          HorizontalAlignment="Stretch"
-                          VerticalAlignment="Top">
-                <!-- Forzar que cada item se estire al ancho disponible -->
-                <ItemsControl.ItemContainerStyle>
-                    <Style TargetType="{x:Type ContentPresenter}">
-                        <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                        <Setter Property="Margin" Value="0,0,0,10"/>
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0,0,0,6"/>
+                </Style>
+            </ListView.ItemContainerStyle>
 
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel VerticalAlignment="Top" HorizontalAlignment="Stretch"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
+            <!-- Use a virtualizing panel for performance -->
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
 
-        </ScrollViewer>
+        </ListView>
 
     </Grid>
 </UserControl>
