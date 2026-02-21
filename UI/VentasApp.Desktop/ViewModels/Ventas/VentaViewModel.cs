@@ -1,20 +1,28 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using VentasApp.Application.CasoDeUso.Venta;
 using VentasApp.Application.DTOs.Venta;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Desktop.ViewModels;
 using VentasApp.Desktop.ViewModels.DTOs;
 using VentasApp.Desktop.Views.Ventas;
+using VentasApp.Infrastructure.Persistencia.Contexto;
 
 namespace VentasApp.Desktop.ViewModels.Ventas;
 
-public partial class VentaViewModel : ObservableObject
+public partial class VentaViewModel : ObservableObject, IBuscable
 {
     private readonly ListarVentasUseCase _listar;
     private readonly ObtenerVentaUseCase _obtener;
     private readonly CrearVentaUseCase _crear;
     private readonly AnularVentaUseCase _anular;
     private readonly VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase _guardarDetalle;
+
+    private List<VentaCardDto> _todasLasVentas = new();
 
     [ObservableProperty]
     private ObservableCollection<VentaCardDto> _ventas = new();
@@ -39,17 +47,81 @@ public partial class VentaViewModel : ObservableObject
     {
         var lista = await _listar.EjecutarAsync();
 
-        Ventas = new ObservableCollection<VentaCardDto>(
-            lista.Select(v => new VentaCardDto
+        _todasLasVentas = lista.Select(v => new VentaCardDto
+        {
+            Id = v.Id,
+            Codigo = v.Codigo,
+            Fecha = v.Fecha,
+            EstadoVenta = v.EstadoVenta,
+            EstadoPago = v.EstadoPago,
+            Total = v.Total,
+            Restante = v.Restante
+        }).ToList();
+
+        Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas);
+    }
+
+    // ================= IBuscable =================
+
+    public async Task BuscarAsync(string texto)
+    {
+        if (string.IsNullOrWhiteSpace(texto)) { await RestablecerAsync(); return; }
+
+        var esNumero = texto.All(char.IsDigit);
+
+        if (esNumero)
+        {
+            if (texto.Length < 5)
             {
-                Id = v.Id,
-                Codigo = v.Codigo,
-                Fecha = v.Fecha,
-                EstadoVenta = v.EstadoVenta,
-                EstadoPago = v.EstadoPago,
-                Total = v.Total,
-                Restante = v.Restante
-             }));
+                var id = int.Parse(texto);
+                Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas.Where(v => v.Id == id));
+            }
+            else
+            {
+                var ids = await ObtenerIdsVentasPorClienteAsync(async repo =>
+                {
+                    var porDni = await repo.ObtenerClientePorDni(texto);
+                    var porTel = await repo.ObtenerClientePorTelefono(texto);
+                    return new[] { porDni, porTel }
+                        .Where(c => c is not null)
+                        .DistinctBy(c => c!.Id)
+                        .Select(c => c!.Id)
+                        .ToList();
+                });
+                Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas.Where(v => ids.Contains(v.Id)));
+            }
+        }
+        else
+        {
+            var ids = await ObtenerIdsVentasPorClienteAsync(async repo =>
+            {
+                var clientes = await repo.BuscarPorNombre(texto);
+                return clientes.Select(c => c.Id).ToList();
+            });
+            Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas.Where(v => ids.Contains(v.Id)));
+        }
+    }
+
+    public Task RestablecerAsync()
+    {
+        Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas);
+        return Task.CompletedTask;
+    }
+
+    private static async Task<List<int>> ObtenerIdsVentasPorClienteAsync(
+        Func<IClienteRepository, Task<List<int>>> obtenerClienteIds)
+    {
+        using var scope = App.AppHost!.Services.CreateScope();
+        var repo = scope.ServiceProvider.GetRequiredService<IClienteRepository>();
+        var clienteIds = await obtenerClienteIds(repo);
+        if (!clienteIds.Any()) return [];
+
+        var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        return db.Compras
+            .Where(c => clienteIds.Contains(c.IdCliente))
+            .Select(c => c.IdVenta)
+            .Distinct()
+            .ToList();
     }
 
     [RelayCommand]

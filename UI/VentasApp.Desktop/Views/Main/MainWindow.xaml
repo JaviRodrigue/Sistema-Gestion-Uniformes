@@ -62,7 +62,47 @@
 
         <!-- Área de contenido -->
         <Border Grid.Column="1" Background="{StaticResource BackgroundMain}" Padding="10">
-            <ContentControl x:Name="ContentHost"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Barra de búsqueda -->
+                <Border Grid.Row="0" Background="{StaticResource SurfaceLight}"
+                        CornerRadius="8" Padding="10,6" Margin="0,0,0,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0" Kind="Magnify"
+                                                 Width="18" Height="18"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="{StaticResource TextMuted}"
+                                                 Margin="0,0,8,0"/>
+                        <TextBox x:Name="TxtBuscar"
+                                 Grid.Column="1"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 VerticalAlignment="Center"
+                                 FontSize="14"
+                                 materialDesign:HintAssist.Hint="Buscar..."
+                                 TextChanged="OnBuscarTextChanged"/>
+                        <Button Grid.Column="2"
+                                Style="{StaticResource MaterialDesignFlatButton}"
+                                Padding="4" Height="28"
+                                ToolTip="Limpiar búsqueda"
+                                Click="OnLimpiarBusquedaClick">
+                            <materialDesign:PackIcon Kind="Close" Width="14" Height="14"
+                                                     Foreground="{StaticResource TextMuted}"/>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <ContentControl x:Name="ContentHost" Grid.Row="1"/>
+            </Grid>
         </Border>
     </Grid>
 </Window>

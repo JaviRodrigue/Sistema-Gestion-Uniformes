@@ -2,6 +2,7 @@
 using System;
 using System.Windows;
 using System.Windows.Controls;
+using VentasApp.Desktop.ViewModels;
 using VentasApp.Desktop.Views.Cliente;
 using VentasApp.Desktop.Views.Productos;
 using VentasApp.Desktop.Views.Ventas;
@@ -15,34 +16,43 @@ public partial class MainWindow : Window
     public MainWindow(IServiceProvider provider)
     {
         InitializeComponent();
-
         _provider = provider;
-
-        // Vista inicial (evita pantalla vacía)
-        ContentHost.Content = _provider.GetRequiredService<VentaView>(); // Initialize with VentaView
+        NavigateTo(_provider.GetRequiredService<VentaView>());
     }
 
-    private void OnBtnVentasClick(object sender, RoutedEventArgs e)
-    {
-        ContentHost.Content = _provider.GetRequiredService<VentaView>(); // Load VentaView
-    }
+    private void OnBtnVentasClick(object sender, RoutedEventArgs e) =>
+        NavigateTo(_provider.GetRequiredService<VentaView>());
 
-    private void OnBtnClientesClick(object sender, RoutedEventArgs e)
-    {
-        ContentHost.Content = _provider.GetRequiredService<ClienteView>(); // Load ClienteView
-    }
+    private void OnBtnClientesClick(object sender, RoutedEventArgs e) =>
+        NavigateTo(_provider.GetRequiredService<ClienteView>());
 
-    private void OnBtnProductosClick(object sender, RoutedEventArgs e)
-    {
-        ContentHost.Content = _provider.GetRequiredService<ProductoView>(); // Load ProductoView
-    }
+    private void OnBtnProductosClick(object sender, RoutedEventArgs e) =>
+        NavigateTo(_provider.GetRequiredService<ProductoView>());
 
     private void OnBtnConfigClick(object sender, RoutedEventArgs e)
     {
-        ContentHost.Content = new TextBlock
-        {
-            Text = "Configuración (próximamente)",
-            FontSize = 24
-        };
+        TxtBuscar.Text = string.Empty;
+        ContentHost.Content = new TextBlock { Text = "Configuración (próximamente)", FontSize = 24 };
     }
+
+    private void NavigateTo(UIElement view)
+    {
+        TxtBuscar.Text = string.Empty;
+        ContentHost.Content = view;
+    }
+
+    private async void OnBuscarTextChanged(object sender, TextChangedEventArgs e)
+    {
+        var texto = TxtBuscar.Text?.Trim() ?? string.Empty;
+        if ((ContentHost.Content as FrameworkElement)?.DataContext is IBuscable buscable)
+        {
+            if (string.IsNullOrWhiteSpace(texto))
+                await buscable.RestablecerAsync();
+            else
+                await buscable.BuscarAsync(texto);
+        }
+    }
+
+    private void OnLimpiarBusquedaClick(object sender, RoutedEventArgs e) =>
+        TxtBuscar.Text = string.Empty;
 }

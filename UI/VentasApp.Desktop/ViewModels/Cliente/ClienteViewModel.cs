@@ -9,10 +9,11 @@ using VentasApp.Desktop.ViewModels.DTOs;
 using VentasApp.Domain.Modelo.Cliente;
 using VentasApp.Application.CasoDeUso.Venta;
 using VentasApp.Application.CasoDeUso.DetalleVenta;
+using VentasApp.Desktop.ViewModels;
 
 namespace VentasApp.Desktop.ViewModels.Cliente;
 
-public partial class ClienteViewModel : ObservableObject
+public partial class ClienteViewModel : ObservableObject, IBuscable
 {
     private readonly VentasApp.Application.Interfaces.Repositorios.IClienteRepository _clienteRepository;
     private readonly VentasApp.Application.CasoDeUso.Cliente.ActualizarClienteCasoDeUso _actualizarClienteCasoDeUso;
@@ -175,14 +176,55 @@ public partial class ClienteViewModel : ObservableObject
         }
     }
 
-    private async void CargarClientes()
+    // ================= IBuscable =================
+
+    public async Task BuscarAsync(string texto)
     {
-        await RecargarAsync();
+        if (string.IsNullOrWhiteSpace(texto)) { await RecargarAsync(); return; }
+
+        var esNumero = texto.All(char.IsDigit);
+        List<VentasApp.Domain.Modelo.Cliente.Cliente> resultados;
+
+        if (esNumero)
+        {
+            if (texto.Length < 5)
+            {
+                var c = await _clienteRepository.ObtenerClientePorId(int.Parse(texto));
+                resultados = c is null ? [] : [c];
+            }
+            else
+            {
+                var porDni = await _clienteRepository.ObtenerClientePorDni(texto);
+                var porTelefono = await _clienteRepository.ObtenerClientePorTelefono(texto);
+                resultados = new[] { porDni, porTelefono }
+                    .Where(c => c is not null)
+                    .DistinctBy(c => c!.Id)
+                    .Select(c => c!)
+                    .ToList();
+            }
+        }
+        else
+        {
+            resultados = await _clienteRepository.BuscarPorNombre(texto);
+        }
+
+        await MapearClientes(resultados);
     }
+
+    public async Task RestablecerAsync() => await RecargarAsync();
+
+    // ================= CARGA =================
+
+    private async void CargarClientes() => await RecargarAsync();
 
     public async Task RecargarAsync()
     {
         var list = await _clienteRepository.ListarClientes();
+        await MapearClientes(list);
+    }
+
+    private async Task MapearClientes(List<VentasApp.Domain.Modelo.Cliente.Cliente> list)
+    {
         var mapped = new List<ClienteCardDto>();
 
         using var scope = App.AppHost!.Services.CreateScope();
