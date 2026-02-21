@@ -70,6 +70,26 @@
                         <materialDesign:PackIcon Kind="BarcodeScan" Width="14" Height="14" Foreground="Gray"/>
                         <TextBlock Text="{Binding CodigoBarraReferencia}" Margin="5,0,0,0" Foreground="Gray" FontSize="12"/>
                     </StackPanel>
+
+                    <!-- Talle: visible solo cuando tiene valor -->
+                    <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Visibility" Value="Visible"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Talle}" Value="{x:Null}">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Talle}" Value="">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <materialDesign:PackIcon Kind="Hanger" Width="14" Height="14" Foreground="Gray"/>
+                        <TextBlock Text="{Binding Talle, StringFormat='Talle: {0}'}"
+                                   Margin="5,0,0,0" Foreground="Gray" FontSize="12"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right">

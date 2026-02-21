@@ -16,6 +16,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
         private readonly VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase _crearProductoUseCase;
         private readonly VentasApp.Application.CasoDeUso.Productos.ActualizarProductoUseCase _actualizarProductoUseCase;
         private readonly VentasApp.Application.CasoDeUso.ItemVendibles.CrearItemVendibleUseCase _crearItemVendibleUseCase;
+        private readonly VentasApp.Application.CasoDeUso.ItemVendibles.ActualizarItemVendibleUseCase _actualizarItemVendibleUseCase;
         private readonly VentasApp.Application.CasoDeUso.Stocks.CrearStockUseCase _crearStockUseCase;
         private readonly VentasApp.Application.CasoDeUso.Stocks.AumentarStockUseCase _aumentarStockUseCase;
         private readonly VentasApp.Application.CasoDeUso.Stocks.DescontarStockUseCase _descontarStockUseCase;
@@ -35,6 +36,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
             VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase crearProductoUseCase,
             VentasApp.Application.CasoDeUso.Productos.ActualizarProductoUseCase actualizarProductoUseCase,
             VentasApp.Application.CasoDeUso.ItemVendibles.CrearItemVendibleUseCase crearItemVendibleUseCase,
+            VentasApp.Application.CasoDeUso.ItemVendibles.ActualizarItemVendibleUseCase actualizarItemVendibleUseCase,
             VentasApp.Application.CasoDeUso.Stocks.CrearStockUseCase crearStockUseCase,
             VentasApp.Application.CasoDeUso.Stocks.AumentarStockUseCase aumentarStockUseCase,
             VentasApp.Application.CasoDeUso.Stocks.DescontarStockUseCase descontarStockUseCase,
@@ -46,6 +48,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
             _crearProductoUseCase = crearProductoUseCase;
             _actualizarProductoUseCase = actualizarProductoUseCase;
             _crearItemVendibleUseCase = crearItemVendibleUseCase;
+            _actualizarItemVendibleUseCase = actualizarItemVendibleUseCase;
             _crearStockUseCase = crearStockUseCase;
             _aumentarStockUseCase = aumentarStockUseCase;
             _descontarStockUseCase = descontarStockUseCase;
@@ -139,7 +142,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
                     IdProducto = nuevoId,
                     nombre = nombre,
                     CodigoBarra = codigoBarra,
-                    Talle = null
+                    Talle = win.TalleSeleccionado
                 };
                 var nuevoItemId = await _crearItemVendibleUseCase.EjecutarAsync(itemDto);
 
@@ -176,6 +179,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
             (win.FindName("TxtPrecioVenta") as System.Windows.Controls.TextBox)!.Text = producto.Precio.ToString();
             (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)!.Text = producto.StockTotal.ToString();
             (win.FindName("TxtStockMinimo") as System.Windows.Controls.TextBox)!.Text = "";
+            win.SetTalle(producto.Talle);
 
             var ok = win.ShowDialog();
             if (ok == true)
@@ -195,6 +199,20 @@ namespace VentasApp.Desktop.ViewModels.Productos
                 };
 
                 await _actualizarProductoUseCase.EjecutarAsync(producto.Id, dto);
+
+                // Update talle on the item vendible
+                var productoParaTalle = await _productoRepository.ObtenerProducto(producto.Id);
+                var itemParaTalle = productoParaTalle?.ItemsVendibles?.FirstOrDefault();
+                if (itemParaTalle is not null)
+                {
+                    await _actualizarItemVendibleUseCase.EjecutarAsync(itemParaTalle.Id,
+                        new VentasApp.Application.DTOs.ItemVendible.ActualizarItemVendibleDto
+                        {
+                            Nombre = itemParaTalle.Nombre,
+                            CodigoBarra = itemParaTalle.CodigoBarra,
+                            Talle = win.TalleSeleccionado
+                        });
+                }
 
                 // Ajustar stock si el usuario ingresó un valor de cantidad
                 var cantidadText = (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
@@ -305,7 +323,8 @@ namespace VentasApp.Desktop.ViewModels.Productos
                     Precio = p.PrecioVenta,
                     StockTotal = stockTotal,
                     StockMinimo = stockMinimo,
-                    CodigoBarraReferencia = item?.CodigoBarra ?? string.Empty
+                    CodigoBarraReferencia = item?.CodigoBarra ?? string.Empty,
+                    Talle = item?.Talle
                 });
             }
 
