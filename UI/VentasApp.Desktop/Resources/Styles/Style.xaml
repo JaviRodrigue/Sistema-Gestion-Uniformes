@@ -6,7 +6,7 @@
 		<Setter Property="Margin" Value="0,5"/>
 		<Setter Property="Padding" Value="10"/>
 		<Setter Property="Background" Value="Transparent"/>
-		<Setter Property="Foreground" Value="White"/>
+		<Setter Property="Foreground" Value="{DynamicResource TextOnDark}"/>
 		<Setter Property="FontSize" Value="14"/>
 		<Setter Property="HorizontalContentAlignment" Value="Left"/>
 		<Setter Property="BorderThickness" Value="0"/>
@@ -19,7 +19,7 @@
 					</Border>
 					<ControlTemplate.Triggers>
 						<Trigger Property="IsMouseOver" Value="True">
-							<Setter Property="Background" Value="#2E2E48"/>
+							<Setter Property="Background" Value="{DynamicResource SurfaceSoftPurple}"/>
 						</Trigger>
 					</ControlTemplate.Triggers>
 				</ControlTemplate>

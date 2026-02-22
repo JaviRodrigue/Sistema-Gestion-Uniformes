@@ -15,7 +15,7 @@
     </UserControl.Resources>
 
     <!-- No Height fijo: permitir que la vista se expanda -->
-    <Grid Background="{StaticResource SecondaryPastel}" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+    <Grid Background="{DynamicResource SecondaryPastel}" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -28,15 +28,15 @@
             <TextBlock Text="Listado de Ventas"
                        FontSize="24"
                        FontWeight="Bold"
-                       Foreground="{StaticResource TextDark}"
+                       Foreground="{DynamicResource TextDark}"
                        DockPanel.Dock="Left"
                        VerticalAlignment="Center"/>
 
             <Button DockPanel.Dock="Right"
                     Command="{Binding AgregarVentaCommand}"
                     Style="{StaticResource MaterialDesignRaisedButton}"
-                    Background="{StaticResource AccentBlue}"
-                    BorderBrush="{StaticResource AccentBlue}"
+                    Background="{DynamicResource AccentBlue}"
+                    BorderBrush="{DynamicResource AccentBlue}"
                     VerticalAlignment="Center"
                     HorizontalAlignment="Right">
 
@@ -58,13 +58,24 @@
                   VirtualizingStackPanel.VirtualizationMode="Recycling"
                   ScrollViewer.CanContentScroll="True"
                   HorizontalAlignment="Stretch"
-                  Margin="4">
+                  Background="Transparent"
+                  BorderThickness="0"
+                  Margin="5">
 
             <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
                     <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     <Setter Property="Padding" Value="0"/>
-                    <Setter Property="Margin" Value="0,0,0,6"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <ContentPresenter />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
                 </Style>
             </ListView.ItemContainerStyle>
 

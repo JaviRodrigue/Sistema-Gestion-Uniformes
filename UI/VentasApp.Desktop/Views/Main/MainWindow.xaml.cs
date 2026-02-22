@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using VentasApp.Desktop.ViewModels;
 using VentasApp.Desktop.Views.Cliente;
+using VentasApp.Desktop.Views.Config;
 using VentasApp.Desktop.Views.Productos;
 using VentasApp.Desktop.Views.Ventas;
 
@@ -29,11 +30,8 @@ public partial class MainWindow : Window
     private void OnBtnProductosClick(object sender, RoutedEventArgs e) =>
         NavigateTo(_provider.GetRequiredService<ProductoView>());
 
-    private void OnBtnConfigClick(object sender, RoutedEventArgs e)
-    {
-        TxtBuscar.Text = string.Empty;
-        ContentHost.Content = new TextBlock { Text = "Configuración (próximamente)", FontSize = 24 };
-    }
+    private void OnBtnConfigClick(object sender, RoutedEventArgs e) =>
+        NavigateTo(_provider.GetRequiredService<ConfigView>());
 
     private void NavigateTo(UIElement view)
     {

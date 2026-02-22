@@ -10,7 +10,7 @@
 
     <!-- DataContext set via constructor injection in code-behind -->
 
-    <Grid Background="{StaticResource SecondaryPastel}" Margin="10">
+    <Grid Background="{DynamicResource SecondaryPastel}" Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -18,14 +18,14 @@
         <DockPanel Grid.Row="0" LastChildFill="False" Margin="10">
             <TextBlock Text="Listado de Productos" 
                        FontSize="24" FontWeight="Bold" 
-                       Foreground="{StaticResource TextDark}"
+                       Foreground="{DynamicResource TextDark}"
                        DockPanel.Dock="Left" 
                        VerticalAlignment="Center"/>
 
             <Button Style="{StaticResource MaterialDesignRaisedButton}"
                     Command="{Binding AgregarProductoCommand}"
-                    Background="{StaticResource AccentBlue}"
-                    BorderBrush="{StaticResource AccentBlue}"
+                    Background="{DynamicResource AccentBlue}"
+                    BorderBrush="{DynamicResource AccentBlue}"
                     DockPanel.Dock="Right"
                     ToolTip="Agregar un nuevo producto">
                 <StackPanel Orientation="Horizontal">

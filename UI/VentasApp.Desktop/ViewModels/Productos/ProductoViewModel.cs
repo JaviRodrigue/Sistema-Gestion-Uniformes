@@ -21,6 +21,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
         private readonly VentasApp.Application.CasoDeUso.Stocks.AumentarStockUseCase _aumentarStockUseCase;
         private readonly VentasApp.Application.CasoDeUso.Stocks.DescontarStockUseCase _descontarStockUseCase;
         private readonly VentasApp.Application.CasoDeUso.Stocks.ActualizarStockMinimoUseCase _actualizarStockMinimoUseCase;
+        private readonly VentasApp.Desktop.Services.AppSettingsService _appSettingsService;
 
         private List<ProductoCardDto> _todosLosProductos = new();
 
@@ -40,7 +41,8 @@ namespace VentasApp.Desktop.ViewModels.Productos
             VentasApp.Application.CasoDeUso.Stocks.CrearStockUseCase crearStockUseCase,
             VentasApp.Application.CasoDeUso.Stocks.AumentarStockUseCase aumentarStockUseCase,
             VentasApp.Application.CasoDeUso.Stocks.DescontarStockUseCase descontarStockUseCase,
-            VentasApp.Application.CasoDeUso.Stocks.ActualizarStockMinimoUseCase actualizarStockMinimoUseCase)
+            VentasApp.Application.CasoDeUso.Stocks.ActualizarStockMinimoUseCase actualizarStockMinimoUseCase,
+            VentasApp.Desktop.Services.AppSettingsService appSettingsService)
         {
             _productoRepository = productoRepository;
             _stockRepository = stockRepository;
@@ -53,6 +55,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
             _aumentarStockUseCase = aumentarStockUseCase;
             _descontarStockUseCase = descontarStockUseCase;
             _actualizarStockMinimoUseCase = actualizarStockMinimoUseCase;
+            _appSettingsService = appSettingsService;
             Productos = new ObservableCollection<ProductoCardDto>();
             CargarProductos();
         }
@@ -148,7 +151,11 @@ namespace VentasApp.Desktop.ViewModels.Productos
                 var cantidadInicialText = (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
                 var stockMinimoText = (win.FindName("TxtStockMinimo") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
                 int.TryParse(cantidadInicialText, out var cantidadInicial);
-                int.TryParse(stockMinimoText, out var stockMinimo);
+                
+                if (!int.TryParse(stockMinimoText, out var stockMinimo))
+                {
+                    stockMinimo = idCategoria == 1 ? _appSettingsService.StockMinimoUniforme : _appSettingsService.StockMinimoLibreria;
+                }
 
                 try
                 {
@@ -188,7 +195,6 @@ namespace VentasApp.Desktop.ViewModels.Productos
             (win.FindName("TxtCosto") as System.Windows.Controls.TextBox)!.Text = producto.Precio.ToString();
             (win.FindName("TxtPrecioVenta") as System.Windows.Controls.TextBox)!.Text = producto.Precio.ToString();
             (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)!.Text = producto.StockTotal.ToString();
-            (win.FindName("TxtStockMinimo") as System.Windows.Controls.TextBox)!.Text = "";
             win.SetTalle(producto.Talle);
 
             var ok = win.ShowDialog();
@@ -208,23 +214,25 @@ namespace VentasApp.Desktop.ViewModels.Productos
                     PrecioVenta = precioVenta
                 };
 
-                await _actualizarProductoUseCase.EjecutarAsync(producto.Id, dto);
-
-                // Update talle on the item vendible
-                var productoParaTalle = await _productoRepository.ObtenerProducto(producto.Id);
-                var itemParaTalle = productoParaTalle?.ItemsVendibles?.FirstOrDefault();
-                if (itemParaTalle is not null)
+                try
                 {
-                    await _actualizarItemVendibleUseCase.EjecutarAsync(itemParaTalle.Id,
-                        new VentasApp.Application.DTOs.ItemVendible.ActualizarItemVendibleDto
-                        {
-                            Nombre = itemParaTalle.Nombre,
-                            CodigoBarra = itemParaTalle.CodigoBarra,
-                            Talle = win.TalleSeleccionado
-                        });
-                }
+                    // Update talle on the item vendible first to check for duplicates
+                    var productoParaTalle = await _productoRepository.ObtenerProducto(producto.Id);
+                    var itemParaTalle = productoParaTalle?.ItemsVendibles?.FirstOrDefault();
+                    if (itemParaTalle is not null)
+                    {
+                        await _actualizarItemVendibleUseCase.EjecutarAsync(itemParaTalle.Id,
+                            new VentasApp.Application.DTOs.ItemVendible.ActualizarItemVendibleDto
+                            {
+                                Nombre = nombre,
+                                CodigoBarra = itemParaTalle.CodigoBarra,
+                                Talle = win.TalleSeleccionado
+                            });
+                    }
 
-                // Ajustar stock si el usuario ingresó un valor de cantidad
+                    await _actualizarProductoUseCase.EjecutarAsync(producto.Id, dto);
+
+                    // Ajustar stock si el usuario ingresó un valor de cantidad
                 var cantidadText = (win.FindName("TxtCantidadInicial") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
                 var stockMinimoText = (win.FindName("TxtStockMinimo") as System.Windows.Controls.TextBox)?.Text ?? string.Empty;
                 int.TryParse(cantidadText, out var nuevaCantidad);
@@ -288,6 +296,13 @@ namespace VentasApp.Desktop.ViewModels.Productos
                                 await _actualizarStockMinimoUseCase.EjecutarAsync(item.Id, nuevoMinimo);
                         }
                     }
+                }
+                }
+                catch (System.Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message, "Error al editar producto",
+                        System.Windows.MessageBoxButton.OK,
+                        System.Windows.MessageBoxImage.Warning);
                 }
 
                 CargarProductos();

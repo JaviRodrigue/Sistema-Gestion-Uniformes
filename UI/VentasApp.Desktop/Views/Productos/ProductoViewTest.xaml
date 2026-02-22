@@ -11,21 +11,21 @@
         <vm:ProductoViewModel/>
     </UserControl.DataContext>
 
-    <Grid Background="#E1F5FE">
+    <Grid Background="{DynamicResource SecondaryPastel}">
         <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="20">
             <ItemsControl ItemsSource="{Binding Productos}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="White" CornerRadius="10" Margin="0,0,0,15" Padding="15">
+                        <Border Background="{DynamicResource SurfaceCard}" CornerRadius="10" Margin="0,0,0,15" Padding="15">
                             <Border.Effect>
-                                <DropShadowEffect Color="#DDDDDD" BlurRadius="10" Opacity="0.4"/>
+                                <DropShadowEffect Color="#000000" BlurRadius="10" Opacity="0.18"/>
                             </Border.Effect>
                             <StackPanel>
-                                <TextBlock Text="{Binding Nombre}" FontSize="18" FontWeight="Bold" Foreground="#424242"/>
-                                <TextBlock Text="{Binding Categoria}" FontSize="14" Foreground="Gray" Margin="0,5,0,0"/>
-                                <TextBlock Text="{Binding Precio, StringFormat='Precio: ${0:N2}'}" FontSize="16" Foreground="#64B5F6" Margin="0,5,0,0"/>
-                                <TextBlock Text="{Binding StockTotal, StringFormat='Stock: {0}'}" FontSize="14" Foreground="#757575"/>
-                                <TextBlock Text="{Binding CodigoBarraReferencia}" FontSize="12" Foreground="Gray"/>
+                                <TextBlock Text="{Binding Nombre}" FontSize="18" FontWeight="Bold" Foreground="{DynamicResource TextDark}"/>
+                                <TextBlock Text="{Binding Categoria}" FontSize="14" Foreground="{DynamicResource TextMuted}" Margin="0,5,0,0"/>
+                                <TextBlock Text="{Binding Precio, StringFormat='Precio: ${0:N2}'}" FontSize="16" Foreground="{DynamicResource AccentBlue}" Margin="0,5,0,0"/>
+                                <TextBlock Text="{Binding StockTotal, StringFormat='Stock: {0}'}" FontSize="14" Foreground="{DynamicResource TextMuted}"/>
+                                <TextBlock Text="{Binding CodigoBarraReferencia}" FontSize="12" Foreground="{DynamicResource TextMuted}"/>
                             </StackPanel>
                         </Border>
                     </DataTemplate>

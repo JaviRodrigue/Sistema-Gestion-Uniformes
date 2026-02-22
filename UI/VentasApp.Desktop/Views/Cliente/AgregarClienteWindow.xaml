@@ -4,11 +4,11 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Nuevo Cliente" Height="560" Width="640"
         WindowStartupLocation="CenterOwner"
-        Background="{StaticResource SecondaryPastel}">
+        Background="{DynamicResource SecondaryPastel}">
     <Grid>
-        <Border CornerRadius="12" Background="White" Padding="16" Margin="16">
+        <Border CornerRadius="12" Background="{DynamicResource SurfaceCard}" Padding="16" Margin="16">
             <Border.Effect>
-                <DropShadowEffect Color="#DDDDDD" BlurRadius="12" Opacity="0.45"/>
+                <DropShadowEffect Color="#000000" BlurRadius="12" Opacity="0.2"/>
             </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
@@ -19,10 +19,10 @@
 
                 <!-- Header -->
                 <DockPanel Grid.Row="0" LastChildFill="False" Margin="0,0,0,12">
-                    <Border Width="40" Height="40" CornerRadius="20" Background="{StaticResource SecondaryPastel}" DockPanel.Dock="Left">
-                        <materialDesign:PackIcon Kind="AccountPlus" Width="22" Height="22" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{StaticResource TextDark}"/>
+                    <Border Width="40" Height="40" CornerRadius="20" Background="{DynamicResource SecondaryPastel}" DockPanel.Dock="Left">
+                        <materialDesign:PackIcon Kind="AccountPlus" Width="22" Height="22" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource TextDark}"/>
                     </Border>
-                    <TextBlock Text="Alta de Cliente" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{StaticResource TextDark}"/>
+                    <TextBlock Text="Alta de Cliente" FontSize="20" FontWeight="SemiBold" VerticalAlignment="Center" Margin="10,0,0,0" Foreground="{DynamicResource TextDark}"/>
                 </DockPanel>
 
                 <!-- Content -->
@@ -30,27 +30,27 @@
                     <StackPanel>
                         <TextBox x:Name="TxtNombre"
                                  materialDesign:HintAssist.Hint="Nombre (obligatorio)"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Style="{StaticResource CustomOutlinedTextBox}"
                                  Margin="0,0,0,12"/>
 
                         <TextBox x:Name="TxtDni"
                                  materialDesign:HintAssist.Hint="DNI / CUIT (obligatorio)"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Style="{StaticResource CustomOutlinedTextBox}"
                                  Margin="0,0,0,12"/>
 
                         <TextBox x:Name="TxtTelefonos"
                                  materialDesign:HintAssist.Hint="Telefonos (opcional)"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Style="{StaticResource CustomOutlinedTextBox}"
                                  Margin="0,0,0,12"/>
 
                         <TextBox x:Name="TxtEmail"
                                  materialDesign:HintAssist.Hint="Email (opcional)"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Style="{StaticResource CustomOutlinedTextBox}"
                                  Margin="0,0,0,12"/>
 
                         <TextBox x:Name="TxtDireccion"
                                  materialDesign:HintAssist.Hint="Dirección (opcional)"
-                                 Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                                 Style="{StaticResource CustomOutlinedTextBox}"
                                  Margin="0,0,0,0"/>
                     </StackPanel>
                 </ScrollViewer>
@@ -58,22 +58,22 @@
                 <!-- Actions -->
                 <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
                     <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                            Background="{StaticResource AccentRed}"
-                            BorderBrush="{StaticResource AccentRed}"
+                            Background="{DynamicResource AccentRed}"
+                            BorderBrush="{DynamicResource AccentRed}"
                             Margin="0,0,8,0"
                             IsCancel="True">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Close" Width="16" Height="16" Foreground="White"/>
-                            <TextBlock Text="Cancelar" Margin="6,0,0,0" Foreground="White"/>
+                            <materialDesign:PackIcon Kind="Close" Width="16" Height="16" Foreground="{DynamicResource TextOnDark}"/>
+                            <TextBlock Text="Cancelar" Margin="6,0,0,0" Foreground="{DynamicResource TextOnDark}"/>
                         </StackPanel>
                     </Button>
                     <Button Style="{StaticResource MaterialDesignRaisedButton}"
-                            Background="{StaticResource AccentBlue}"
-                            BorderBrush="{StaticResource AccentBlue}"
+                            Background="{DynamicResource AccentBlue}"
+                            BorderBrush="{DynamicResource AccentBlue}"
                             IsDefault="True" Click="OnGuardarClick">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="ContentSave" Width="16" Height="16" Foreground="White"/>
-                            <TextBlock Text="Guardar" Margin="6,0,0,0" Foreground="White"/>
+                            <materialDesign:PackIcon Kind="ContentSave" Width="16" Height="16" Foreground="{DynamicResource TextOnDark}"/>
+                            <TextBlock Text="Guardar" Margin="6,0,0,0" Foreground="{DynamicResource TextOnDark}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>

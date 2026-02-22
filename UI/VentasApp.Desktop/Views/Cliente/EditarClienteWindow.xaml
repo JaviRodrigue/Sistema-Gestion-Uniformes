@@ -4,9 +4,9 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         Title="Editar Cliente" Height="385" Width="520" WindowStartupLocation="CenterOwner">
     <Grid Background="{DynamicResource SecondaryPastel}">
-        <Border CornerRadius="12" Background="White" Padding="16" Margin="16">
+        <Border CornerRadius="12" Background="{DynamicResource SurfaceCard}" Padding="16" Margin="16">
             <Border.Effect>
-                <DropShadowEffect Color="#DDDDDD" BlurRadius="12" Opacity="0.45"/>
+                <DropShadowEffect Color="#000000" BlurRadius="12" Opacity="0.2"/>
             </Border.Effect>
             <Grid>
                 <Grid.RowDefinitions>
@@ -34,19 +34,19 @@
 
                     <TextBox x:Name="TxtNombre"
                              materialDesign:HintAssist.Hint="Nombre"
-                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             Style="{StaticResource CustomOutlinedTextBox}"
                              Margin="0,0,0,12"
                              MinWidth="320"/>
 
                     <TextBox x:Name="TxtDni" Grid.Row="1"
                              materialDesign:HintAssist.Hint="DNI"
-                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             Style="{StaticResource CustomOutlinedTextBox}"
                              Margin="0,0,0,12"
                              MinWidth="320"/>
 
                     <TextBox x:Name="TxtTelefonos" Grid.Row="2"
                              materialDesign:HintAssist.Hint="Tel&#233;fonos (separados por coma)"
-                             Style="{StaticResource MaterialDesignOutlinedTextBox}"
+                             Style="{StaticResource CustomOutlinedTextBox}"
                              Margin="0,0,0,0"
                              MinWidth="320"/>
                     </Grid>
@@ -60,8 +60,8 @@
                             Margin="0,0,10,0"
                             Click="OnCancelarClick">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Close" Width="16" Height="16" Foreground="White"/>
-                            <TextBlock Text="Cancelar" Margin="6,0,0,0" Foreground="White"/>
+                            <materialDesign:PackIcon Kind="Close" Width="16" Height="16" Foreground="{DynamicResource TextOnDark}"/>
+                            <TextBlock Text="Cancelar" Margin="6,0,0,0" Foreground="{DynamicResource TextOnDark}"/>
                         </StackPanel>
                     </Button>
                     <Button Style="{StaticResource MaterialDesignRaisedButton}"
@@ -69,8 +69,8 @@
                             BorderBrush="{DynamicResource AccentBlue}"
                             Click="OnGuardarClick">
                         <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="ContentSave" Width="16" Height="16" Foreground="White"/>
-                            <TextBlock Text="Guardar" Margin="6,0,0,0" Foreground="White"/>
+                            <materialDesign:PackIcon Kind="ContentSave" Width="16" Height="16" Foreground="{DynamicResource TextOnDark}"/>
+                            <TextBlock Text="Guardar" Margin="6,0,0,0" Foreground="{DynamicResource TextOnDark}"/>
                         </StackPanel>
                     </Button>
                 </StackPanel>

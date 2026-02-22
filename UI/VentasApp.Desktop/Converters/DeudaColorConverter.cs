@@ -10,9 +10,9 @@ public class DeudaColorConverter : IValueConverter
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
         var tieneDeuda = value is bool b && b;
-        // AccentRed (#E57373) si tiene deuda, SecondaryPastel (#E1F5FE) si no
-        var colorHex = tieneDeuda ? "#E57373" : "#E1F5FE";
-        return new SolidColorBrush((Color)ColorConverter.ConvertFromString(colorHex));
+        var key = tieneDeuda ? "AccentRed" : "SecondaryPastel";
+        return System.Windows.Application.Current.Resources[key]
+               ?? new SolidColorBrush(tieneDeuda ? Colors.LightCoral : Colors.White);
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

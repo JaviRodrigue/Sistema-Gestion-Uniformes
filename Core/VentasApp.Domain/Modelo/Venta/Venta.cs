@@ -71,12 +71,9 @@ public class Venta : Entidad
 
     public void AgregarDetalle(int itemVendible, int cantidad, decimal precioUnitario)
     {
-        // Si la venta estaba Completada (todos los items entregados) y se agrega un nuevo item,
-        // el nuevo item no estará entregado, por lo que la venta debe volver a un estado activo
-        if (Estado == EstadoVenta.Completada)
+        if (Estado != EstadoVenta.Pendiente)
         {
-            // Volver a Confirmada si ya fue confirmada alguna vez, sino a Pendiente
-            Estado = _detalles.Any() ? EstadoVenta.Confirmada : EstadoVenta.Pendiente;
+            throw new ExcepcionDominio("Solo se puede agregar items a una venta pendiente");
         }
         
         var detalle = new DetalleVenta(itemVendible,cantidad,precioUnitario);

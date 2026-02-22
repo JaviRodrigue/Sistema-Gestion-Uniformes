@@ -1,3 +1,15 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <Style x:Key="CustomOutlinedTextBox" TargetType="TextBox" BasedOn="{StaticResource MaterialDesignOutlinedTextBox}">
+        <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="{DynamicResource InputHint}"/>
+    </Style>
+
+    <Style x:Key="CustomFilledComboBox" TargetType="ComboBox" BasedOn="{StaticResource MaterialDesignFilledComboBox}">
+        <Setter Property="Background" Value="{DynamicResource InputBackground}"/>
+        <Setter Property="materialDesign:HintAssist.Foreground" Value="{DynamicResource InputHint}"/>
+    </Style>
+
 </ResourceDictionary>

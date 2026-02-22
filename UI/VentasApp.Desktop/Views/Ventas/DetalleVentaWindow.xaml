@@ -7,7 +7,8 @@ Title="Detalle Venta"
 Height="720"
 Width="1000"
 WindowState="Maximized"
-WindowStartupLocation="CenterOwner">
+WindowStartupLocation="CenterOwner"
+Background="{DynamicResource SecondaryPastel}">
 
     <Grid Margin="20">
 
@@ -31,16 +32,17 @@ WindowStartupLocation="CenterOwner">
             <StackPanel Grid.Column="0">
                 <TextBlock Text="Detalle de Venta"
                            FontSize="22"
-                           FontWeight="Bold"/>
+                           FontWeight="Bold"
+                           Foreground="{DynamicResource TextDark}"/>
                 <!-- Cliente chip -->
                 <Border CornerRadius="8" Padding="10,8" Margin="0,10,0,0">
                     <Border.Style>
                         <Style TargetType="Border">
-                            <Setter Property="Background" Value="{StaticResource SurfaceSoftBlue}"/>
+                            <Setter Property="Background" Value="{DynamicResource SurfaceSoftBlue}"/>
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding Cliente}" Value="">
                                     <Setter Property="Background" Value="Transparent"/>
-                                    <Setter Property="BorderBrush" Value="LightGray"/>
+                                    <Setter Property="BorderBrush" Value="{DynamicResource TextMuted}"/>
                                     <Setter Property="BorderThickness" Value="1"/>
                                 </DataTrigger>
                             </Style.Triggers>
@@ -50,10 +52,10 @@ WindowStartupLocation="CenterOwner">
                         <materialDesign:PackIcon Kind="Account" Width="18" Height="18" VerticalAlignment="Center">
                             <materialDesign:PackIcon.Style>
                                 <Style TargetType="materialDesign:PackIcon">
-                                    <Setter Property="Foreground" Value="{StaticResource AccentBlue}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource AccentBlue}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Cliente}" Value="">
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -65,13 +67,13 @@ WindowStartupLocation="CenterOwner">
                                     <Setter Property="Text" Value="{Binding Cliente}"/>
                                     <Setter Property="FontWeight" Value="SemiBold"/>
                                     <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="Foreground" Value="{StaticResource AccentBlue}"/>
+                                    <Setter Property="Foreground" Value="{DynamicResource AccentBlue}"/>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding Cliente}" Value="">
                                             <Setter Property="Text" Value="Sin cliente asignado"/>
                                             <Setter Property="FontStyle" Value="Italic"/>
                                             <Setter Property="FontWeight" Value="Normal"/>
-                                            <Setter Property="Foreground" Value="Gray"/>
+                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
@@ -83,10 +85,13 @@ WindowStartupLocation="CenterOwner">
             <Button Grid.Column="1"
                     VerticalAlignment="Top"
                     Margin="10,0,0,0"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Background="{DynamicResource AccentBlue}"
+                    BorderBrush="{DynamicResource AccentBlue}"
                     Click="OnAgregarClienteClick">
                 <StackPanel Orientation="Horizontal">
-                    <materialDesign:PackIcon Kind="AccountSearch" Width="16" Height="16" Margin="0,0,6,0"/>
-                    <TextBlock Text="Agregar Cliente"/>
+                    <materialDesign:PackIcon Kind="AccountSearch" Width="16" Height="16" Margin="0,0,6,0" Foreground="{DynamicResource TextOnDark}"/>
+                    <TextBlock Text="Agregar Cliente" Foreground="{DynamicResource TextOnDark}"/>
                 </StackPanel>
             </Button>
         </Grid>
@@ -105,21 +110,28 @@ WindowStartupLocation="CenterOwner">
 
 
             <!-- ================= ITEMS ================= -->
-            <GroupBox Header="Productos"
-                      Grid.Column="0"
-                      Margin="0,0,10,0">
-
+            <Border Grid.Column="0" Background="{DynamicResource SurfaceCard}" CornerRadius="12" Margin="0,0,10,0" Padding="16">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="10" Opacity="0.1"/>
+                </Border.Effect>
                 <DockPanel>
-
-                    <Button Content="Agregar item"
-                            Background="{StaticResource AccentBlue}"
-                            DockPanel.Dock="Top"
-                            Command="{Binding AgregarItemCommand}"/>
+                    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+                        <TextBlock Text="Productos" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}" VerticalAlignment="Center"/>
+                        <Button Content="Agregar item"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                Background="{DynamicResource AccentBlue}"
+                                BorderBrush="{DynamicResource AccentBlue}"
+                                Foreground="{DynamicResource TextOnDark}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding AgregarItemCommand}"/>
+                    </DockPanel>
 
                     <DataGrid x:Name="ItemsDataGrid"
                               ItemsSource="{Binding Venta.Items}"
                               AutoGenerateColumns="False"
-                              CanUserAddRows="False">
+                              CanUserAddRows="False"
+                              Background="Transparent"
+                              BorderThickness="0">
 
                         <DataGrid.Columns>
 
@@ -170,8 +182,8 @@ WindowStartupLocation="CenterOwner">
                                         <Button Content="X"
                                                 Command="{Binding DataContext.EliminarItemCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                 CommandParameter="{Binding}"
-                                                Background="{StaticResource AccentRed}"
-                                                Foreground="White"/>
+                                                Background="{DynamicResource AccentRed}"
+                                                Foreground="{DynamicResource TextOnDark}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -180,25 +192,30 @@ WindowStartupLocation="CenterOwner">
                     </DataGrid>
 
                 </DockPanel>
-            </GroupBox>
-
-
+            </Border>
 
             <!-- ================= PAGOS ================= -->
-            <GroupBox Header="Pagos"
-                      Grid.Column="1"
-                      Margin="10,0,0,0">
-
+            <Border Grid.Column="1" Background="{DynamicResource SurfaceCard}" CornerRadius="12" Margin="10,0,0,0" Padding="16">
+                <Border.Effect>
+                    <DropShadowEffect Color="#000000" BlurRadius="10" Opacity="0.1"/>
+                </Border.Effect>
                 <DockPanel>
-
-                    <Button Content="Agregar pago"
-                            Background="{StaticResource AccentBlue}"
-                            DockPanel.Dock="Top"
-                            Command="{Binding AgregarPagoCommand}"/>
+                    <DockPanel DockPanel.Dock="Top" Margin="0,0,0,12">
+                        <TextBlock Text="Pagos" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource TextDark}" VerticalAlignment="Center"/>
+                        <Button Content="Agregar pago"
+                                Style="{StaticResource MaterialDesignRaisedButton}"
+                                Background="{DynamicResource AccentBlue}"
+                                BorderBrush="{DynamicResource AccentBlue}"
+                                Foreground="{DynamicResource TextOnDark}"
+                                HorizontalAlignment="Right"
+                                Command="{Binding AgregarPagoCommand}"/>
+                    </DockPanel>
 
                     <DataGrid x:Name="PagosDataGrid" ItemsSource="{Binding Venta.Pagos}"
                               AutoGenerateColumns="False"
-                              CanUserAddRows="False">
+                              CanUserAddRows="False"
+                              Background="Transparent"
+                              BorderThickness="0">
 
                         <DataGrid.Columns>
 
@@ -245,8 +262,8 @@ WindowStartupLocation="CenterOwner">
                                         <Button Content="X"
                                                 Command="{Binding DataContext.EliminarPagoCommand, RelativeSource={RelativeSource AncestorType=Window}}"
                                                 CommandParameter="{Binding}"
-                                                Background="{StaticResource AccentRed}"
-                                                Foreground="White"/>
+                                                Background="{DynamicResource AccentRed}"
+                                                Foreground="{DynamicResource TextOnDark}"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
@@ -255,30 +272,35 @@ WindowStartupLocation="CenterOwner">
                     </DataGrid>
 
                 </DockPanel>
-            </GroupBox>
+            </Border>
 
         </Grid>
 
 
 
         <!-- ================= FOOTER ================= -->
-        <StackPanel Grid.Row="2"
-                    Orientation="Horizontal"
-                    HorizontalAlignment="Right"
-                    Margin="0,10">
+        <Border Grid.Row="2" Background="{DynamicResource SurfaceCard}" CornerRadius="12" Padding="16" Margin="0,10,0,0">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" BlurRadius="10" Opacity="0.1"/>
+            </Border.Effect>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Total, StringFormat='Total: ${0:N2}'}" Margin="20,0" FontSize="16" Foreground="{DynamicResource TextDark}"/>
+                <TextBlock Text="{Binding Pagado, StringFormat='Pagado: ${0:N2}'}" Margin="20,0" FontSize="16" Foreground="{DynamicResource TextDark}"/>
+                <TextBlock Text="{Binding Restante, StringFormat='Restante: ${0:N2}'}"
+                           FontWeight="Bold" FontSize="18"
+                           Foreground="{DynamicResource DangerSoft}"
+                           Margin="20,0"/>
 
-            <TextBlock Text="{Binding Total, StringFormat='Total: ${0:N2}'}" Margin="20,0"/>
-            <TextBlock Text="{Binding Pagado, StringFormat='Pagado: ${0:N2}'}" Margin="20,0"/>
-            <TextBlock Text="{Binding Restante, StringFormat='Restante: ${0:N2}'}"
-                       FontWeight="Bold"
-                       Foreground="Red"
-                       Margin="20,0"/>
-
-            <Button Content="Guardar"
-                    Width="100"
-                    Margin="10,0"
-                    Click="Guardar_Click"/>
-        </StackPanel>
+                <Button Content="Guardar"
+                        Width="120" Height="40"
+                        Margin="10,0,0,0"
+                        Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="{DynamicResource AccentBlue}"
+                        BorderBrush="{DynamicResource AccentBlue}"
+                        Foreground="{DynamicResource TextOnDark}"
+                        Click="Guardar_Click"/>
+            </StackPanel>
+        </Border>
 
     </Grid>
 </Window>

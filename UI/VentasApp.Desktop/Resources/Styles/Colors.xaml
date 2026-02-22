@@ -24,6 +24,10 @@
     <SolidColorBrush x:Key="TextMuted" Color="#6B7280"/>
     <SolidColorBrush x:Key="TextOnDark" Color="#FFFFFF"/>
 
+    <!-- Inputs -->
+    <SolidColorBrush x:Key="InputBackground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="InputHint" Color="#6B7280"/>
+
     <!-- Compatibility mappings (keep existing keys used across XAML) -->
     <SolidColorBrush x:Key="PrimaryPastel" Color="#EDE7F6"/> <!-- maps to SurfaceSoftPurple -->
     <SolidColorBrush x:Key="SecondaryPastel" Color="#F8F9FB"/> <!-- maps to BackgroundMain -->
@@ -31,6 +35,7 @@
     <SolidColorBrush x:Key="AccentRed" Color="#E57373"/> <!-- maps to DangerSoft -->
     <SolidColorBrush x:Key="TextDark" Color="#1F2937"/> <!-- maps to TextPrimary -->
     <SolidColorBrush x:Key="TextLight" Color="#4B5563"/> <!-- maps to TextSecondary -->
-    <SolidColorBrush x:Key="CardBackground" Color="#EEF2F7"/> <!-- maps to SurfaceLight -->
+    <SolidColorBrush x:Key="CardBackground"      Color="#EEF2F7"/> <!-- maps to SurfaceLight -->
+    <SolidColorBrush x:Key="SurfaceCard"         Color="#FFFFFF"/>  <!-- modal/card inner surface -->
 
 </ResourceDictionary>

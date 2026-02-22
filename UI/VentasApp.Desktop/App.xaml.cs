@@ -7,10 +7,13 @@ using System.Windows;
 using VentasApp.Desktop.ViewModels.Productos;
 using VentasApp.Desktop.ViewModels.Ventas;
 using VentasApp.Desktop.ViewModels.Cliente;
+using VentasApp.Desktop.ViewModels.Config;
 using VentasApp.Desktop.Views.Productos;
 using VentasApp.Desktop.Views.Ventas;
 using VentasApp.Desktop.Views.Cliente;
+using VentasApp.Desktop.Views.Config;
 using VentasApp.Desktop.Views.Main;
+using VentasApp.Desktop.Services;
 using Microsoft.EntityFrameworkCore;
 using VentasApp.Infrastructure.Persistencia.Contexto;
 using VentasApp.Application.Interfaces.Repositorios;
@@ -100,6 +103,12 @@ public partial class App : System.Windows.Application
                 services.AddTransient<VentaView>();
                 services.AddTransient<ProductoView>();
                 services.AddTransient<ClienteView>();
+                services.AddTransient<ConfigView>();
+
+                services.AddSingleton<ThemeService>();
+                services.AddSingleton<ConfigViewModel>();
+                var appSettings = AppSettingsService.Cargar();
+                services.AddSingleton(appSettings);
 
 
             })
@@ -128,6 +137,11 @@ public partial class App : System.Windows.Application
         {
             // 1. Iniciar el Host
             await AppHost!.StartAsync();
+
+            // Aplicar tema guardado
+            var savedSettings = AppHost.Services.GetRequiredService<AppSettingsService>();
+            if (savedSettings.ModoOscuro)
+                AppHost.Services.GetRequiredService<ThemeService>().AplicarTema(true);
 
             // 2. Asegurar creación de la base de datos
             using (var scope = AppHost.Services.CreateScope())

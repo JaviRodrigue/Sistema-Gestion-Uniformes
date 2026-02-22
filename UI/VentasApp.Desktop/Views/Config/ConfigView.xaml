@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="VentasApp.Desktop.Views.Config.ConfigView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             mc:Ignorable="d"
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <Grid Background="{DynamicResource BackgroundMain}" Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header -->
+        <DockPanel Grid.Row="0" LastChildFill="False" Margin="10,10,10,16">
+            <Border Width="40" Height="40" CornerRadius="20"
+                    Background="{DynamicResource SurfaceSoftPurple}" DockPanel.Dock="Left">
+                <materialDesign:PackIcon Kind="Cog" Width="22" Height="22"
+                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                         Foreground="{DynamicResource TextDark}"/>
+            </Border>
+            <TextBlock Text="Configuraci&#243;n" FontSize="24" FontWeight="Bold"
+                       Foreground="{DynamicResource TextDark}"
+                       VerticalAlignment="Center" Margin="12,0,0,0"/>
+        </DockPanel>
+
+        <!-- Content -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="10,0,10,10" MaxWidth="600" HorizontalAlignment="Left">
+
+                <!-- Apariencia -->
+                <Border Background="{DynamicResource CardBackground}"
+                        CornerRadius="10" Padding="20" Margin="0,0,0,16">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#000000" BlurRadius="10" Opacity="0.15"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <DockPanel LastChildFill="False" Margin="0,0,0,16">
+                            <Border Width="34" Height="34" CornerRadius="17"
+                                    Background="{DynamicResource SurfaceSoftPurple}" DockPanel.Dock="Left">
+                                <materialDesign:PackIcon Kind="Palette" Width="18" Height="18"
+                                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                         Foreground="{DynamicResource TextDark}"/>
+                            </Border>
+                            <TextBlock Text="Apariencia" FontSize="16" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextDark}"
+                                       VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </DockPanel>
+
+                        <DockPanel LastChildFill="False">
+                            <StackPanel DockPanel.Dock="Left" Margin="0,0,0,0">
+                                <TextBlock Text="Modo Oscuro" FontSize="14"
+                                           Foreground="{DynamicResource TextDark}"/>
+                                 <TextBlock Text="Cambia la paleta de colores de la aplicaci&#243;n"
+                                           FontSize="11" Foreground="{DynamicResource TextMuted}"
+                                           Margin="0,2,0,0"/>
+                            </StackPanel>
+                            <ToggleButton DockPanel.Dock="Right"
+                                          IsChecked="{Binding ModoOscuroActivo}"
+                                          Style="{StaticResource MaterialDesignSwitchToggleButton}"
+                                          VerticalAlignment="Center"/>
+                        </DockPanel>
+                    </StackPanel>
+                </Border>
+
+                <!-- Stock Minimo Global -->
+                <Border Background="{DynamicResource CardBackground}"
+                        CornerRadius="10" Padding="20" Margin="0,0,0,16">
+                    <Border.Effect>
+                        <DropShadowEffect Color="#000000" BlurRadius="10" Opacity="0.15"/>
+                    </Border.Effect>
+                    <StackPanel>
+                        <DockPanel LastChildFill="False" Margin="0,0,0,8">
+                            <Border Width="34" Height="34" CornerRadius="17"
+                                    Background="{DynamicResource SurfaceSoftPurple}" DockPanel.Dock="Left">
+                                <materialDesign:PackIcon Kind="PackageVariant" Width="18" Height="18"
+                                                         HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                         Foreground="{DynamicResource TextDark}"/>
+                            </Border>
+                             <TextBlock Text="Stock Minimo Global" FontSize="16" FontWeight="SemiBold"
+                                       Foreground="{DynamicResource TextDark}"
+                                       VerticalAlignment="Center" Margin="10,0,0,0"/>
+                        </DockPanel>
+
+                        <TextBlock Text="Valor por defecto al crear nuevos productos. Se puede ajustar individualmente por producto."
+                                   FontSize="11" Foreground="{DynamicResource TextMuted}"
+                                   TextWrapping="Wrap" Margin="0,0,0,16"/>
+
+                        <TextBox materialDesign:HintAssist.Hint="Stock minimo Libreria"
+                                 Style="{StaticResource CustomOutlinedTextBox}"
+                                 Text="{Binding StockMinimoLibreria, UpdateSourceTrigger=PropertyChanged}"
+                                 Margin="0,0,0,12" MinWidth="280"/>
+
+                        <TextBox materialDesign:HintAssist.Hint="Stock minimo Uniformes"
+                                 Style="{StaticResource CustomOutlinedTextBox}"
+                                 Text="{Binding StockMinimoUniforme, UpdateSourceTrigger=PropertyChanged}"
+                                 MinWidth="280"/>
+                    </StackPanel>
+                </Border>
+
+                <!-- Guardar -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="{DynamicResource AccentBlue}"
+                            BorderBrush="{DynamicResource AccentBlue}"
+                            Command="{Binding GuardarConfigCommand}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="ContentSave" Width="16" Height="16" Foreground="{DynamicResource TextOnDark}"/>
+                            <TextBlock Text="Guardar configuraci&#243;n" Margin="6,0,0,0" Foreground="{DynamicResource TextOnDark}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

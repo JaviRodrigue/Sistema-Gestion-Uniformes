@@ -17,6 +17,14 @@ public class ActualizarItemVendibleUseCase
     {
         //Verifico si el item existe
         var item = await _repository.ObtenerItem(idItem) ?? throw new Exception("No se encontro el Item Vendible");
+        
+        // Verificar si ya existe otro item con el mismo nombre y talle
+        if (item.Nombre != dto.Nombre || item.Talle != dto.Talle)
+        {
+            if (await _repository.ExisteConNombreYTalle(dto.Nombre, dto.Talle))
+                throw new Exception($"Ya existe un uniforme '{dto.Nombre}' con talle '{dto.Talle}'");
+        }
+
         item.CambiarNombre(dto.Nombre);
         item.CambiarCodigoBarras(dto.CodigoBarra);
         item.CambiarTalle(dto.Talle);
