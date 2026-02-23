@@ -190,12 +190,14 @@ namespace VentasApp.Desktop.Views.Ventas;
 
 
                 
+
+
+                
                 System.Diagnostics.Debug.WriteLine("[GUARDAR_VENTA_ASYNC] Llamando a GuardarVentaCompletaUseCase");
                 using (var scope = App.AppHost!.Services.CreateScope())
                 {
                     var guardarCompleto = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.Venta.GuardarVentaCompletaUseCase>();
                     await guardarCompleto.EjecutarAsync(appDto);
-<<<<<<< HEAD
                     
                     // Vincular cliente a la venta via Compra si fue seleccionado
                     var vm2 = DataContext as DetalleVentaViewModel;
@@ -220,11 +222,9 @@ namespace VentasApp.Desktop.Views.Ventas;
                         }
                     }
                 }
-=======
-                }
-
->>>>>>> 1dc2d169fdda58cb9c8ce690482891bf923447cd
                 System.Diagnostics.Debug.WriteLine("[GUARDAR_VENTA_ASYNC] GuardarVentaCompletaUseCase completado exitosamente");
+
+                
 
                 
                 try

@@ -42,4 +42,6 @@ public class VentaCardDto
     public DateTime? FechaEstimada => Detalle.FechaEstimada;
 
     public bool TieneDeuda => Restante > 0;
+
+    public bool EstaPagada => Restante <= 0.01m;
 }

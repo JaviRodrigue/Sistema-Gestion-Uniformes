@@ -82,10 +82,49 @@
                 <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0">
                     <TextBlock Text="{Binding Total, StringFormat='${0:N2}'}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource AccentBlue}" HorizontalAlignment="Right" Margin="0,0,0,5"/>
                     
-                    <Border CornerRadius="5" Padding="8,4" HorizontalAlignment="Right" Background="{DynamicResource SecondaryPastel}">
+                    <Border CornerRadius="5" Padding="8,4" HorizontalAlignment="Right" Background="{DynamicResource SecondaryPastel}" Margin="0,0,0,5">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Restante: " FontSize="12" Foreground="{DynamicResource TextMuted}"/>
                             <TextBlock Text="{Binding Restante, StringFormat='${0:N2}'}" Foreground="{DynamicResource DangerSoft}" FontWeight="SemiBold" FontSize="12"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border CornerRadius="5" Padding="6,3" HorizontalAlignment="Right">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{DynamicResource WarningSoft}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EstaPagada}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource SuccessSoft}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Width="14" Height="14" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="{DynamicResource TextOnDark}">
+                                <materialDesign:PackIcon.Style>
+                                    <Style TargetType="materialDesign:PackIcon">
+                                        <Setter Property="Kind" Value="ClockAlert"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EstaPagada}" Value="True">
+                                                <Setter Property="Kind" Value="CheckCircle"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </materialDesign:PackIcon.Style>
+                            </materialDesign:PackIcon>
+                            <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextOnDark}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="PENDIENTE DE PAGO"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EstaPagada}" Value="True">
+                                                <Setter Property="Text" Value="PAGADA"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
                         </StackPanel>
                     </Border>
                 </StackPanel>

@@ -41,6 +41,28 @@ public class GuardarVentaCompletaUseCase
         // Esto evita que el DbContext quede en estado inconsistente si falla
         foreach (var item in dto.Items)
         {
+            // Validar precio unitario
+            if (item.PrecioUnitario <= 0)
+            {
+                var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
+                var nombre = itemVendible?.Nombre ?? "el producto";
+                if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
+                    nombre = $"{nombre} - Talle {itemVendible.Talle}";
+                
+                throw new ExcepcionDominio($"El precio unitario debe ser mayor a cero.\n\nProducto: {nombre}\nPrecio actual: ${item.PrecioUnitario:N2}\n\nPor favor, ingrese un precio válido.");
+            }
+            
+            // Validar cantidad
+            if (item.Cantidad <= 0)
+            {
+                var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
+                var nombre = itemVendible?.Nombre ?? "el producto";
+                if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
+                    nombre = $"{nombre} - Talle {itemVendible.Talle}";
+                
+                throw new ExcepcionDominio($"La cantidad debe ser mayor a cero.\n\nProducto: {nombre}\nCantidad actual: {item.Cantidad}\n\nPor favor, ingrese una cantidad válida.");
+            }
+            
             if (item.IdDetalle == 0)
             {
                 // Nuevo item: validar stock completo

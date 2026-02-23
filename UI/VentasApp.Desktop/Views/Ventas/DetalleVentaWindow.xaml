@@ -199,9 +199,9 @@ Background="{DynamicResource SecondaryPastel}">
 
                         <DataGrid.Columns>
 
-                            <DataGridCheckBoxColumn Header="?"
+                            <DataGridCheckBoxColumn Header=""
                                                     Binding="{Binding Entregado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Width="50">
+                                                    Width="65">
                                 <DataGridCheckBoxColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -234,7 +234,7 @@ Background="{DynamicResource SecondaryPastel}">
 
                             <DataGridTextColumn Header="Cantidad"
                                                 Binding="{Binding Cantidad, Mode=TwoWay}"
-                                                Width="100"/>
+                                                Width="90"/>
 
                             <DataGridTextColumn Header="Subtotal"
                                                 Binding="{Binding Subtotal, StringFormat=C}"
@@ -285,9 +285,9 @@ Background="{DynamicResource SecondaryPastel}">
 
                         <DataGrid.Columns>
 
-                            <DataGridCheckBoxColumn Header="?"
+                            <DataGridCheckBoxColumn Header=""
                                                     Binding="{Binding Verificado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Width="60">
+                                                    Width="68">
                                 <DataGridCheckBoxColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
@@ -321,7 +321,7 @@ Background="{DynamicResource SecondaryPastel}">
                                                 Binding="{Binding Monto, Mode=TwoWay}"
                                                 Width="100"/>
 
-                            <DataGridTemplateColumn Header="Medio" Width="180">
+                            <DataGridTemplateColumn Header="Medio" Width="130">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
                                         <ComboBox Name="MedioPagoComboBox"

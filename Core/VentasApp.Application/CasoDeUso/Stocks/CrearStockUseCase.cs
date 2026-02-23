@@ -22,7 +22,7 @@ public class CrearStockUseCase
         {
             throw new Exception("El item ya tiene un stock asignado");
         }
-        var stock = new Stock(
+        var stock = new VentasApp.Domain.Modelo.Productos.Stock(
             dto.IdItemVendible,
             dto.CantidadInicial,
             dto.StockMinimo

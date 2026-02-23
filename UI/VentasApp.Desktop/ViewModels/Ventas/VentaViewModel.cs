@@ -35,7 +35,7 @@ public partial class VentaViewModel : ObservableObject, IBuscable
     [ObservableProperty]
     private string _filtroEstadoPago = "Todos";
 
-    public List<string> FiltrosEstadoVenta { get; } = new() { "Todas", "Pendiente", "Confirmada", "Completada", "Cancelada" };
+    public List<string> FiltrosEstadoVenta { get; } = new() { "Todas", "Pendiente", "Completada", "Cancelada" };
     public List<string> FiltrosEstadoPago { get; } = new() { "Todos", "Pendiente", "Pagada" };
 
     partial void OnFiltroEstadoVentaChanged(string value) => AplicarFiltros();

@@ -33,7 +33,7 @@ public class ListarVentasUseCase
                 Total = v.MontoTotal,
                 Restante = v.SaldoPendiente,
                 EstadoVenta = v.Estado.ToString(),
-                EstadoPago = v.SaldoPendiente == 0 ? "Pagado" : "Pendiente"
+                EstadoPago = v.SaldoPendiente <= 0.01m ? "Pagada" : "Pendiente"
             });
         }
 

@@ -36,15 +36,6 @@ public class Venta : Entidad
 
         this.MontoPagado = montoPagado;
         this.SaldoPendiente = this.MontoTotal - this.MontoPagado;
-
-        if (this.MontoPagado >= this.MontoTotal && this.MontoTotal > 0 && Estado != EstadoVenta.Cancelada)
-        {
-            this.Estado = EstadoVenta.Completada;
-        }
-        else if (this.Estado == EstadoVenta.Completada && this.MontoPagado < this.MontoTotal)
-        {
-            this.Estado = EstadoVenta.Pendiente;
-        }
     }
 
     public void QuitarPago(decimal monto)
@@ -109,12 +100,6 @@ public class Venta : Entidad
         }
         this.MontoPagado += monto;
         this.SaldoPendiente = this.MontoTotal - this.MontoPagado;
-
-        
-        if(this.MontoPagado >= this.MontoTotal)
-        {
-            this.Estado = EstadoVenta.Completada;
-        }
     }
 
     public void AnularVenta()

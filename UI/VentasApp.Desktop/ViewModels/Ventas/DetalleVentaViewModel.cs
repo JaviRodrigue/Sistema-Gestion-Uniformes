@@ -90,7 +90,7 @@ public partial class DetalleVentaViewModel : ObservableObject
 
     public void ActualizarNombresProductos()
     {
-        // Actualizar nombres de productos con talle despus de que Productos se haya cargado
+        // Actualizar nombres de productos con talle después de que Productos se haya cargado
         foreach (var item in Venta.Items)
         {
             if (item.ProductId != 0)
@@ -100,6 +100,7 @@ public partial class DetalleVentaViewModel : ObservableObject
                 {
                     item.PrecioUnitario = prod.PrecioVenta;
                     item.Producto = prod.Nombre;
+                    item.StockMaximo = prod.StockDisponible;
                 }
             }
         }

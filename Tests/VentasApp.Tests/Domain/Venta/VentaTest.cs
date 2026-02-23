@@ -80,7 +80,7 @@ using VentasApp.Domain.Base;
         }
 
         [Fact]
-        public void RegistrarPago_Completo_CambiaAPagada()
+        public void RegistrarPago_Completo_ActualizaMontos()
         {
             var venta = new Venta(TipoVenta.Presencial);
             venta.AgregarDetalle(1, 2, 1000);
@@ -88,8 +88,9 @@ using VentasApp.Domain.Base;
 
             venta.RegistrarPago(2000);
 
-            Assert.Equal(EstadoVenta.Completada, venta.Estado);
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
             Assert.Equal(0, venta.SaldoPendiente);
+            Assert.Equal(2000, venta.MontoPagado);
         }
 
         [Fact]
@@ -182,5 +183,33 @@ using VentasApp.Domain.Base;
 
             Assert.Equal(2700, venta.MontoTotal);
         }
+
+        [Fact]
+        public void MarcarTodosLosItemsComoEntregados_CambiaACompletada()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.AgregarDetalle(2, 2, 500);
+
+            var detalles = venta.Detalles.ToList();
+            venta.MarcarItemComoEntregado(detalles[0].Id);
+            venta.MarcarItemComoEntregado(detalles[1].Id);
+
+            Assert.Equal(EstadoVenta.Completada, venta.Estado);
+        }
+
+        [Fact]
+        public void PagoCompleto_SinEntregas_NoDeberiaMarcarComoCompletada()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.Confirmar();
+
+            venta.RegistrarPago(1000);
+
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
+            Assert.Equal(0, venta.SaldoPendiente);
+        }
     }
+
 
