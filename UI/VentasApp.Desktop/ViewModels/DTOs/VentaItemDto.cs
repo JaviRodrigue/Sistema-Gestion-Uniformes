@@ -27,11 +27,22 @@ public partial class VentaItemDto : ObservableObject
     private int _cantidad;
 
     [ObservableProperty]
+    private int _stockMaximo;
+
+    [ObservableProperty]
     private bool _entregado;
 
     public decimal Subtotal => PrecioUnitario * Cantidad;
 
 
     partial void OnPrecioUnitarioChanged(decimal _) => OnPropertyChanged(nameof(Subtotal));
-    partial void OnCantidadChanged(int _) => OnPropertyChanged(nameof(Subtotal));
+    
+    partial void OnCantidadChanged(int value)
+    {
+        if (StockMaximo > 0 && value > StockMaximo)
+        {
+            Cantidad = StockMaximo;
+        }
+        OnPropertyChanged(nameof(Subtotal));
+    }
 }

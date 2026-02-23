@@ -194,6 +194,7 @@ public partial class DetalleVentaViewModel : ObservableObject
             {
                 item.PrecioUnitario = prod.PrecioVenta;
                 item.Producto = prod.Nombre;
+                item.StockMaximo = prod.StockDisponible;
             }
             RaiseTotalsChanged();
         }

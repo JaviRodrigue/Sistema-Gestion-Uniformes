@@ -37,7 +37,7 @@ using VentasApp.Domain.Base;
         {
             var venta = new Venta(TipoVenta.Presencial);
             venta.AgregarDetalle(1, 1, 1000);
-            venta.Confirmar();
+            venta.RegistrarPago(1000); // Esto cambia el estado a Completada
 
             var ex = Assert.Throws<ExcepcionDominio>(() =>
                 venta.AgregarDetalle(2, 1, 500));
@@ -76,7 +76,7 @@ using VentasApp.Domain.Base;
             venta.RegistrarPago(500);
 
             Assert.Equal(500, venta.MontoPagado);
-            Assert.Equal(EstadoVenta.Completada, venta.Estado);
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
         }
 
         [Fact]
