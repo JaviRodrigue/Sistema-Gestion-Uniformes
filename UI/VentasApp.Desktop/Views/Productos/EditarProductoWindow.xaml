@@ -54,19 +54,16 @@
                                 <RadioButton x:Name="TalleSinTalle" Content="—"   GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}" ToolTip="Sin talle"/>
 							</WrapPanel>
 							<WrapPanel>
+                                <RadioButton x:Name="Talle4"        Content="4"   GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                <RadioButton x:Name="Talle6"        Content="6"   GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                <RadioButton x:Name="Talle8"        Content="8"   GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                <RadioButton x:Name="Talle10"       Content="10"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                <RadioButton x:Name="Talle12"       Content="12"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                <RadioButton x:Name="Talle14"       Content="14"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                 <RadioButton x:Name="Talle16"       Content="16"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
-                                <RadioButton x:Name="Talle18"       Content="18"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
-                                <RadioButton x:Name="Talle20"       Content="20"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
-                                <RadioButton x:Name="Talle22"       Content="22"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
-                                <RadioButton x:Name="Talle24"       Content="24"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
-                                <RadioButton x:Name="Talle26"       Content="26"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
-                                <RadioButton x:Name="Talle28"       Content="28"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
-                                <RadioButton x:Name="Talle30"       Content="30"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
-                                <RadioButton x:Name="Talle32"       Content="32"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                             </WrapPanel>
                             <!-- Talles con letra -->
                             <WrapPanel Margin="0,4,0,0">
-                                <RadioButton x:Name="TalleXS"       Content="XS"  GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                 <RadioButton x:Name="TalleS"        Content="S"   GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                 <RadioButton x:Name="TalleM"        Content="M"   GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                 <RadioButton x:Name="TalleL"        Content="L"   GroupName="TallesEditar" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
