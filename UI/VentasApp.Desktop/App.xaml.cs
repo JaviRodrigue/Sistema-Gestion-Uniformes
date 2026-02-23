@@ -80,6 +80,7 @@ public partial class App : System.Windows.Application
                 services.AddTransient<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
                 services.AddTransient<VentasApp.Application.CasoDeUso.Venta.GuardarVentaCompletaUseCase>();
                 services.AddTransient<AnularVentaUseCase>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Venta.ObtenerIdsVentasPorClientesUseCase>();
                 services.AddTransient<VentasApp.Application.CasoDeUso.Pago.RegistrarPagoUseCase>();
                 services.AddTransient<VentasApp.Application.CasoDeUso.Pago.EliminarPagoUseCase>();
                 
@@ -87,17 +88,22 @@ public partial class App : System.Windows.Application
                 services.AddTransient<CrearProductoUseCase>();
                 services.AddTransient<VentasApp.Application.CasoDeUso.Productos.ListarProductoUseCase>();
                 services.AddTransient<ActualizarProductoUseCase>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Productos.EliminarProductoUseCase>();
                 services.AddTransient<CrearItemVendibleUseCase>();
                 services.AddTransient<VentasApp.Application.CasoDeUso.ItemVendibles.ActualizarItemVendibleUseCase>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Productos.ObtenerProductosParaVentaUseCase>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Pago.ObtenerMediosPagoUseCase>();
 
                 // Cliente UseCases
                 services.AddTransient<ActualizarClienteCasoDeUso>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Cliente.EliminarClienteCasoDeUso>();
 
                 // Stocks UseCases
                 services.AddTransient<CrearStockUseCase>();
                 services.AddTransient<ObtenerStockUseCase>();
                 services.AddTransient<AumentarStockUseCase>();
                 services.AddTransient<DescontarStockUseCase>();
+                services.AddTransient<VentasApp.Application.CasoDeUso.Stocks.ActualizarStockMinimoGlobalUseCase>();
                 services.AddTransient<ActualizarStockMinimoUseCase>();
 
                 services.AddTransient<VentaView>();

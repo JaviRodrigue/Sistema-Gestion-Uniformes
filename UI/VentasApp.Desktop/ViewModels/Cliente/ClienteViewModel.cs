@@ -85,12 +85,26 @@ public partial class ClienteViewModel : ObservableObject, IBuscable
     }
 
     [RelayCommand]
-    private void EliminarCliente(ClienteCardDto? cliente)
+    private async Task EliminarCliente(ClienteCardDto? cliente)
     {
         if (cliente is null) return;
-        if (Clientes.Contains(cliente))
+        
+        var result = System.Windows.MessageBox.Show($"¿Está seguro que desea eliminar el cliente {cliente.Nombre}?", "Confirmar eliminación", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+        if (result != System.Windows.MessageBoxResult.Yes) return;
+
+        try
         {
-            Clientes.Remove(cliente);
+            using var scope = App.AppHost!.Services.CreateScope();
+            var eliminarUseCase = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.Cliente.EliminarClienteCasoDeUso>();
+            await eliminarUseCase.EjecutarAsync(cliente.Id);
+            
+            await RecargarAsync();
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(ex.Message, "Error al eliminar cliente",
+                System.Windows.MessageBoxButton.OK,
+                System.Windows.MessageBoxImage.Error);
         }
     }
 

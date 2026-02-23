@@ -32,6 +32,15 @@ public class StockRepository : IStockRepository
                 .FirstOrDefaultAsync(s => s.IdItemVendible == idItem);
     }
 
+    public async Task<List<Stock>> ObtenerTodosConProducto()
+    {
+        return await _context.Stock
+            .Include(s => s.ItemVendible)
+            .ThenInclude(i => i.Producto)
+            .AsTracking()
+            .ToListAsync();
+    }
+
     public Task Actualizar(Stock stock)
     {
         // EF Core ya rastrea los cambios si la entidad fue obtenida con AsTracking()

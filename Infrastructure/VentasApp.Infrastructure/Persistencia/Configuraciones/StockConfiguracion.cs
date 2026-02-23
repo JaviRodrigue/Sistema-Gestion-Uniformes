@@ -16,7 +16,7 @@ public class StockConfiguracion : IEntityTypeConfiguration<Stock>
         builder.Property(s => s.Activo).IsRequired();
 
         builder.HasOne(s => s.ItemVendible)
-            .WithOne()
+            .WithOne(i => i.Stock)
             .HasForeignKey<Stock>(s => s.IdItemVendible)
             .OnDelete(DeleteBehavior.Restrict);
     }

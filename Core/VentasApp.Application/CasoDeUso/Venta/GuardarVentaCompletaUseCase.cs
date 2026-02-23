@@ -244,6 +244,12 @@ public class GuardarVentaCompletaUseCase
         var totalPagos = totalPersistidos + totalNuevos;
         venta.RecalcularMontosDesdePagos(totalPagos);
 
+        // Vincular cliente si fue seleccionado
+        if (dto.IdCliente > 0)
+        {
+            await _ventaRepo.VincularClienteVenta(venta.Id, dto.IdCliente);
+        }
+
         // Actualizar venta y guardar todo en una sola transaccion
         await _ventaRepo.Actualizar(venta);
         await _unitOfWork.SaveChanges();

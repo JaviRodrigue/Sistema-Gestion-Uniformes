@@ -41,5 +41,29 @@ public class VentaRepository : IVentaRepository
         return Task.CompletedTask;
     }
 
+    public async Task VincularClienteVenta(int idVenta, int idCliente)
+    {
+        var compraExistente = await _context.Compras.FirstOrDefaultAsync(c => c.IdVenta == idVenta);
+        if (compraExistente != null)
+        {
+            if (compraExistente.IdCliente != idCliente)
+            {
+                _context.Compras.Remove(compraExistente);
+                await _context.Compras.AddAsync(new Compra(idVenta, idCliente));
+            }
+        }
+        else
+        {
+            await _context.Compras.AddAsync(new Compra(idVenta, idCliente));
+        }
+    }
 
+    public async Task<List<int>> ObtenerIdsVentasPorClientes(List<int> clientesIds)
+    {
+        return await _context.Compras
+            .Where(c => clientesIds.Contains(c.IdCliente))
+            .Select(c => c.IdVenta)
+            .Distinct()
+            .ToListAsync();
+    }
 }

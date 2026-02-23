@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using VentasApp.Application.DTOs.Productos;
 using CommunityToolkit.Mvvm.Messaging;
 using VentasApp.Desktop.Messages;
+using VentasApp.Application.CasoDeUso.Productos;
+using VentasApp.Application.CasoDeUso.Pago;
 
 namespace VentasApp.Desktop.Views.Ventas;
 
@@ -29,63 +31,30 @@ namespace VentasApp.Desktop.Views.Ventas;
             InitializeComponent();
             _dto = dto;
             _guardar = guardar;
+            
+            // Create VM without Use Cases first, or pass them later?
+            // DetalleVentaViewModel needs them in constructor.
+            // Let's resolve them from a scope that lives as long as the window, or just resolve them inside CargarDatosAsync.
+            // Actually, we can just pass the provider to VM or resolve them in CargarDatosAsync.
+            // Let's change DetalleVentaViewModel to not require them in constructor, or we can create the scope and keep it alive.
+            // Or we can just resolve them inside CargarDatosAsync in the Window and pass the data to VM.
+            
             var vm = new DetalleVentaViewModel(dto);
             DataContext = vm;
 
-            // cargar lista de productos en la ventana para el ComboBox
-            // Obtener la lista de productos desde el contenedor de servicios
+            // Cargar datos asincrónicamente
+            _ = CargarDatosAsync(vm);
+        }
+
+        private async System.Threading.Tasks.Task CargarDatosAsync(DetalleVentaViewModel vm)
+        {
             var provider = App.AppHost!.Services;
-            // Obtener ItemVendible para seleccionar el item concreto (id de ItemVendible)
-            using (var scope = provider.CreateScope())
-            {
-                var scopedDb = scope.ServiceProvider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
-                var productos = scopedDb.ItemVendible.Select(iv => new VentasApp.Application.DTOs.Productos.ListadoProductoDto
-                                {
-                                    Id = iv.Id,
-                                    Nombre = iv.Producto != null 
-                                        ? (string.IsNullOrWhiteSpace(iv.Talle) 
-                                            ? iv.Producto.Nombre 
-                                            : $"{iv.Producto.Nombre} - Talle {iv.Talle}")
-                                        : iv.CodigoBarra,
-                                    PrecioVenta = iv.Producto != null ? iv.Producto.PrecioVenta : 0m,
-                                    StockDisponible = scopedDb.Stock.Where(s => s.IdItemVendible == iv.Id).Select(s => s.CantidadDisponible).FirstOrDefault()
-                                }).ToList();
-
-                // Exponer en la ventana un campo Productos usando code-behind (DetalleVentaViewModel no tiene lista de productos)
-                this.Productos = productos;
-                // Add items into existing collection so binding is notified
-                vm.Productos.Clear();
-                foreach (var p in productos)
-                    vm.Productos.Add(p);
-                
-                // Actualizar nombres de productos existentes para incluir talle
-                vm.ActualizarNombresProductos();
-            }
+            using var scope = provider.CreateScope();
+            var obtenerProductos = scope.ServiceProvider.GetRequiredService<ObtenerProductosParaVentaUseCase>();
+            var obtenerMediosPago = scope.ServiceProvider.GetRequiredService<ObtenerMediosPagoUseCase>();
             
-            // nothing to do here during construction
-
-            // Cargar medios de pago para el ComboBox de pagos
-            // No existe un usecase de listar medios; usamos un scope para el DbContext
-            using (var scopeMed = provider.CreateScope())
-            {
-                var dbMed = scopeMed.ServiceProvider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
-                var medios = dbMed.MedioPagos.Select(m => new { m.Id, m.Nombre }).ToList();
-                // Ensure common medios exist: Efectivo, Tarjeta, Transferencia
-                var needSave = false;
-                if (!dbMed.MedioPagos.Any(m => m.Nombre == "Efectivo")) { dbMed.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Efectivo", false)); needSave = true; }
-                if (!dbMed.MedioPagos.Any(m => m.Nombre == "Tarjeta")) { dbMed.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Tarjeta", true)); needSave = true; }
-                if (!dbMed.MedioPagos.Any(m => m.Nombre == "Transferencia")) { dbMed.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Transferencia", false)); needSave = true; }
-                if (needSave) dbMed.SaveChanges();
-
-                medios = dbMed.MedioPagos.Select(m => new { m.Id, m.Nombre }).ToList();
-                var mediosDto = medios.Select(m => new VentasApp.Application.DTOs.Productos.ListadoProductoDto { Id = m.Id, Nombre = m.Nombre }).ToList();
-                // Exponer en DataContext: actualizar la colección existente para notificar bindings
-                vm.MediosPago.Clear();
-                foreach (var m in mediosDto)
-                    vm.MediosPago.Add(m);
-            }
-
-            // No inline edit/auto-complete for products: ComboBox is non-editable and binding handles selection
+            await vm.CargarDatosAsync(obtenerProductos, obtenerMediosPago);
+            this.Productos = new System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto>(vm.Productos);
         }
 
         private static T? FindVisualChild<T>(DependencyObject depObj) where T : DependencyObject
@@ -140,8 +109,7 @@ namespace VentasApp.Desktop.Views.Ventas;
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"[GUARDAR_CLICK] Excepción capturada: {ex.GetType().Name} - {ex.Message}");
-                // Si llegamos aquí, significa que GuardarVentaAsync no manejó la excepción correctamente
-                // Esto NO debería suceder si los catches internos funcionan bien
+                
                 
                 if (ex is VentasApp.Domain.Base.ExcepcionDominio exDom)
                 {
@@ -158,15 +126,14 @@ namespace VentasApp.Desktop.Views.Ventas;
         {
             try
             {
-                // Validar que la venta esté en un estado editable
+                
                 if (_dto.Estado == VentasApp.Domain.Enum.EstadoVenta.Cancelada)
                 {
                     MessageBox.Show("No se puede modificar una venta cancelada.", "Venta cancelada", MessageBoxButton.OK, MessageBoxImage.Warning);
                     return;
                 }
 
-                // Ensure any in-progress edits are committed before reading DTOs.
-                // Move focus away from current editor then commit DataGrid edits.
+                
                 try
                 {
                     this.MoveFocus(new System.Windows.Input.TraversalRequest(System.Windows.Input.FocusNavigationDirection.Next));
@@ -185,8 +152,7 @@ namespace VentasApp.Desktop.Views.Ventas;
                     PagosDataGrid.CommitEdit();
                 }
                 catch { }
-                // Map UI DTO to application DTO
-                // Validaciones: todos los items deben tener un producto seleccionado
+                
                 if (_dto.Items.Any(i => i.ProductId == 0))
                 {
                     MessageBox.Show("Debe seleccionar un producto para cada línea antes de guardar.", "Validación", MessageBoxButton.OK, MessageBoxImage.Warning);
@@ -223,14 +189,13 @@ namespace VentasApp.Desktop.Views.Ventas;
 
 
 
-                // Guardar todo (detalles y pagos) usando el caso de uso que unifica la operación
-                // Use a scoped provider so all repos/DbContext used by the use case are
-                // from the same scope and see in-memory tracked entities before SaveChanges.
+                
                 System.Diagnostics.Debug.WriteLine("[GUARDAR_VENTA_ASYNC] Llamando a GuardarVentaCompletaUseCase");
                 using (var scope = App.AppHost!.Services.CreateScope())
                 {
                     var guardarCompleto = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.Venta.GuardarVentaCompletaUseCase>();
                     await guardarCompleto.EjecutarAsync(appDto);
+<<<<<<< HEAD
                     
                     // Vincular cliente a la venta via Compra si fue seleccionado
                     var vm2 = DataContext as DetalleVentaViewModel;
@@ -255,11 +220,13 @@ namespace VentasApp.Desktop.Views.Ventas;
                         }
                     }
                 }
+=======
+                }
+
+>>>>>>> 1dc2d169fdda58cb9c8ce690482891bf923447cd
                 System.Diagnostics.Debug.WriteLine("[GUARDAR_VENTA_ASYNC] GuardarVentaCompletaUseCase completado exitosamente");
 
-                // Force the main VentaViewModel to refresh so the list reflects the
-                // changes immediately (some DbContext lifetimes may cause slight
-                // timing issues when multiple contexts are used).
+                
                 try
                 {
                     var ventaVm = App.AppHost!.Services.GetRequiredService<VentasApp.Desktop.ViewModels.Ventas.VentaViewModel>();
