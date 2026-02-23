@@ -1,0 +1,49 @@
+using Microsoft.EntityFrameworkCore;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Modelo.Pago;
+using VentasApp.Infrastructure.Persistencia.Contexto;
+
+namespace VentasApp.Infrastructure.Persistencia.Repositorios;
+
+public class PagoRepository : IPagoRepository
+{
+    private DatabaseContext _context;
+
+    public PagoRepository(DatabaseContext context)
+    {
+        _context = context;
+    }
+
+    public async Task Agregar(Pago pago)
+    {
+        await _context.Pagos.AddAsync(pago);
+    }
+
+    public async Task<Pago?> ObtenerPorId(int idPago)
+    {
+        return await _context.Pagos.Include(p => p.Metodos).FirstOrDefaultAsync(p => p.Id == idPago);
+    }
+
+    public async Task Eliminar(int idPago)
+    {
+        var pago = await ObtenerPorId(idPago);
+        if (pago is null) return;
+        // No ajustar montos aquí. El flujo de aplicación debe recalcular montos desde los pagos
+        // para mantener la consistencia y evitar excepciones por desincronización de estados.
+        _context.Pagos.Remove(pago);
+    }
+
+    public async Task<List<Pago>> ObtenerPorVenta(int idVenta)
+    {
+        return await _context.Pagos
+                .Include(p => p.Metodos).ThenInclude(m => m.MedioPago)
+                .Where(p => p.IdVenta == idVenta)
+                .ToListAsync();
+    }
+
+    public Task Actualizar(Pago pago)
+    {
+        _context.Pagos.Update(pago);
+        return Task.CompletedTask;
+    }
+}

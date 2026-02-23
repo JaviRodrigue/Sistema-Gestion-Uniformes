@@ -1,0 +1,41 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- New palette -->
+    <!-- Base Neutral (Backgrounds) -->
+    <SolidColorBrush x:Key="BackgroundMain" Color="#F8F9FB"/>
+    <SolidColorBrush x:Key="SurfaceLight" Color="#EEF2F7"/>
+    <SolidColorBrush x:Key="SurfaceSoftPurple" Color="#EDE7F6"/>
+    <SolidColorBrush x:Key="SurfaceSoftBlue" Color="#E3F2FD"/>
+
+    <!-- Primary / Accent -->
+    <SolidColorBrush x:Key="PrimarySoft" Color="#5C6BC0"/>
+    <SolidColorBrush x:Key="PrimaryHover" Color="#3F51B5"/>
+    <SolidColorBrush x:Key="AccentBlueSoft" Color="#42A5F5"/>
+
+    <!-- States / Alerts -->
+    <SolidColorBrush x:Key="SuccessSoft" Color="#66BB6A"/>
+    <SolidColorBrush x:Key="WarningSoft" Color="#FFB74D"/>
+    <SolidColorBrush x:Key="DangerSoft" Color="#E57373"/>
+
+    <!-- Typography -->
+    <SolidColorBrush x:Key="TextPrimary" Color="#1F2937"/>
+    <SolidColorBrush x:Key="TextSecondary" Color="#4B5563"/>
+    <SolidColorBrush x:Key="TextMuted" Color="#6B7280"/>
+    <SolidColorBrush x:Key="TextOnDark" Color="#FFFFFF"/>
+
+    <!-- Inputs -->
+    <SolidColorBrush x:Key="InputBackground" Color="#FFFFFF"/>
+    <SolidColorBrush x:Key="InputHint" Color="#6B7280"/>
+
+    <!-- Compatibility mappings (keep existing keys used across XAML) -->
+    <SolidColorBrush x:Key="PrimaryPastel" Color="#EDE7F6"/> <!-- maps to SurfaceSoftPurple -->
+    <SolidColorBrush x:Key="SecondaryPastel" Color="#F8F9FB"/> <!-- maps to BackgroundMain -->
+    <SolidColorBrush x:Key="AccentBlue" Color="#42A5F5"/> <!-- maps to AccentBlueSoft -->
+    <SolidColorBrush x:Key="AccentRed" Color="#E57373"/> <!-- maps to DangerSoft -->
+    <SolidColorBrush x:Key="TextDark" Color="#1F2937"/> <!-- maps to TextPrimary -->
+    <SolidColorBrush x:Key="TextLight" Color="#4B5563"/> <!-- maps to TextSecondary -->
+    <SolidColorBrush x:Key="CardBackground"      Color="#EEF2F7"/> <!-- maps to SurfaceLight -->
+    <SolidColorBrush x:Key="SurfaceCard"         Color="#FFFFFF"/>  <!-- modal/card inner surface -->
+
+</ResourceDictionary>

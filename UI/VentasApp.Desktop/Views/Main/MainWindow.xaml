@@ -1,0 +1,110 @@
+<Window x:Class="VentasApp.Desktop.Views.Main.MainWindow"
+xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+xmlns:local="clr-namespace:VentasApp.Desktop"
+xmlns:vProductos="clr-namespace:VentasApp.Desktop.Views.Productos"
+xmlns:vCliente="clr-namespace:VentasApp.Desktop.Views.Cliente"
+xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+mc:Ignorable="d"
+Title="Sistema Uniformes" 
+Height="700" Width="1100"
+WindowState="Maximized"
+Background="{DynamicResource BackgroundMain}">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="240"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Sidebar permanente -->
+        <Border Grid.Column="0" Background="{DynamicResource SurfaceSoftPurple}" Padding="16" BorderBrush="{DynamicResource SurfaceLight}" BorderThickness="0,0,1,0">
+            <StackPanel>
+                <TextBlock Text="Sistema Uniformes" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource TextPrimary}"/>
+                <Separator Margin="0,12,0,12"/>
+
+                <Button x:Name="BtnVentas" Margin="0,0,0,8" Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="{DynamicResource SurfaceSoftBlue}" BorderBrush="{DynamicResource SurfaceSoftBlue}"
+                        Click="OnBtnVentasClick">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CashRegister" Width="18" Height="18" Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock Text="Ventas" Margin="8,0,0,0" Foreground="{DynamicResource TextPrimary}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnClientes" Margin="0,0,0,8" Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="{DynamicResource SurfaceSoftBlue}" BorderBrush="{DynamicResource SurfaceSoftBlue}"
+                        Click="OnBtnClientesClick">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="AccountGroup" Width="18" Height="18" Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock Text="Clientes" Margin="8,0,0,0" Foreground="{DynamicResource TextPrimary}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnProductos" Margin="0,0,0,8" Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="{DynamicResource SurfaceSoftBlue}" BorderBrush="{DynamicResource SurfaceSoftBlue}"
+                        Click="OnBtnProductosClick">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="TshirtCrew" Width="18" Height="18" Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock Text="Productos" Margin="8,0,0,0" Foreground="{DynamicResource TextPrimary}"/>
+                    </StackPanel>
+                </Button>
+
+                <Button x:Name="BtnConfig" Style="{StaticResource MaterialDesignRaisedButton}"
+                        Background="{DynamicResource SurfaceSoftBlue}" BorderBrush="{DynamicResource SurfaceSoftBlue}"
+                        Click="OnBtnConfigClick">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="Cog" Width="18" Height="18" Foreground="{DynamicResource TextPrimary}"/>
+                        <TextBlock Text="Configuracion" Margin="8,0,0,0" Foreground="{DynamicResource TextPrimary}"/>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </Border>
+
+        <!-- Area de contenido -->
+        <Border Grid.Column="1" Background="{DynamicResource BackgroundMain}" Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Barra de busqueda -->
+                <Border Grid.Row="0" Background="{DynamicResource SurfaceLight}"
+                        CornerRadius="8" Padding="10,6" Margin="0,0,0,10">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <materialDesign:PackIcon Grid.Column="0" Kind="Magnify"
+                                                 Width="18" Height="18"
+                                                 VerticalAlignment="Center"
+                                                 Foreground="{DynamicResource TextMuted}"
+                                                 Margin="0,0,8,0"/>
+                        <TextBox x:Name="TxtBuscar"
+                                 Grid.Column="1"
+                                 BorderThickness="0"
+                                 Background="Transparent"
+                                 VerticalAlignment="Center"
+                                 FontSize="14"
+                                 materialDesign:HintAssist.Hint="Buscar..."
+                                 TextChanged="OnBuscarTextChanged"/>
+                        <Button Grid.Column="2"
+                                Style="{StaticResource MaterialDesignFlatButton}"
+                                Padding="4" Height="28"
+                                ToolTip="Limpiar busqueda"
+                                Click="OnLimpiarBusquedaClick">
+                            <materialDesign:PackIcon Kind="Close" Width="14" Height="14"
+                                                     Foreground="{DynamicResource TextMuted}"/>
+                        </Button>
+                    </Grid>
+                </Border>
+
+                <ContentControl x:Name="ContentHost" Grid.Row="1"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

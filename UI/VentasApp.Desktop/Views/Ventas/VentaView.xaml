@@ -1,0 +1,107 @@
+<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="clr-namespace:VentasApp.Desktop.ViewModels.Ventas"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d"
+    x:Class="VentasApp.Desktop.Views.Ventas.VentaView"
+    d:DesignHeight="118.464" d:DesignWidth="566.318">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/VentasApp.Desktop;component/Resources/Templates/VentaCardTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <!-- No Height fijo: permitir que la vista se expanda -->
+    <Grid Background="{DynamicResource SecondaryPastel}" Margin="10" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <DockPanel Grid.Row="0" Margin="10" LastChildFill="False">
+
+            <TextBlock Text="Listado de Ventas"
+                       FontSize="24"
+                       FontWeight="Bold"
+                       Foreground="{DynamicResource TextDark}"
+                       DockPanel.Dock="Left"
+                       VerticalAlignment="Center"/>
+
+            <Button DockPanel.Dock="Right"
+                    Command="{Binding AgregarVentaCommand}"
+                    Style="{StaticResource MaterialDesignRaisedButton}"
+                    Background="{DynamicResource AccentBlue}"
+                    BorderBrush="{DynamicResource AccentBlue}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Right">
+
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="CartPlus" Margin="0,0,8,0"/>
+                    <TextBlock Text="NUEVA VENTA"/>
+                </StackPanel>
+
+            </Button>
+
+            <!-- Filtros -->
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,20,0" VerticalAlignment="Center">
+                <TextBlock Text="Estado:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextMuted}"/>
+                <ComboBox ItemsSource="{Binding FiltrosEstadoVenta}" 
+                          SelectedItem="{Binding FiltroEstadoVenta}" 
+                          Width="120" Margin="0,0,15,0"
+                          Style="{StaticResource CustomFilledComboBox}"/>
+                          
+                <TextBlock Text="Pago:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextMuted}"/>
+                <ComboBox ItemsSource="{Binding FiltrosEstadoPago}" 
+                          SelectedItem="{Binding FiltroEstadoPago}" 
+                          Width="120" 
+                          Style="{StaticResource CustomFilledComboBox}"/>
+            </StackPanel>
+
+        </DockPanel>
+
+        <!-- LISTADO -->
+        <!-- Use ListView with virtualization to handle large numbers of ventas efficiently -->
+        <ListView Grid.Row="1"
+                  ItemsSource="{Binding Ventas}"
+                  ItemTemplate="{StaticResource VentaCardTemplate}"
+                  VirtualizingStackPanel.IsVirtualizing="True"
+                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                  ScrollViewer.CanContentScroll="True"
+                  HorizontalAlignment="Stretch"
+                  Background="Transparent"
+                  BorderThickness="0"
+                  Margin="5">
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    <Setter Property="Padding" Value="0"/>
+                    <Setter Property="Margin" Value="0"/>
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="ListViewItem">
+                                <ContentPresenter />
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+
+            <!-- Use a virtualizing panel for performance -->
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+
+        </ListView>
+
+    </Grid>
+</UserControl>

@@ -1,4 +1,12 @@
 ﻿
-
-FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\MainWindow.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\App.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\Resources\Templates\ClienteCardTemplate.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\Resources\Templates\ProductoCardTemplate.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\Resources\Templates\VentaCardTemplate.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\Views\Cliente\ClienteView.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\Views\Main\MainWindow.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\Views\Productos\ProductoView.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\Views\Productos\ProductoViewTest.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\Views\Ventas\DetalleVentaWindow.xaml;;
+FC:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\Views\Ventas\VentaView.xaml;;
 
