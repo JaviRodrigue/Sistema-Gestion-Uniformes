@@ -3,7 +3,6 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows;
 using VentasApp.Desktop.Services;
 using Microsoft.Extensions.DependencyInjection;
-using VentasApp.Infrastructure.Persistencia.Contexto;
 using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Messaging;
@@ -86,36 +85,12 @@ public partial class ConfigViewModel : ObservableObject
         try
         {
             using var scope = _serviceProvider.CreateScope();
-            var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+            var useCase = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.Stocks.ActualizarStockMinimoGlobalUseCase>();
             
-            var stocks = db.Stock.ToList();
-            var items = db.ItemVendible.ToList();
-            var productos = db.Producto.ToList();
-            
-            int actualizados = 0;
-            
-            foreach (var stock in stocks)
-            {
-                var item = items.FirstOrDefault(i => i.Id == stock.IdItemVendible);
-                if (item != null)
-                {
-                    var producto = productos.FirstOrDefault(p => p.Id == item.IdProducto);
-                    if (producto != null)
-                    {
-                        // 1 = Uniforme, 2 = Libreria
-                        int nuevoMinimo = producto.IdCategoria == 1 ? uniMin : libMin;
-                        if (stock.StockMinimo != nuevoMinimo)
-                        {
-                            stock.CambiarStockMinimo(nuevoMinimo);
-                            actualizados++;
-                        }
-                    }
-                }
-            }
+            int actualizados = await useCase.EjecutarAsync(libMin, uniMin);
             
             if (actualizados > 0)
             {
-                await db.SaveChangesAsync();
                 WeakReferenceMessenger.Default.Send(new StockChangedMessage());
                 MessageBox.Show($"Se actualizaron {actualizados} productos con el nuevo stock mínimo.", "Actualización completada", MessageBoxButton.OK, MessageBoxImage.Information);
             }

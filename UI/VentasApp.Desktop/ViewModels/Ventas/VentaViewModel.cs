@@ -14,7 +14,6 @@ using VentasApp.Desktop.ViewModels;
 using VentasApp.Desktop.ViewModels.DTOs;
 using VentasApp.Desktop.Views.Ventas;
 using VentasApp.Desktop.Messages;
-using VentasApp.Infrastructure.Persistencia.Contexto;
 
 namespace VentasApp.Desktop.ViewModels.Ventas;
 
@@ -174,12 +173,8 @@ public partial class VentaViewModel : ObservableObject, IBuscable
         var clienteIds = await obtenerClienteIds(repo);
         if (!clienteIds.Any()) return [];
 
-        var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
-        return db.Compras
-            .Where(c => clienteIds.Contains(c.IdCliente))
-            .Select(c => c.IdVenta)
-            .Distinct()
-            .ToList();
+        var useCase = scope.ServiceProvider.GetRequiredService<ObtenerIdsVentasPorClientesUseCase>();
+        return await useCase.EjecutarAsync(clienteIds);
     }
 
     [RelayCommand]

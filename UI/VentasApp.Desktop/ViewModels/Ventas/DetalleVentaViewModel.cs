@@ -1,6 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using VentasApp.Desktop.ViewModels.DTOs;
+using VentasApp.Application.CasoDeUso.Productos;
+using VentasApp.Application.CasoDeUso.Pago;
+using System.Threading.Tasks;
+using System.Linq;
+using System;
 
 namespace VentasApp.Desktop.ViewModels.Ventas;
 
@@ -8,8 +13,8 @@ public partial class DetalleVentaViewModel : ObservableObject
 {
     public VentaDetalleDto Venta { get; }
 
-        public System.Collections.ObjectModel.ObservableCollection<VentasApp.Application.DTOs.Productos.ListadoProductoDto> Productos { get; set; } = new();
-        public System.Collections.ObjectModel.ObservableCollection<VentasApp.Application.DTOs.Productos.ListadoProductoDto> MediosPago { get; set; } = new();
+    public System.Collections.ObjectModel.ObservableCollection<VentasApp.Application.DTOs.Productos.ListadoProductoDto> Productos { get; set; } = new();
+    public System.Collections.ObjectModel.ObservableCollection<VentasApp.Application.DTOs.Productos.ListadoProductoDto> MediosPago { get; set; } = new();
 
     public string Cliente
     {
@@ -68,9 +73,24 @@ public partial class DetalleVentaViewModel : ObservableObject
             pago.PropertyChanged += Pago_PropertyChanged;
     }
 
+    public async Task CargarDatosAsync(VentasApp.Application.CasoDeUso.Productos.ObtenerProductosParaVentaUseCase obtenerProductos, VentasApp.Application.CasoDeUso.Pago.ObtenerMediosPagoUseCase obtenerMediosPago)
+    {
+        var productos = await obtenerProductos.EjecutarAsync();
+        Productos.Clear();
+        foreach (var p in productos)
+            Productos.Add(p);
+
+        ActualizarNombresProductos();
+
+        var medios = await obtenerMediosPago.EjecutarAsync();
+        MediosPago.Clear();
+        foreach (var m in medios)
+            MediosPago.Add(m);
+    }
+
     public void ActualizarNombresProductos()
     {
-        // Actualizar nombres de productos con talle después de que Productos se haya cargado
+        // Actualizar nombres de productos con talle despus de que Productos se haya cargado
         foreach (var item in Venta.Items)
         {
             if (item.ProductId != 0)

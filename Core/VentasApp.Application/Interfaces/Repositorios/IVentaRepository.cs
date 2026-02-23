@@ -6,4 +6,6 @@ public interface IVentaRepository
     Task<List<Venta>> ObtenerTodas();
     Task Agregar(Venta venta);
     Task Actualizar(Venta venta);
+    Task VincularClienteVenta(int idVenta, int idCliente);
+    Task<List<int>> ObtenerIdsVentasPorClientes(List<int> clientesIds);
 }

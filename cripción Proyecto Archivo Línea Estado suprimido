@@ -1,0 +1,90 @@
+[33mcommit 030e545389c763adf76054ef949c33b088177eea[m
+Author: javiRodrigue <agudtinjava@gmail.com>
+Date:   Sun Feb 22 21:48:10 2026 -0300
+
+    solucionando bug de descontar stock automatico
+
+[1mdiff --git a/Core/VentasApp.Domain/Enum/EstadoVenta.cs b/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[1mindex 9df0385..3380628 100644[m
+[1m--- a/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[1m+++ b/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[36m@@ -3,8 +3,6 @@[m [mnamespace VentasApp.Domain.Enum;[m
+ public enum EstadoVenta[m
+ {[m
+     Pendiente = 1,[m
+[31m-    Confirmada = 2,[m
+[31m-    Pagada = 3,[m
+[31m-    Cancelada = 4,[m
+[31m-    Completada = 5[m
+[32m+[m[32m    Completada = 2,[m
+[32m+[m[32m    Cancelada = 3[m
+ }[m
+\ No newline at end of file[m
+
+[33mcommit 923309bffb54d5dea84fe06b37bf5221b3729522[m
+Author: javiRodrigue <agudtinjava@gmail.com>
+Date:   Sat Feb 21 18:56:49 2026 -0300
+
+    agregando funcionalidades a venta
+
+[1mdiff --git a/Core/VentasApp.Domain/Enum/EstadoVenta.cs b/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[1mindex 0fd4843..9df0385 100644[m
+[1m--- a/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[1m+++ b/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[36m@@ -5,5 +5,6 @@[m [mpublic enum EstadoVenta[m
+     Pendiente = 1,[m
+     Confirmada = 2,[m
+     Pagada = 3,[m
+[31m-    Cancelada = 4[m
+[32m+[m[32m    Cancelada = 4,[m
+[32m+[m[32m    Completada = 5[m
+ }[m
+\ No newline at end of file[m
+
+[33mcommit 7588595142befb3a4c4eb70da218f57ae4ae7173[m
+Author: javiRodrigue <agudtinjava@gmail.com>
+Date:   Wed Jan 7 00:29:40 2026 -0300
+
+    Agregando UnitOfWorf para centralizar la persistencia
+
+[1mdiff --git a/Core/VentasApp.Domain/Enum/EstadoVenta.cs b/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[1mindex 12aefe6..0fd4843 100644[m
+[1m--- a/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[1m+++ b/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[36m@@ -2,8 +2,8 @@[m [mnamespace VentasApp.Domain.Enum;[m
+ [m
+ public enum EstadoVenta[m
+ {[m
+[31m-    SinPagar,[m
+[31m-    Confirmada,[m
+[31m-    Pagada,[m
+[31m-    Cancelada[m
+[32m+[m[32m    Pendiente = 1,[m
+[32m+[m[32m    Confirmada = 2,[m
+[32m+[m[32m    Pagada = 3,[m
+[32m+[m[32m    Cancelada = 4[m
+ }[m
+\ No newline at end of file[m
+
+[33mcommit c39a1448db443de90a6107d85cd92295d99ee762[m
+Author: javiRodrigue <agudtinjava@gmail.com>
+Date:   Sat Jan 3 17:38:56 2026 -0300
+
+    agregando constructores a las entidades
+
+[1mdiff --git a/Core/VentasApp.Domain/Enum/EstadoVenta.cs b/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[1mnew file mode 100644[m
+[1mindex 0000000..12aefe6[m
+[1m--- /dev/null[m
+[1m+++ b/Core/VentasApp.Domain/Enum/EstadoVenta.cs[m
+[36m@@ -0,0 +1,9 @@[m
+[32m+[m[32mnamespace VentasApp.Domain.Enum;[m
+[32m+[m
+[32m+[m[32mpublic enum EstadoVenta[m
+[32m+[m[32m{[m
+[32m+[m[32m    SinPagar,[m
+[32m+[m[32m    Confirmada,[m
+[32m+[m[32m    Pagada,[m
+[32m+[m[32m    Cancelada[m
+[32m+[m[32m}[m
+\ No newline at end of file[m

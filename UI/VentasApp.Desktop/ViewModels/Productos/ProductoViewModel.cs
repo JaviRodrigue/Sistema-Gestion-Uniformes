@@ -359,12 +359,26 @@ namespace VentasApp.Desktop.ViewModels.Productos
         }
 
         [RelayCommand]
-        private void EliminarProducto(ProductoCardDto? producto)
+        private async Task EliminarProducto(ProductoCardDto? producto)
         {
             if (producto is null) return;
-            if (Productos.Contains(producto))
+            
+            var result = System.Windows.MessageBox.Show($"¿Está seguro que desea eliminar el producto {producto.Nombre}?", "Confirmar eliminación", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+            if (result != System.Windows.MessageBoxResult.Yes) return;
+
+            try
             {
-                Productos.Remove(producto);
+                using var scope = _serviceProvider.CreateScope();
+                var eliminarUseCase = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.Productos.EliminarProductoUseCase>();
+                await eliminarUseCase.EjecutarAsync(producto.Id);
+                
+                await CargarProductosAsync();
+            }
+            catch (System.Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Error al eliminar producto",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
             }
         }
 

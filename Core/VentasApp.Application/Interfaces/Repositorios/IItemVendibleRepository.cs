@@ -8,5 +8,6 @@ public interface IItemVendibleRepository
     Task<ItemVendible?> ObtenerItem(int id);
     Task<ItemVendible?> ObtenerItemPorCodigoBarra(string codigo);
     Task<List<ItemVendible>> ListarItem(int idProducto);
+    Task<List<ItemVendible>> ObtenerTodosConProductoYStock();
     Task<bool> ExisteConNombreYTalle(string nombre, string? talle);
 }

@@ -10,6 +10,7 @@ public class ItemVendible : Entidad
     public string CodigoBarra{get ; private set;} = null!;
     public string? Talle {get; private set;}
     public bool Activado{get; private set;}
+    public Stock? Stock { get; private set; }
 
     protected ItemVendible(){}
 

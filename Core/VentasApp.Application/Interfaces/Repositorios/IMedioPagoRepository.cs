@@ -4,5 +4,7 @@ namespace VentasApp.Application.Interfaces.Repositorios;
 
 public interface IMedioPagoRepository
 {
-    public Task<MedioPago?> ObtenerPorId(int id);
+    Task<MedioPago?> ObtenerPorId(int id);
+    Task<List<MedioPago>> ObtenerTodos();
+    Task Agregar(MedioPago medioPago);
 }

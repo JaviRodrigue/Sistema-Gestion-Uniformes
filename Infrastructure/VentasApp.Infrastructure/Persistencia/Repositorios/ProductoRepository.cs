@@ -23,13 +23,14 @@ public class ProductoRepository : IProductoRepository
     {
         return await _context.Producto
                             .Include(p => p.ItemsVendibles)
-                            .FirstOrDefaultAsync(p => p.Id == id);
+                            .FirstOrDefaultAsync(p => p.Id == id && p.Activo);
     }
 
     public async Task<List<Producto>> ListarProductos()
     {
         return await _context.Producto
             .Include(p => p.ItemsVendibles)
+            .Where(p => p.Activo)
             .ToListAsync();
     }
 }

@@ -47,4 +47,11 @@ public class ItemVendibleRepository : IItemVendibleRepository
                         && i.Activado);
     }
 
+    public async Task<List<ItemVendible>> ObtenerTodosConProductoYStock()
+    {
+        return await _context.ItemVendible
+            .Include(i => i.Producto)
+            .Include(i => i.Stock)
+            .ToListAsync();
+    }
 }
