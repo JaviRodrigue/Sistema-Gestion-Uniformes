@@ -3,8 +3,6 @@ namespace VentasApp.Domain.Enum;
 public enum EstadoVenta
 {
     Pendiente = 1,
-    Confirmada = 2,
-    Pagada = 3,
-    Cancelada = 4,
-    Completada = 5
+    Completada = 2,
+    Cancelada = 3
 }

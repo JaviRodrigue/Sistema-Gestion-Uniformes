@@ -36,6 +36,8 @@ public class ConfirmarVentaUseCase
             {
                 stock.Descontar(detalle.Cantidad);
             }
+            
+            await _repositoryStock.Actualizar(stock);
         }
         venta.Confirmar();
 

@@ -28,8 +28,18 @@ public class StockRepository : IStockRepository
     public async Task<Stock?> ObtenerPorItemVendible(int idItem)
     {
         return await _context.Stock
+                .AsTracking()
                 .FirstOrDefaultAsync(s => s.IdItemVendible == idItem);
     }
 
-
+    public Task Actualizar(Stock stock)
+    {
+        // EF Core ya rastrea los cambios si la entidad fue obtenida con AsTracking()
+        // Solo necesitamos marcar como modificado si está desacoplado
+        if (_context.Entry(stock).State == EntityState.Detached)
+        {
+            _context.Stock.Update(stock);
+        }
+        return Task.CompletedTask;
+    }
 }

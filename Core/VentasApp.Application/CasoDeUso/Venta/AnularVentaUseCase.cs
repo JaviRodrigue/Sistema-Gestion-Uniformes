@@ -34,6 +34,8 @@ public class AnularVentaUseCase
             {
                 stock.Aumentar(detalle.Cantidad);
             }
+            
+            await _repositoryStock.Actualizar(stock);
         }
         await _unitOfWork.SaveChanges();
     }

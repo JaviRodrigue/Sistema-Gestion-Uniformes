@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using VentasApp.Domain.Enum;
 
 namespace VentasApp.Desktop.ViewModels.DTOs;
 
@@ -8,8 +9,10 @@ public class VentaDetalleDto
 {
     public int Id { get; set; }
     public string Codigo { get; set; } = "";
+    public DateTime Fecha { get; set; }
     public string Cliente { get; set; } = "";
     public int IdCliente { get; set; }
+    public EstadoVenta Estado { get; set; }
 
     public DateTime? FechaEstimada { get; set; }
 

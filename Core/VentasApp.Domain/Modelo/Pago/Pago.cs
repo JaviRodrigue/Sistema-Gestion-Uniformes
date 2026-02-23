@@ -60,4 +60,14 @@ public class Pago : Entidad
         this.Verificado = false;
     }
 
+    public void ModificarFecha(DateTime nuevaFecha)
+    {
+        if (nuevaFecha > DateTime.Now)
+        {
+            throw new ExcepcionDominio("La fecha del pago no puede ser futura");
+        }
+
+        this.FechaPago = nuevaFecha;
+    }
+
 }

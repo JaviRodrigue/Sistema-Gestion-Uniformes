@@ -71,6 +71,11 @@
                         <materialDesign:PackIcon Kind="Account" Width="14" Height="14" Foreground="{DynamicResource TextMuted}"/>
                         <TextBlock Text="{Binding Cliente}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="5,0,0,0"/>
                     </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                        <materialDesign:PackIcon Kind="Calendar" Width="14" Height="14" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="{Binding Fecha, StringFormat='dd/MM/yyyy'}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="5,0,0,0"/>
+                    </StackPanel>
                 </StackPanel>
 
                 <!-- TOTALES -->

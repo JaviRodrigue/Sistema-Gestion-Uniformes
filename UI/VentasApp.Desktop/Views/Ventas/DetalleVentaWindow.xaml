@@ -3,12 +3,17 @@ xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 xmlns:vm="clr-namespace:VentasApp.Desktop.ViewModels.Ventas"
+xmlns:converters="clr-namespace:VentasApp.Desktop.Converters"
 Title="Detalle Venta"
 Height="720"
 Width="1000"
 WindowState="Maximized"
 WindowStartupLocation="CenterOwner"
 Background="{DynamicResource SecondaryPastel}">
+
+    <Window.Resources>
+        <converters:InverseBoolConverter x:Key="InverseBoolConverter"/>
+    </Window.Resources>
 
     <Grid Margin="20">
 
@@ -30,10 +35,55 @@ Background="{DynamicResource SecondaryPastel}">
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
             <StackPanel Grid.Column="0">
-                <TextBlock Text="Detalle de Venta"
-                           FontSize="22"
-                           FontWeight="Bold"
-                           Foreground="{DynamicResource TextDark}"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Detalle de Venta"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Foreground="{DynamicResource TextDark}"/>
+                    <Border CornerRadius="4" 
+                            Padding="8,4" 
+                            Margin="12,0,0,0"
+                            VerticalAlignment="Center"
+                            Background="{DynamicResource AccentRed}">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Visibility" Value="Collapsed"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Venta.Estado}" Value="Cancelada">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="CANCELADA" 
+                                   FontWeight="Bold" 
+                                   FontSize="12"
+                                   Foreground="White"/>
+                    </Border>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
+                    <materialDesign:PackIcon Kind="Calendar" Width="16" Height="16" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                    <DatePicker materialDesign:HintAssist.Hint="Fecha de venta"
+                                SelectedDate="{Binding Fecha, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                IsEnabled="{Binding EsEditable}"
+                                Margin="8,0,0,0"
+                                FontSize="13"
+                                BorderBrush="{DynamicResource AccentBlue}"
+                                BorderThickness="0,0,0,1"
+                                Padding="4,0"
+                                VerticalAlignment="Center"
+                                materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource AccentBlue}"
+                                Style="{StaticResource MaterialDesignFloatingHintDatePicker}">
+                        <DatePicker.Resources>
+                            <Style TargetType="DatePickerTextBox">
+                                <Setter Property="Background" Value="Transparent"/>
+                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                            </Style>
+                        </DatePicker.Resources>
+                    </DatePicker>
+                </StackPanel>
+                
                 <!-- Cliente chip -->
                 <Border CornerRadius="8" Padding="10,8" Margin="0,10,0,0">
                     <Border.Style>
@@ -88,6 +138,7 @@ Background="{DynamicResource SecondaryPastel}">
                     Style="{StaticResource MaterialDesignRaisedButton}"
                     Background="{DynamicResource AccentBlue}"
                     BorderBrush="{DynamicResource AccentBlue}"
+                    IsEnabled="{Binding EsEditable}"
                     Click="OnAgregarClienteClick">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="AccountSearch" Width="16" Height="16" Margin="0,0,6,0" Foreground="{DynamicResource TextOnDark}"/>
@@ -123,6 +174,7 @@ Background="{DynamicResource SecondaryPastel}">
                                 BorderBrush="{DynamicResource AccentBlue}"
                                 Foreground="{DynamicResource TextOnDark}"
                                 HorizontalAlignment="Right"
+                                IsEnabled="{Binding EsEditable}"
                                 Command="{Binding AgregarItemCommand}"/>
                     </DockPanel>
 
@@ -130,6 +182,7 @@ Background="{DynamicResource SecondaryPastel}">
                               ItemsSource="{Binding Venta.Items}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
+                              IsReadOnly="{Binding EsEditable, Converter={StaticResource InverseBoolConverter}}"
                               Background="Transparent"
                               BorderThickness="0">
 
@@ -208,12 +261,14 @@ Background="{DynamicResource SecondaryPastel}">
                                 BorderBrush="{DynamicResource AccentBlue}"
                                 Foreground="{DynamicResource TextOnDark}"
                                 HorizontalAlignment="Right"
+                                IsEnabled="{Binding EsEditable}"
                                 Command="{Binding AgregarPagoCommand}"/>
                     </DockPanel>
 
                     <DataGrid x:Name="PagosDataGrid" ItemsSource="{Binding Venta.Pagos}"
                               AutoGenerateColumns="False"
                               CanUserAddRows="False"
+                              IsReadOnly="{Binding EsEditable, Converter={StaticResource InverseBoolConverter}}"
                               Background="Transparent"
                               BorderThickness="0">
 
@@ -236,9 +291,20 @@ Background="{DynamicResource SecondaryPastel}">
                                 </DataGridCheckBoxColumn.ElementStyle>
                             </DataGridCheckBoxColumn>
 
-                            <DataGridTextColumn Header="Fecha"
-                                                Binding="{Binding Fecha, Mode=TwoWay, StringFormat=d}"
-                                                Width="120"/>
+                            <DataGridTemplateColumn Header="Fecha" Width="140">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <DatePicker SelectedDate="{Binding Fecha, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                    BorderThickness="0"
+                                                    Background="Transparent"
+                                                    VerticalAlignment="Center"
+                                                    HorizontalAlignment="Stretch"
+                                                    Margin="4,0"
+                                                    materialDesign:HintAssist.Hint="Fecha"
+                                                    Style="{StaticResource MaterialDesignFloatingHintDatePicker}"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
 
                             <DataGridTextColumn Header="Monto"
                                                 Binding="{Binding Monto, Mode=TwoWay}"
@@ -298,6 +364,7 @@ Background="{DynamicResource SecondaryPastel}">
                         Background="{DynamicResource AccentBlue}"
                         BorderBrush="{DynamicResource AccentBlue}"
                         Foreground="{DynamicResource TextOnDark}"
+                        IsEnabled="{Binding EsEditable}"
                         Click="Guardar_Click"/>
             </StackPanel>
         </Border>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using VentasApp.Application.DTOs.ItemVendible;
 using VentasApp.Application.DTOs.Pago;
+using VentasApp.Domain.Enum;
 
 namespace VentasApp.Application.DTOs.Venta;
 
@@ -13,8 +14,10 @@ public class VentaDetalleDto
 {
     public int Id { get; set; }
     public string Codigo { get; set; } = "";
+    public DateTime Fecha { get; set; }
     public string Cliente { get; set; } = "";
     public int IdCliente { get; set; }
+    public EstadoVenta Estado { get; set; }
     public decimal Total { get; set; }
     public decimal Restante { get; set; }
 

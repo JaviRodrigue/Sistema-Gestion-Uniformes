@@ -31,6 +31,16 @@ public partial class DetalleVentaViewModel : ObservableObject
         }
     }
 
+    public DateTime Fecha
+    {
+        get => Venta.Fecha;
+        set
+        {
+            Venta.Fecha = value;
+            OnPropertyChanged();
+        }
+    }
+
     public DateTime? FechaEstimada
     {
         get => Venta.FechaEstimada;
@@ -52,7 +62,17 @@ public partial class DetalleVentaViewModel : ObservableObject
         foreach (var item in Venta.Items)
         {
             item.PropertyChanged += Item_PropertyChanged;
-            // if the item already has a product selected, update price from Productos
+        }
+
+        foreach (var pago in Venta.Pagos)
+            pago.PropertyChanged += Pago_PropertyChanged;
+    }
+
+    public void ActualizarNombresProductos()
+    {
+        // Actualizar nombres de productos con talle después de que Productos se haya cargado
+        foreach (var item in Venta.Items)
+        {
             if (item.ProductId != 0)
             {
                 var prod = Productos.FirstOrDefault(p => p.Id == item.ProductId);
@@ -63,9 +83,6 @@ public partial class DetalleVentaViewModel : ObservableObject
                 }
             }
         }
-
-        foreach (var pago in Venta.Pagos)
-            pago.PropertyChanged += Pago_PropertyChanged;
     }
 
     private void RaiseTotalsChanged()
@@ -78,6 +95,9 @@ public partial class DetalleVentaViewModel : ObservableObject
     public decimal Total => Venta.Total;
     public decimal Pagado => Venta.Pagado;
     public decimal Restante => Venta.Restante;
+    
+    public bool EsEditable => Venta.Estado == VentasApp.Domain.Enum.EstadoVenta.Pendiente || 
+                              Venta.Estado == VentasApp.Domain.Enum.EstadoVenta.Completada;
 
     // ================= ITEMS =================
 

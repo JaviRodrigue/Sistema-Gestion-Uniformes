@@ -117,10 +117,23 @@ public partial class App : System.Windows.Application
 
     private void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
     {
-        MessageBox.Show($"ERROR NO MANEJADO:\n\n{e.Exception.Message}\n\nStackTrace:\n{e.Exception.StackTrace}", 
-            "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        Debug.WriteLine($"ERROR: {e.Exception}");
+        Debug.WriteLine($"[MANEJADOR GLOBAL] Excepción capturada: {e.Exception.GetType().Name}");
+        
+        // Si es una excepción de dominio, mostrar un mensaje más amigable
+        if (e.Exception is VentasApp.Domain.Base.ExcepcionDominio exDominio)
+        {
+            Debug.WriteLine($"[MANEJADOR GLOBAL] ExcepcionDominio: {exDominio.Message}");
+            MessageBox.Show(exDominio.Message, "Validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+        else
+        {
+            Debug.WriteLine($"[MANEJADOR GLOBAL] Excepción genérica: {e.Exception.Message}");
+            MessageBox.Show($"ERROR NO MANEJADO:\n\n{e.Exception.Message}\n\nStackTrace:\n{e.Exception.StackTrace}", 
+                "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        
         e.Handled = true;
+        Debug.WriteLine("[MANEJADOR GLOBAL] e.Handled = true - La aplicación NO se cerrará");
     }
 
     private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

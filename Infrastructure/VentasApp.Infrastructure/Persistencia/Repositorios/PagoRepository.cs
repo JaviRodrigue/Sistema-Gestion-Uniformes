@@ -40,4 +40,10 @@ public class PagoRepository : IPagoRepository
                 .Where(p => p.IdVenta == idVenta)
                 .ToListAsync();
     }
+
+    public Task Actualizar(Pago pago)
+    {
+        _context.Pagos.Update(pago);
+        return Task.CompletedTask;
+    }
 }

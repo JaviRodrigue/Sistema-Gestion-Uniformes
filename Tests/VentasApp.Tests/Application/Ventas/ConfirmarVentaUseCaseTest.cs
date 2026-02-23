@@ -53,7 +53,7 @@ public class ConfirmarVentaUseCaseTest
         await useCase.EjecutarAsync(1);
 
         stock.CantidadDisponible.Should().Be(8);
-        venta.Estado.Should().Be(EstadoVenta.Confirmada);
+        venta.Estado.Should().Be(EstadoVenta.Pendiente);
     }
 
 

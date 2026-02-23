@@ -1,16 +1,20 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VentasApp.Desktop.ViewModels;
 using VentasApp.Desktop.ViewModels.DTOs;
+using VentasApp.Desktop.Messages;
 
 namespace VentasApp.Desktop.ViewModels.Productos
 {
     public partial class ProductoViewModel : ObservableObject, IBuscable
     {
+        private readonly IServiceProvider _serviceProvider;
         private readonly VentasApp.Application.Interfaces.Repositorios.IProductoRepository _productoRepository;
         private readonly VentasApp.Application.Interfaces.Repositorios.IStockRepository _stockRepository;
         private readonly VentasApp.Application.CasoDeUso.Productos.CrearProductoUseCase _crearProductoUseCase;
@@ -31,6 +35,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
         private ObservableCollection<ProductoCardDto> _productos;
 
         public ProductoViewModel(
+            IServiceProvider serviceProvider,
             VentasApp.Application.Interfaces.Repositorios.IProductoRepository productoRepository,
             VentasApp.Application.Interfaces.Repositorios.IStockRepository stockRepository,
             VentasApp.Application.Interfaces.Repositorios.IItemVendibleRepository itemVendibleRepository,
@@ -44,6 +49,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
             VentasApp.Application.CasoDeUso.Stocks.ActualizarStockMinimoUseCase actualizarStockMinimoUseCase,
             VentasApp.Desktop.Services.AppSettingsService appSettingsService)
         {
+            _serviceProvider = serviceProvider;
             _productoRepository = productoRepository;
             _stockRepository = stockRepository;
             _itemVendibleRepository = itemVendibleRepository;
@@ -57,7 +63,16 @@ namespace VentasApp.Desktop.ViewModels.Productos
             _actualizarStockMinimoUseCase = actualizarStockMinimoUseCase;
             _appSettingsService = appSettingsService;
             Productos = new ObservableCollection<ProductoCardDto>();
-            CargarProductos();
+            
+            WeakReferenceMessenger.Default.Register<StockChangedMessage>(this, async (r, m) =>
+            {
+                await System.Windows.Application.Current.Dispatcher.InvokeAsync(async () =>
+                {
+                    await CargarProductosAsync();
+                });
+            });
+            
+            _ = CargarProductosAsync();
         }
 
         // ================= IBuscable =================
@@ -93,11 +108,18 @@ namespace VentasApp.Desktop.ViewModels.Productos
             }
         }
 
+
         public Task RestablecerAsync()
         {
             Productos = new ObservableCollection<ProductoCardDto>(_todosLosProductos);
             return Task.CompletedTask;
         }
+
+        public async Task RefreshAsync()
+        {
+            await CargarProductosAsync();
+        }
+
 
         [RelayCommand]
         private async void AgregarProducto()
@@ -177,7 +199,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
                 }
                 finally
                 {
-                    CargarProductos();
+                    await CargarProductosAsync();
                 }
             }
         }
@@ -305,7 +327,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
                         System.Windows.MessageBoxImage.Warning);
                 }
 
-                CargarProductos();
+                await CargarProductosAsync();
             }
         }
 
@@ -319,9 +341,13 @@ namespace VentasApp.Desktop.ViewModels.Productos
             }
         }
 
-        private async void CargarProductos()
+        private async Task CargarProductosAsync()
         {
-            var lista = await _productoRepository.ListarProductos();
+            using var scope = _serviceProvider.CreateScope();
+            var productoRepository = scope.ServiceProvider.GetRequiredService<VentasApp.Application.Interfaces.Repositorios.IProductoRepository>();
+            var stockRepository = scope.ServiceProvider.GetRequiredService<VentasApp.Application.Interfaces.Repositorios.IStockRepository>();
+            
+            var lista = await productoRepository.ListarProductos();
             var result = new List<ProductoCardDto>();
             foreach (var p in lista)
             {
@@ -330,7 +356,7 @@ namespace VentasApp.Desktop.ViewModels.Productos
                 int stockMinimo = 0;
                 if (item is not null)
                 {
-                    var stock = await _stockRepository.ObtenerPorItemVendible(item.Id);
+                    var stock = await stockRepository.ObtenerPorItemVendible(item.Id);
                     stockTotal = stock?.CantidadDisponible ?? 0;
                     stockMinimo = stock?.StockMinimo ?? 0;
                 }

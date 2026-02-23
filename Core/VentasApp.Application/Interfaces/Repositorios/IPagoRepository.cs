@@ -8,4 +8,5 @@ public interface IPagoRepository
     Task<List<Pago>> ObtenerPorVenta(int idVenta);
     Task<Pago?> ObtenerPorId(int idPago);
     Task Eliminar(int idPago);
+    Task Actualizar(Pago pago);
 }

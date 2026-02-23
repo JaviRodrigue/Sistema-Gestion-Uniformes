@@ -7,26 +7,37 @@ using VentasApp.Domain.Modelo.Venta;
 public class ListarVentasUseCase
 {
     private readonly IVentaRepository _ventaRepository;
+    private readonly IClienteRepository _clienteRepository;
 
-    public ListarVentasUseCase(IVentaRepository ventaRepository)
+    public ListarVentasUseCase(IVentaRepository ventaRepository, IClienteRepository clienteRepository)
     {
         _ventaRepository = ventaRepository;
+        _clienteRepository = clienteRepository;
     }
 
     public async Task<List<VentaResumenDto>> EjecutarAsync()
     {
         var ventas = await _ventaRepository.ObtenerTodas();
+        var resultado = new List<VentaResumenDto>();
 
-        return ventas.Select(v => new VentaResumenDto
+        foreach (var v in ventas)
         {
-            Id = v.Id,
-            Codigo = $"V-{v.Id:0000}",
-            Fecha = v.FechaVenta,
-            Total = v.MontoTotal,
-            Restante = v.SaldoPendiente,
-            EstadoVenta = v.Estado.ToString(),
-            EstadoPago = v.SaldoPendiente == 0 ? "Pagado" : "Pendiente"
-        }).ToList();
+            var cliente = await _clienteRepository.ObtenerClientePorVenta(v.Id);
+            
+            resultado.Add(new VentaResumenDto
+            {
+                Id = v.Id,
+                Codigo = $"V-{v.Id:0000}",
+                Fecha = v.FechaVenta,
+                Cliente = cliente?.Nombre ?? "Sin cliente",
+                Total = v.MontoTotal,
+                Restante = v.SaldoPendiente,
+                EstadoVenta = v.Estado.ToString(),
+                EstadoPago = v.SaldoPendiente == 0 ? "Pagado" : "Pendiente"
+            });
+        }
+
+        return resultado;
     }
 
 }

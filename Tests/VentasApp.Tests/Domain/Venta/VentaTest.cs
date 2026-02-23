@@ -63,7 +63,7 @@ using VentasApp.Domain.Base;
 
             venta.Confirmar();
 
-            Assert.Equal(EstadoVenta.Confirmada, venta.Estado);
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
         }
 
         [Fact]
@@ -76,7 +76,7 @@ using VentasApp.Domain.Base;
             venta.RegistrarPago(500);
 
             Assert.Equal(500, venta.MontoPagado);
-            Assert.Equal(EstadoVenta.Confirmada, venta.Estado);
+            Assert.Equal(EstadoVenta.Completada, venta.Estado);
         }
 
         [Fact]
@@ -88,7 +88,7 @@ using VentasApp.Domain.Base;
 
             venta.RegistrarPago(2000);
 
-            Assert.Equal(EstadoVenta.Pagada, venta.Estado);
+            Assert.Equal(EstadoVenta.Completada, venta.Estado);
             Assert.Equal(0, venta.SaldoPendiente);
         }
 
@@ -106,17 +106,53 @@ using VentasApp.Domain.Base;
         }
 
         [Fact]
-        public void AnularVenta_Pagada_LanzaExcepcion()
+        public void AnularVenta_Completada_DeberiaPermitir()
         {
             var venta = new Venta(TipoVenta.Presencial);
             venta.AgregarDetalle(1, 1, 1000);
             venta.Confirmar();
             venta.RegistrarPago(1000);
 
-            var ex = Assert.Throws<ExcepcionDominio>(() =>
-                venta.AnularVenta());
+            venta.AnularVenta();
 
-            Assert.Equal("No se puede anular una venta pagada", ex.Message);
+            Assert.Equal(EstadoVenta.Cancelada, venta.Estado);
+        }
+
+        [Fact]
+        public void ModificarFecha_DeberiaActualizarLaFechaCuandoEsValida()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            var nuevaFecha = DateTime.Now.AddDays(-5);
+
+            venta.ModificarFecha(nuevaFecha);
+
+            Assert.Equal(nuevaFecha.Date, venta.FechaVenta.Date);
+        }
+
+        [Fact]
+        public void ModificarFecha_DeberiaLanzarExcepcionCuandoFechaEsFutura()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            var fechaFutura = DateTime.Now.AddDays(1);
+
+            var ex = Assert.Throws<ExcepcionDominio>(() =>
+                venta.ModificarFecha(fechaFutura));
+
+            Assert.Equal("La fecha de la venta no puede ser futura", ex.Message);
+        }
+
+        [Fact]
+        public void ModificarFecha_DeberiaLanzarExcepcionCuandoVentaEstaCancelada()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.AnularVenta();
+            var nuevaFecha = DateTime.Now.AddDays(-1);
+
+            var ex = Assert.Throws<ExcepcionDominio>(() =>
+                venta.ModificarFecha(nuevaFecha));
+
+            Assert.Equal("No se puede modificar la fecha de una venta cancelada", ex.Message);
         }
 
         [Fact]

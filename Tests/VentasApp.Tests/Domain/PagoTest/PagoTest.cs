@@ -138,4 +138,35 @@ public class PagoTest
         // Assert
         act.Should().Throw<NotSupportedException>();
     }
+
+    [Fact]
+    public void ModificarFecha_DeberiaActualizarLaFechaCuandoEsValida()
+    {
+        // Arrange
+        var pago = new Pago(1, false);
+        var nuevaFecha = DateTime.Now.AddDays(-5);
+
+        // Act
+        pago.ModificarFecha(nuevaFecha);
+
+        // Assert
+        pago.FechaPago.Date.Should().Be(nuevaFecha.Date);
+    }
+
+    [Fact]
+    public void ModificarFecha_DeberiaLanzarExcepcionCuandoFechaEsFutura()
+    {
+        // Arrange
+        var pago = new Pago(1, false);
+        var fechaFutura = DateTime.Now.AddDays(1);
+
+        // Act
+        Action act = () => pago.ModificarFecha(fechaFutura);
+
+        // Assert
+        act.Should()
+            .Throw<ExcepcionDominio>()
+            .WithMessage("La fecha del pago no puede ser futura");
+    }
 }
+

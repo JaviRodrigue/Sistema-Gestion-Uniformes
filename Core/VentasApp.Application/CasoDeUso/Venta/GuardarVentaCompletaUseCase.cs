@@ -1,5 +1,6 @@
 using VentasApp.Application.DTOs.Venta;
 using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Base;
 
 namespace VentasApp.Application.CasoDeUso.Venta;
 
@@ -8,13 +9,17 @@ public class GuardarVentaCompletaUseCase
     private readonly IVentaRepository _ventaRepo;
     private readonly IPagoRepository _pagoRepo;
     private readonly IMedioPagoRepository _medioRepo;
+    private readonly IStockRepository _stockRepo;
+    private readonly IItemVendibleRepository _itemRepo;
     private readonly IUnitOfWork _unitOfWork;
 
-    public GuardarVentaCompletaUseCase(IVentaRepository ventaRepo, IPagoRepository pagoRepo, IMedioPagoRepository medioRepo, IUnitOfWork unit)
+    public GuardarVentaCompletaUseCase(IVentaRepository ventaRepo, IPagoRepository pagoRepo, IMedioPagoRepository medioRepo, IStockRepository stockRepo, IItemVendibleRepository itemRepo, IUnitOfWork unit)
     {
         _ventaRepo = ventaRepo;
         _pagoRepo = pagoRepo;
         _medioRepo = medioRepo;
+        _stockRepo = stockRepo;
+        _itemRepo = itemRepo;
         _unitOfWork = unit;
     }
 
@@ -22,14 +27,96 @@ public class GuardarVentaCompletaUseCase
     {
         var venta = await _ventaRepo.ObtenerPorId(dto.Id) ?? throw new Exception("Venta no encontrada");
 
-        // Manejo detalles
+        // Aplicar cambio de fecha si fue modificada
+        if (dto.Fecha != venta.FechaVenta)
+        {
+            venta.ModificarFecha(dto.Fecha);
+        }
+
+        // Fase 1: Validar disponibilidad de stock para TODOS los ítems antes de realizar cambios
+        foreach (var item in dto.Items)
+        {
+            if (item.IdDetalle == 0)
+            {
+                var stockValidacion = await _stockRepo.ObtenerPorItemVendible(item.IdItemVendible);
+                if (stockValidacion == null)
+                    throw new ExcepcionDominio("No se encontró stock para el producto seleccionado");
+
+                if (stockValidacion.CantidadDisponible < item.Cantidad)
+                {
+                    var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
+                    var nombre = itemVendible?.Nombre ?? "el producto";
+                    if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
+                        nombre = $"{nombre} - Talle {itemVendible.Talle}";
+                    throw new ExcepcionDominio(
+                        $"Stock insuficiente para '{nombre}'.\n\nDisponible: {stockValidacion.CantidadDisponible} unidades\nSolicitado: {item.Cantidad} unidades\n\nPor favor, reduzca la cantidad o verifique el stock disponible.");
+                }
+            }
+            else
+            {
+                var original = venta.Detalles.FirstOrDefault(d => d.Id == item.IdDetalle);
+                if (original is not null && item.Cantidad > original.Cantidad)
+                {
+                    var diferencia = item.Cantidad - original.Cantidad;
+                    var stockValidacion = await _stockRepo.ObtenerPorItemVendible(item.IdItemVendible);
+                    if (stockValidacion == null)
+                        throw new ExcepcionDominio("No se encontró stock para el producto");
+
+                    if (stockValidacion.CantidadDisponible < diferencia)
+                    {
+                        var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
+                        var nombre = itemVendible?.Nombre ?? "el producto";
+                        if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
+                            nombre = $"{nombre} - Talle {itemVendible.Talle}";
+                        throw new ExcepcionDominio(
+                            $"Stock insuficiente para '{nombre}'.\n\nDisponible: {stockValidacion.CantidadDisponible} unidades\nAdicional requerido: {diferencia} unidades\n\nPor favor, ajuste la cantidad.");
+                    }
+                }
+            }
+        }
+
+        // Fase 2: Aplicar cambios (validaciones de stock superadas)
         var existentes = venta.Detalles.Select(d => d.Id).ToList();
 
         foreach (var item in dto.Items)
         {
             if (item.IdDetalle == 0)
             {
-                venta.AgregarDetalle(item.IdItemVendible, item.Cantidad, item.PrecioUnitario);
+                // Verificar stock disponible antes de agregar
+                var stock = await _stockRepo.ObtenerPorItemVendible(item.IdItemVendible);
+                if (stock == null)
+                {
+                    throw new ExcepcionDominio($"No se encontró stock para el producto seleccionado");
+                }
+                
+                // Obtener nombre del producto para mensaje más claro
+                var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
+                var nombreProducto = itemVendible?.Nombre ?? "el producto";
+                if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
+                {
+                    nombreProducto = $"{nombreProducto} - Talle {itemVendible.Talle}";
+                }
+                
+                System.Diagnostics.Debug.WriteLine($"[STOCK] Antes de agregar - ItemVendible: {item.IdItemVendible}, Stock disponible: {stock.CantidadDisponible}, Solicitado: {item.Cantidad}");
+                
+                if (stock.CantidadDisponible < item.Cantidad)
+                {
+                    throw new ExcepcionDominio($"Stock insuficiente para '{nombreProducto}'.\n\nDisponible: {stock.CantidadDisponible} unidades\nSolicitado: {item.Cantidad} unidades\n\nPor favor, reduzca la cantidad o verifique el stock disponible.");
+                }
+                
+                try
+                {
+                    venta.AgregarDetalle(item.IdItemVendible, item.Cantidad, item.PrecioUnitario);
+                    // Descontar del stock
+                    stock.Descontar(item.Cantidad);
+                    await _stockRepo.Actualizar(stock);
+                    
+                    System.Diagnostics.Debug.WriteLine($"[STOCK] Después de agregar - ItemVendible: {item.IdItemVendible}, Stock disponible: {stock.CantidadDisponible}");
+                }
+                catch (ExcepcionDominio ex)
+                {
+                    throw new ExcepcionDominio($"No se puede agregar el producto: {ex.Message}");
+                }
             }
             else
             {
@@ -38,7 +125,51 @@ public class GuardarVentaCompletaUseCase
                 {
                     if (original.Cantidad != item.Cantidad || original.PrecioUnitario != item.PrecioUnitario)
                     {
-                        venta.ModificarDetalle(item.IdDetalle, item.Cantidad, item.PrecioUnitario);
+                        // Si la cantidad cambió, ajustar el stock
+                        if (original.Cantidad != item.Cantidad)
+                        {
+                            var stock = await _stockRepo.ObtenerPorItemVendible(item.IdItemVendible);
+                            if (stock == null)
+                            {
+                                throw new ExcepcionDominio($"No se encontró stock para el producto");
+                            }
+                            
+                            var diferencia = item.Cantidad - original.Cantidad;
+                            
+                            if (diferencia > 0)
+                            {
+                                // Se aumentó la cantidad, verificar stock
+                                if (stock.CantidadDisponible < diferencia)
+                                {
+                                    // Obtener nombre del producto para mensaje más claro
+                                    var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
+                                    var nombreProducto = itemVendible?.Nombre ?? "el producto";
+                                    if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
+                                    {
+                                        nombreProducto = $"{nombreProducto} - Talle {itemVendible.Talle}";
+                                    }
+                                    
+                                    throw new ExcepcionDominio($"Stock insuficiente para '{nombreProducto}'.\n\nDisponible: {stock.CantidadDisponible} unidades\nAdicional requerido: {diferencia} unidades\n\nPor favor, ajuste la cantidad.");
+                                }
+                                stock.Descontar(diferencia);
+                                await _stockRepo.Actualizar(stock);
+                            }
+                            else if (diferencia < 0)
+                            {
+                                // Se redujo la cantidad, devolver al stock
+                                stock.Aumentar(Math.Abs(diferencia));
+                                await _stockRepo.Actualizar(stock);
+                            }
+                        }
+                        
+                        try
+                        {
+                            venta.ModificarDetalle(item.IdDetalle, item.Cantidad, item.PrecioUnitario);
+                        }
+                        catch (ExcepcionDominio ex)
+                        {
+                            throw new ExcepcionDominio($"No se puede modificar el producto: {ex.Message}");
+                        }
                     }
                     
                     // Actualizar estado de entrega
@@ -61,7 +192,26 @@ public class GuardarVentaCompletaUseCase
 
         foreach (var idToRemove in existentes)
         {
-            venta.EliminarDetalle(idToRemove);
+            // Devolver el stock antes de eliminar
+            var detalleAEliminar = venta.Detalles.FirstOrDefault(d => d.Id == idToRemove);
+            if (detalleAEliminar != null)
+            {
+                var stock = await _stockRepo.ObtenerPorItemVendible(detalleAEliminar.IdItemVendible);
+                if (stock != null)
+                {
+                    stock.Aumentar(detalleAEliminar.Cantidad);
+                    await _stockRepo.Actualizar(stock);
+                }
+            }
+            
+            try
+            {
+                venta.EliminarDetalle(idToRemove);
+            }
+            catch (ExcepcionDominio ex)
+            {
+                throw new ExcepcionDominio($"No se puede eliminar el producto: {ex.Message}");
+            }
         }
 
         // Manejo pagos
@@ -73,6 +223,12 @@ public class GuardarVentaCompletaUseCase
         foreach (var pagoDto in dto.Pagos.Where(p => p.Id == 0))
         {
             var pago = new VentasApp.Domain.Modelo.Pago.Pago(venta.Id, false);
+            
+            if (pagoDto.FechaPago != default && pagoDto.FechaPago != pago.FechaPago)
+            {
+                pago.ModificarFecha(pagoDto.FechaPago);
+            }
+            
             foreach (var metodo in pagoDto.Metodos)
             {
                 var medio = await _medioRepo.ObtenerPorId(metodo.IdMedioPago) ?? throw new Exception("Medio de pago invalido");
@@ -83,7 +239,16 @@ public class GuardarVentaCompletaUseCase
             {
                 pago.MarcarComoVerificado();
             }
-            venta.RegistrarPago(pago.Total);
+            
+            try
+            {
+                venta.RegistrarPago(pago.Total);
+            }
+            catch (ExcepcionDominio ex)
+            {
+                throw new ExcepcionDominio($"No se puede registrar el pago: {ex.Message}");
+            }
+            
             await _pagoRepo.Agregar(pago);
         }
 
@@ -93,6 +258,17 @@ public class GuardarVentaCompletaUseCase
         {
             // eliminar pago
             await _pagoRepo.Eliminar(idEl);
+        }
+
+        // Actualizar fechas de pagos existentes si fueron modificadas
+        foreach (var pagoDto in dto.Pagos.Where(p => p.Id > 0))
+        {
+            var pagoExistente = pagosPersistidos.FirstOrDefault(p => p.Id == pagoDto.Id);
+            if (pagoExistente != null && pagoExistente.FechaPago != pagoDto.FechaPago)
+            {
+                pagoExistente.ModificarFecha(pagoDto.FechaPago);
+                await _pagoRepo.Actualizar(pagoExistente);
+            }
         }
 
         // Calcular el total pagado teniendo en cuenta pagos persistidos (excluyendo los eliminados)

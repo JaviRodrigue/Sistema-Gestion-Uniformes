@@ -5,6 +5,8 @@ using VentasApp.Desktop.ViewModels.Ventas;
 using VentasApp.Application.CasoDeUso.DetalleVenta;
 using System.Collections.ObjectModel;
 using VentasApp.Application.DTOs.Productos;
+using CommunityToolkit.Mvvm.Messaging;
+using VentasApp.Desktop.Messages;
 
 namespace VentasApp.Desktop.Views.Ventas;
 
@@ -40,7 +42,11 @@ namespace VentasApp.Desktop.Views.Ventas;
                 var productos = scopedDb.ItemVendible.Select(iv => new VentasApp.Application.DTOs.Productos.ListadoProductoDto
                                 {
                                     Id = iv.Id,
-                                    Nombre = iv.Producto != null ? iv.Producto.Nombre : iv.CodigoBarra,
+                                    Nombre = iv.Producto != null 
+                                        ? (string.IsNullOrWhiteSpace(iv.Talle) 
+                                            ? iv.Producto.Nombre 
+                                            : $"{iv.Producto.Nombre} - Talle {iv.Talle}")
+                                        : iv.CodigoBarra,
                                     PrecioVenta = iv.Producto != null ? iv.Producto.PrecioVenta : 0m
                                 }).ToList();
 
@@ -50,6 +56,9 @@ namespace VentasApp.Desktop.Views.Ventas;
                 vm.Productos.Clear();
                 foreach (var p in productos)
                     vm.Productos.Add(p);
+                
+                // Actualizar nombres de productos existentes para incluir talle
+                vm.ActualizarNombresProductos();
             }
             
             // nothing to do here during construction
@@ -123,6 +132,26 @@ namespace VentasApp.Desktop.Views.Ventas;
         {
             try
             {
+                await GuardarVentaAsync();
+            }
+            catch
+            {
+                // Las excepciones ya fueron manejadas y mostradas en GuardarVentaAsync
+                // Este catch solo previene que las excepciones lleguen al manejador global
+            }
+        }
+
+        private async Task GuardarVentaAsync()
+        {
+            try
+            {
+                // Validar que la venta esté en un estado editable
+                if (_dto.Estado == VentasApp.Domain.Enum.EstadoVenta.Cancelada)
+                {
+                    MessageBox.Show("No se puede modificar una venta cancelada.", "Venta cancelada", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
+                }
+
                 // Ensure any in-progress edits are committed before reading DTOs.
                 // Move focus away from current editor then commit DataGrid edits.
                 try
@@ -155,6 +184,7 @@ namespace VentasApp.Desktop.Views.Ventas;
                     Id = _dto.Id,
                     Codigo = _dto.Codigo,
                     Cliente = _dto.Cliente,
+                    Fecha = _dto.Fecha,
                     Items = _dto.Items.Select(i => new VentasApp.Application.DTOs.Venta.VentaItemDto
                     {
                         IdDetalle = i.IdDetalle,
@@ -213,12 +243,26 @@ namespace VentasApp.Desktop.Views.Ventas;
                     // ignore failures here; refresh is best-effort
                 }
 
+                WeakReferenceMessenger.Default.Send(new StockChangedMessage());
+
                 DialogResult = true;
                 Close();
             }
+            catch (VentasApp.Domain.Base.ExcepcionDominio ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"[EXCEPCION CAPTURADA] ExcepcionDominio: {ex.Message}");
+                try { ItemsDataGrid.CancelEdit(); } catch { }
+                try { PagosDataGrid.CancelEdit(); } catch { }
+                MessageBox.Show(ex.Message, "Validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                // No cerrar la ventana, permitir al usuario corregir
+            }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Error al guardar detalle", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Diagnostics.Debug.WriteLine($"[EXCEPCION CAPTURADA] Exception: {ex.Message}");
+                try { ItemsDataGrid.CancelEdit(); } catch { }
+                try { PagosDataGrid.CancelEdit(); } catch { }
+                MessageBox.Show($"Error inesperado: {ex.Message}", "Error al guardar", MessageBoxButton.OK, MessageBoxImage.Error);
+                // No cerrar la ventana, permitir al usuario corregir
             }
         }
 

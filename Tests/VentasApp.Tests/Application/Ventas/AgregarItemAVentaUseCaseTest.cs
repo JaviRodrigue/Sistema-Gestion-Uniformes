@@ -4,15 +4,20 @@ using VentasApp.Application.CasoDeUso.Venta;
 using VentasApp.Application.DTOs.Venta;
 using VentasApp.Application.Interfaces.Repositorios;
 using VentasApp.Domain.Modelo.Venta;
+using VentasApp.Domain.Modelo.Productos;
 
 public class AgregarItemAVentaUseCaseTests
 {
     private readonly Mock<IVentaRepository> _ventaRepoMock;
+    private readonly Mock<IStockRepository> _stockRepoMock;
+    private readonly Mock<IItemVendibleRepository> _itemRepoMock;
     private readonly Mock<IUnitOfWork> _unitOfWorkMock;
 
     public AgregarItemAVentaUseCaseTests()
     {
         _ventaRepoMock = new Mock<IVentaRepository>();
+        _stockRepoMock = new Mock<IStockRepository>();
+        _itemRepoMock = new Mock<IItemVendibleRepository>();
         _unitOfWorkMock = new Mock<IUnitOfWork>();
     }
 
@@ -21,13 +26,20 @@ public class AgregarItemAVentaUseCaseTests
     {
         // Arrange
         var venta = new Venta(VentasApp.Domain.Enum.TipoVenta.Presencial);
+        var stock = new Stock(1, 10, 2);
 
         _ventaRepoMock
             .Setup(r => r.ObtenerPorId(It.IsAny<int>()))
             .ReturnsAsync(venta);
 
+        _stockRepoMock
+            .Setup(r => r.ObtenerPorItemVendible(It.IsAny<int>()))
+            .ReturnsAsync(stock);
+
         var useCase = new AgregarItemAVentaUseCase(
             _ventaRepoMock.Object,
+            _stockRepoMock.Object,
+            _itemRepoMock.Object,
             _unitOfWorkMock.Object
         );
 
@@ -44,6 +56,7 @@ public class AgregarItemAVentaUseCaseTests
         // Assert
         Assert.Single(venta.Detalles);
         Assert.Equal(200, venta.MontoTotal);
+        Assert.Equal(8, stock.CantidadDisponible);
 
         _unitOfWorkMock.Verify(u => u.SaveChanges(), Times.Once);
     }
@@ -57,11 +70,56 @@ public class AgregarItemAVentaUseCaseTests
 
         var useCase = new AgregarItemAVentaUseCase(
             _ventaRepoMock.Object,
+            _stockRepoMock.Object,
+            _itemRepoMock.Object,
             _unitOfWorkMock.Object
         );
 
         await Assert.ThrowsAsync<Exception>(() =>
             useCase.EjecutarAsync(1, new AgregarDetalleDto())
         );
+    }
+
+    [Fact]
+    public async Task AgregarItem_StockInsuficiente_LanzaExcepcionDominio()
+    {
+        // Arrange
+        var venta = new Venta(VentasApp.Domain.Enum.TipoVenta.Presencial);
+        var stock = new Stock(1, 5, 2);
+        var itemVendible = new ItemVendible(1, "Remera", "PROD-001", "L");
+
+        _ventaRepoMock
+            .Setup(r => r.ObtenerPorId(It.IsAny<int>()))
+            .ReturnsAsync(venta);
+
+        _stockRepoMock
+            .Setup(r => r.ObtenerPorItemVendible(It.IsAny<int>()))
+            .ReturnsAsync(stock);
+
+        _itemRepoMock
+            .Setup(r => r.ObtenerItem(It.IsAny<int>()))
+            .ReturnsAsync(itemVendible);
+
+        var useCase = new AgregarItemAVentaUseCase(
+            _ventaRepoMock.Object,
+            _stockRepoMock.Object,
+            _itemRepoMock.Object,
+            _unitOfWorkMock.Object
+        );
+
+        var dto = new AgregarDetalleDto
+        {
+            IdItemVendible = 1,
+            Cantidad = 10,
+            PrecioUnitario = 100
+        };
+
+        // Act & Assert
+        var ex = await Assert.ThrowsAsync<VentasApp.Domain.Base.ExcepcionDominio>(() =>
+            useCase.EjecutarAsync(1, dto)
+        );
+
+        Assert.Contains("Stock insuficiente", ex.Message);
+        Assert.Equal(5, stock.CantidadDisponible);
     }
 }

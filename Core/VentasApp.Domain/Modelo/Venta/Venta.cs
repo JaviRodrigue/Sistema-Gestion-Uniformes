@@ -37,11 +37,11 @@ public class Venta : Entidad
         this.MontoPagado = montoPagado;
         this.SaldoPendiente = this.MontoTotal - this.MontoPagado;
 
-        if (this.MontoPagado >= this.MontoTotal && this.MontoTotal > 0)
+        if (this.MontoPagado >= this.MontoTotal && this.MontoTotal > 0 && Estado != EstadoVenta.Cancelada)
         {
-            this.Estado = EstadoVenta.Pagada;
+            this.Estado = EstadoVenta.Completada;
         }
-        else if (this.Estado == EstadoVenta.Pagada && this.MontoPagado < this.MontoTotal)
+        else if (this.Estado == EstadoVenta.Completada && this.MontoPagado < this.MontoTotal)
         {
             this.Estado = EstadoVenta.Pendiente;
         }
@@ -71,10 +71,7 @@ public class Venta : Entidad
 
     public void AgregarDetalle(int itemVendible, int cantidad, decimal precioUnitario)
     {
-        if (Estado != EstadoVenta.Pendiente)
-        {
-            throw new ExcepcionDominio("Solo se puede agregar items a una venta pendiente");
-        }
+        
         
         var detalle = new DetalleVenta(itemVendible,cantidad,precioUnitario);
         _detalles.Add(detalle);
@@ -91,7 +88,6 @@ public class Venta : Entidad
         {
             throw new ExcepcionDominio("La venta debe tener al menos un item");
         }
-        this.Estado = EstadoVenta.Confirmada;
     }
 
     public void RegistrarPago(decimal monto)
@@ -114,16 +110,15 @@ public class Venta : Entidad
         
         if(this.MontoPagado >= this.MontoTotal)
         {
-            this.Estado = EstadoVenta.Pagada;
+            this.Estado = EstadoVenta.Completada;
         }
     }
 
     public void AnularVenta()
     {
-        
-        if(this.Estado == EstadoVenta.Pagada)
+        if(this.Estado == EstadoVenta.Cancelada)
         {
-            throw new ExcepcionDominio("No se puede anular una venta pagada");
+            throw new ExcepcionDominio("La venta ya está cancelada");
         }
 
         this.Estado = EstadoVenta.Cancelada;
@@ -177,17 +172,10 @@ public class Venta : Entidad
         var detalle = _detalles.FirstOrDefault(d => d.Id == idDetalle) ?? throw new ExcepcionDominio("El detalle no existe");
         detalle.DesmarcarEntrega();
         
-        // Si la venta estaba Completada y se desmarca un item, volver al estado previo
+        // Si la venta estaba Completada y se desmarca un item, volver a Pendiente
         if (Estado == EstadoVenta.Completada)
         {
-            if (MontoPagado >= MontoTotal && MontoTotal > 0)
-            {
-                Estado = EstadoVenta.Pagada;
-            }
-            else
-            {
-                Estado = EstadoVenta.Confirmada;
-            }
+            Estado = EstadoVenta.Pendiente;
         }
     }
 
@@ -204,16 +192,23 @@ public class Venta : Entidad
         }
         else if (Estado == EstadoVenta.Completada)
         {
-            // Si no todos están entregados pero estaba Completada, volver a estado apropiado
-            if (MontoPagado >= MontoTotal && MontoTotal > 0)
-            {
-                Estado = EstadoVenta.Pagada;
-            }
-            else
-            {
-                Estado = EstadoVenta.Confirmada;
-            }
+            Estado = EstadoVenta.Pendiente;
         }
+    }
+
+    public void ModificarFecha(DateTime nuevaFecha)
+    {
+        if (Estado == EstadoVenta.Cancelada)
+        {
+            throw new ExcepcionDominio("No se puede modificar la fecha de una venta cancelada");
+        }
+
+        if (nuevaFecha > DateTime.Now)
+        {
+            throw new ExcepcionDominio("La fecha de la venta no puede ser futura");
+        }
+
+        this.FechaVenta = nuevaFecha;
     }
 
 }

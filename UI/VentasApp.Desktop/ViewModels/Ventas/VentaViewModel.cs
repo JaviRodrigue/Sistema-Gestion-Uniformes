@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ using VentasApp.Application.Interfaces.Repositorios;
 using VentasApp.Desktop.ViewModels;
 using VentasApp.Desktop.ViewModels.DTOs;
 using VentasApp.Desktop.Views.Ventas;
+using VentasApp.Desktop.Messages;
 using VentasApp.Infrastructure.Persistencia.Contexto;
 
 namespace VentasApp.Desktop.ViewModels.Ventas;
@@ -53,6 +55,7 @@ public partial class VentaViewModel : ObservableObject, IBuscable
             Id = v.Id,
             Codigo = v.Codigo,
             Fecha = v.Fecha,
+            Cliente = v.Cliente,
             EstadoVenta = v.EstadoVenta,
             EstadoPago = v.EstadoPago,
             Total = v.Total,
@@ -134,8 +137,6 @@ public partial class VentaViewModel : ObservableObject, IBuscable
         if (detalle is null) return;
 
         var uiDetalle = MapDetalle(detalle);
-        uiDetalle.Id = detalle.Id;
-        // Resolve the GuardarDetalle usecase from transient scope and pass it to the window
         var guardar = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
         var win = new DetalleVentaWindow(uiDetalle, guardar);
         var result = win.ShowDialog();
@@ -156,6 +157,9 @@ public partial class VentaViewModel : ObservableObject, IBuscable
         using var scope = _provider.CreateScope();
         var anular = scope.ServiceProvider.GetRequiredService<AnularVentaUseCase>();
         await anular.EjecutarAsync(card.Id);
+        
+        WeakReferenceMessenger.Default.Send(new StockChangedMessage());
+        
         await CargarAsync();
     }
 
@@ -163,9 +167,12 @@ public partial class VentaViewModel : ObservableObject, IBuscable
     {
         return new VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto
         {
+            Id = src.Id,
             Codigo = src.Codigo,
+            Fecha = src.Fecha,
             Cliente = src.Cliente,
             IdCliente = src.IdCliente,
+            Estado = src.Estado,
             // FechaEstimada no existe en el DTO de aplicación
             Items = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaItemDto>(
                 src.Items.Select(i => new VentasApp.Desktop.ViewModels.DTOs.VentaItemDto
@@ -213,7 +220,6 @@ public partial class VentaViewModel : ObservableObject, IBuscable
 
             // 3. Mapear
             var uiDetalle = MapDetalle(detalle);
-            uiDetalle.Id = detalle.Id;
 
             // 4. Abrir ventana directamente
             var guardar = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();

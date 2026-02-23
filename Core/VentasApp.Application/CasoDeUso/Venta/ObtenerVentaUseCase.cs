@@ -34,8 +34,10 @@ public class ObtenerVentaUseCase
         {
             Id = v.Id,
             Codigo = $"V-{v.Id:0000}",
+            Fecha = v.FechaVenta,
             Cliente = clienteVenta?.Nombre ?? string.Empty,
             IdCliente = clienteVenta?.Id ?? 0,
+            Estado = v.Estado,
             Total = v.MontoTotal,
             Restante = v.SaldoPendiente,
             Items = v.Detalles.Select(d => new VentaItemDto
@@ -57,7 +59,10 @@ public class ObtenerVentaUseCase
                 var iv = await _itemRepository.ObtenerItem(item.IdItemVendible);
                 if (iv != null)
                 {
-                    item.Descripcion = iv.Nombre ?? iv.CodigoBarra ?? $"Item {iv.Id}";
+                    var nombreBase = iv.Nombre ?? iv.CodigoBarra ?? $"Item {iv.Id}";
+                    item.Descripcion = string.IsNullOrWhiteSpace(iv.Talle) 
+                        ? nombreBase 
+                        : $"{nombreBase} - Talle {iv.Talle}";
                 }
             }
         }
