@@ -30,6 +30,20 @@ public partial class VentaViewModel : ObservableObject, IBuscable
     [ObservableProperty]
     private ObservableCollection<VentaCardDto> _ventas = new();
 
+    [ObservableProperty]
+    private string _filtroEstadoVenta = "Todas";
+
+    [ObservableProperty]
+    private string _filtroEstadoPago = "Todos";
+
+    public List<string> FiltrosEstadoVenta { get; } = new() { "Todas", "Pendiente", "Confirmada", "Completada", "Cancelada" };
+    public List<string> FiltrosEstadoPago { get; } = new() { "Todos", "Pendiente", "Pagada" };
+
+    partial void OnFiltroEstadoVentaChanged(string value) => AplicarFiltros();
+    partial void OnFiltroEstadoPagoChanged(string value) => AplicarFiltros();
+
+    private List<VentaCardDto> _ventasBusqueda = new();
+
     public VentaViewModel(IServiceProvider provider)
     {
         _provider = provider;
@@ -62,7 +76,21 @@ public partial class VentaViewModel : ObservableObject, IBuscable
             Restante = v.Restante
         }).ToList();
 
-        Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas);
+        _ventasBusqueda = _todasLasVentas.ToList();
+        AplicarFiltros();
+    }
+
+    private void AplicarFiltros()
+    {
+        var filtrados = _ventasBusqueda.AsEnumerable();
+        
+        if (FiltroEstadoVenta != "Todas")
+            filtrados = filtrados.Where(v => v.EstadoVenta == FiltroEstadoVenta);
+            
+        if (FiltroEstadoPago != "Todos")
+            filtrados = filtrados.Where(v => v.EstadoPago == FiltroEstadoPago);
+
+        Ventas = new ObservableCollection<VentaCardDto>(filtrados);
     }
 
     // ================= IBuscable =================
@@ -71,44 +99,70 @@ public partial class VentaViewModel : ObservableObject, IBuscable
     {
         if (string.IsNullOrWhiteSpace(texto)) { await RestablecerAsync(); return; }
 
+        var textoLower = texto.ToLowerInvariant();
         var esNumero = texto.All(char.IsDigit);
+        var resultados = new HashSet<VentaCardDto>();
 
         if (esNumero)
         {
-            if (texto.Length < 5)
+            // Buscar por ID de venta
+            if (int.TryParse(texto, out var id))
             {
-                var id = int.Parse(texto);
-                Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas.Where(v => v.Id == id));
+                var porId = _todasLasVentas.FirstOrDefault(v => v.Id == id);
+                if (porId != null) resultados.Add(porId);
             }
-            else
+            
+            // Buscar por DNI o Teléfono del cliente
+            var idsPorCliente = await ObtenerIdsVentasPorClienteAsync(async repo =>
             {
-                var ids = await ObtenerIdsVentasPorClienteAsync(async repo =>
-                {
-                    var porDni = await repo.ObtenerClientePorDni(texto);
-                    var porTel = await repo.ObtenerClientePorTelefono(texto);
-                    return new[] { porDni, porTel }
-                        .Where(c => c is not null)
-                        .DistinctBy(c => c!.Id)
-                        .Select(c => c!.Id)
-                        .ToList();
-                });
-                Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas.Where(v => ids.Contains(v.Id)));
-            }
-        }
-        else
-        {
-            var ids = await ObtenerIdsVentasPorClienteAsync(async repo =>
-            {
-                var clientes = await repo.BuscarPorNombre(texto);
-                return clientes.Select(c => c.Id).ToList();
+                var porDni = await repo.ObtenerClientePorDni(texto);
+                var porTel = await repo.ObtenerClientePorTelefono(texto);
+                return new[] { porDni, porTel }
+                    .Where(c => c is not null)
+                    .DistinctBy(c => c!.Id)
+                    .Select(c => c!.Id)
+                    .ToList();
             });
-            Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas.Where(v => ids.Contains(v.Id)));
+            
+            foreach (var v in _todasLasVentas.Where(v => idsPorCliente.Contains(v.Id)))
+            {
+                resultados.Add(v);
+            }
         }
+        
+        // Buscar por código de venta, nombre de cliente, estado de venta o estado de pago
+        var porTexto = _todasLasVentas.Where(v => 
+            v.Codigo.Contains(texto, StringComparison.OrdinalIgnoreCase) ||
+            v.Cliente.Contains(texto, StringComparison.OrdinalIgnoreCase) ||
+            v.EstadoVenta.Contains(texto, StringComparison.OrdinalIgnoreCase) ||
+            v.EstadoPago.Contains(texto, StringComparison.OrdinalIgnoreCase)
+        );
+        
+        foreach (var v in porTexto)
+        {
+            resultados.Add(v);
+        }
+        
+        // Buscar por nombre de cliente en la base de datos (por si el nombre en la tarjeta está incompleto)
+        var idsPorNombreCliente = await ObtenerIdsVentasPorClienteAsync(async repo =>
+        {
+            var clientes = await repo.BuscarPorNombre(texto);
+            return clientes.Select(c => c.Id).ToList();
+        });
+        
+        foreach (var v in _todasLasVentas.Where(v => idsPorNombreCliente.Contains(v.Id)))
+        {
+            resultados.Add(v);
+        }
+
+        _ventasBusqueda = resultados.ToList();
+        AplicarFiltros();
     }
 
     public Task RestablecerAsync()
     {
-        Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas);
+        _ventasBusqueda = _todasLasVentas.ToList();
+        AplicarFiltros();
         return Task.CompletedTask;
     }
 

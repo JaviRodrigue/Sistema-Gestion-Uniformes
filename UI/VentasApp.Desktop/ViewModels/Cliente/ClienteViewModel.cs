@@ -23,6 +23,15 @@ public partial class ClienteViewModel : ObservableObject, IBuscable
     [ObservableProperty]
     private ObservableCollection<ClienteCardDto> _clientes;
 
+    [ObservableProperty]
+    private string _filtroDeuda = "Todos";
+
+    public List<string> FiltrosDeuda { get; } = new() { "Todos", "Con Deuda", "Sin Deuda" };
+
+    partial void OnFiltroDeudaChanged(string value) => AplicarFiltros();
+
+    private List<ClienteCardDto> _todosLosClientes = new();
+
     public ClienteViewModel(
         VentasApp.Application.Interfaces.Repositorios.IClienteRepository clienteRepository,
         VentasApp.Application.CasoDeUso.Cliente.ActualizarClienteCasoDeUso actualizarClienteCasoDeUso,
@@ -182,31 +191,32 @@ public partial class ClienteViewModel : ObservableObject, IBuscable
     {
         if (string.IsNullOrWhiteSpace(texto)) { await RecargarAsync(); return; }
 
+        var textoLower = texto.ToLowerInvariant();
         var esNumero = texto.All(char.IsDigit);
-        List<VentasApp.Domain.Modelo.Cliente.Cliente> resultados;
+        List<VentasApp.Domain.Modelo.Cliente.Cliente> resultados = new();
 
         if (esNumero)
         {
-            if (texto.Length < 5)
+            // Buscar por ID, DNI o Teléfono
+            if (int.TryParse(texto, out var id))
             {
-                var c = await _clienteRepository.ObtenerClientePorId(int.Parse(texto));
-                resultados = c is null ? [] : [c];
+                var c = await _clienteRepository.ObtenerClientePorId(id);
+                if (c != null) resultados.Add(c);
             }
-            else
-            {
-                var porDni = await _clienteRepository.ObtenerClientePorDni(texto);
-                var porTelefono = await _clienteRepository.ObtenerClientePorTelefono(texto);
-                resultados = new[] { porDni, porTelefono }
-                    .Where(c => c is not null)
-                    .DistinctBy(c => c!.Id)
-                    .Select(c => c!)
-                    .ToList();
-            }
+            
+            var porDni = await _clienteRepository.ObtenerClientePorDni(texto);
+            if (porDni != null) resultados.Add(porDni);
+            
+            var porTelefono = await _clienteRepository.ObtenerClientePorTelefono(texto);
+            if (porTelefono != null) resultados.Add(porTelefono);
         }
-        else
-        {
-            resultados = await _clienteRepository.BuscarPorNombre(texto);
-        }
+        
+        // Siempre buscar por nombre, incluso si es número (podría ser un nombre con números)
+        var porNombre = await _clienteRepository.BuscarPorNombre(texto);
+        resultados.AddRange(porNombre);
+
+        // Eliminar duplicados
+        resultados = resultados.DistinctBy(c => c.Id).ToList();
 
         await MapearClientes(resultados);
     }
@@ -265,6 +275,19 @@ public partial class ClienteViewModel : ObservableObject, IBuscable
             });
         }
 
-        Clientes = new ObservableCollection<ClienteCardDto>(mapped);
+        _todosLosClientes = mapped;
+        AplicarFiltros();
+    }
+
+    private void AplicarFiltros()
+    {
+        var filtrados = _todosLosClientes.AsEnumerable();
+        
+        if (FiltroDeuda == "Con Deuda")
+            filtrados = filtrados.Where(c => c.DeudaTotal > 0);
+        else if (FiltroDeuda == "Sin Deuda")
+            filtrados = filtrados.Where(c => c.DeudaTotal <= 0);
+
+        Clientes = new ObservableCollection<ClienteCardDto>(filtrados);
     }
 }

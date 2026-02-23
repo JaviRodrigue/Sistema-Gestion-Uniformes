@@ -34,6 +34,20 @@ namespace VentasApp.Desktop.ViewModels.Productos
         [ObservableProperty]
         private ObservableCollection<ProductoCardDto> _productos;
 
+        [ObservableProperty]
+        private string _filtroCategoria = "Todas";
+
+        [ObservableProperty]
+        private string _filtroStock = "Todos";
+
+        public List<string> FiltrosCategoria { get; } = new() { "Todas", "Uniforme", "Libreria" };
+        public List<string> FiltrosStock { get; } = new() { "Todos", "Bajo Stock", "Con Stock" };
+
+        partial void OnFiltroCategoriaChanged(string value) => AplicarFiltros();
+        partial void OnFiltroStockChanged(string value) => AplicarFiltros();
+
+        private List<ProductoCardDto> _productosBusqueda = new();
+
         public ProductoViewModel(
             IServiceProvider serviceProvider,
             VentasApp.Application.Interfaces.Repositorios.IProductoRepository productoRepository,
@@ -81,37 +95,50 @@ namespace VentasApp.Desktop.ViewModels.Productos
         {
             if (string.IsNullOrWhiteSpace(texto)) { await RestablecerAsync(); return; }
 
+            var textoLower = texto.ToLowerInvariant();
             var esNumero = texto.All(char.IsDigit);
+            var resultados = new HashSet<ProductoCardDto>();
 
             if (esNumero)
             {
-                if (texto.Length < 5)
+                // Buscar por ID
+                if (int.TryParse(texto, out var id))
                 {
-                    var id = int.Parse(texto);
-                    Productos = new ObservableCollection<ProductoCardDto>(
-                        _todosLosProductos.Where(p => p.Id == id));
+                    var porId = _todosLosProductos.FirstOrDefault(p => p.Id == id);
+                    if (porId != null) resultados.Add(porId);
                 }
-                else
+                
+                // Buscar por código de barras
+                var item = await _itemVendibleRepository.ObtenerItemPorCodigoBarra(texto);
+                if (item != null)
                 {
-                    var item = await _itemVendibleRepository.ObtenerItemPorCodigoBarra(texto);
-                    var resultado = item is not null
-                        ? _todosLosProductos.Where(p => p.Id == item.IdProducto).ToList()
-                        : new List<ProductoCardDto>();
-                    Productos = new ObservableCollection<ProductoCardDto>(resultado);
+                    var porCodigo = _todosLosProductos.FirstOrDefault(p => p.Id == item.IdProducto);
+                    if (porCodigo != null) resultados.Add(porCodigo);
                 }
             }
-            else
+            
+            // Buscar por nombre, categoría o talle
+            var porTexto = _todosLosProductos.Where(p => 
+                p.Nombre.Contains(texto, System.StringComparison.OrdinalIgnoreCase) ||
+                p.Categoria.Contains(texto, System.StringComparison.OrdinalIgnoreCase) ||
+                (p.Talle != null && p.Talle.Contains(texto, System.StringComparison.OrdinalIgnoreCase)) ||
+                p.CodigoBarraReferencia.Contains(texto, System.StringComparison.OrdinalIgnoreCase)
+            );
+            
+            foreach (var p in porTexto)
             {
-                Productos = new ObservableCollection<ProductoCardDto>(
-                    _todosLosProductos.Where(p =>
-                        p.Nombre.Contains(texto, System.StringComparison.OrdinalIgnoreCase)));
+                resultados.Add(p);
             }
+
+            _productosBusqueda = resultados.ToList();
+            AplicarFiltros();
         }
 
 
         public Task RestablecerAsync()
         {
-            Productos = new ObservableCollection<ProductoCardDto>(_todosLosProductos);
+            _productosBusqueda = _todosLosProductos.ToList();
+            AplicarFiltros();
             return Task.CompletedTask;
         }
 
@@ -380,7 +407,27 @@ namespace VentasApp.Desktop.ViewModels.Productos
             }
 
             _todosLosProductos = result;
-            Productos = new ObservableCollection<ProductoCardDto>(_todosLosProductos);
+            _productosBusqueda = _todosLosProductos.ToList();
+            AplicarFiltros();
+        }
+
+        private void AplicarFiltros()
+        {
+            var filtrados = _productosBusqueda.AsEnumerable();
+            
+            if (FiltroCategoria != "Todas")
+            {
+                // Handle the accent difference in the data vs filter
+                var catFilter = FiltroCategoria == "Libreria" ? "Librería" : FiltroCategoria;
+                filtrados = filtrados.Where(p => p.Categoria == catFilter);
+            }
+                
+            if (FiltroStock == "Bajo Stock")
+                filtrados = filtrados.Where(p => p.StockTotal <= p.StockMinimo);
+            else if (FiltroStock == "Con Stock")
+                filtrados = filtrados.Where(p => p.StockTotal > p.StockMinimo);
+
+            Productos = new ObservableCollection<ProductoCardDto>(filtrados);
         }
     }
 }

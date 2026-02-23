@@ -142,7 +142,18 @@ Background="{DynamicResource SecondaryPastel}">
                     Click="OnAgregarClienteClick">
                 <StackPanel Orientation="Horizontal">
                     <materialDesign:PackIcon Kind="AccountSearch" Width="16" Height="16" Margin="0,0,6,0" Foreground="{DynamicResource TextOnDark}"/>
-                    <TextBlock Text="Agregar Cliente" Foreground="{DynamicResource TextOnDark}"/>
+                    <TextBlock Foreground="{DynamicResource TextOnDark}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="Cambiar Cliente"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Cliente}" Value="">
+                                        <Setter Property="Text" Value="Agregar Cliente"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
                 </StackPanel>
             </Button>
         </Grid>
