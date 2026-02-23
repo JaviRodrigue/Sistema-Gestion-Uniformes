@@ -53,7 +53,7 @@ namespace VentasApp.Desktop.Views.Productos {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/VentasApp.Desktop;V1.0.0.0;component/views/productos/productoviewtest.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/VentasApp.Desktop;component/views/productos/productoviewtest.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Productos\ProductoViewTest.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

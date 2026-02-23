@@ -55,7 +55,7 @@ namespace VentasApp.Desktop.Views.Config {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/VentasApp.Desktop;V1.0.0.0;component/views/config/configview.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/VentasApp.Desktop;component/views/config/configview.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Config\ConfigView.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

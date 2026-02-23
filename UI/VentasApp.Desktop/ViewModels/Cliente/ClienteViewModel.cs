@@ -56,14 +56,14 @@ public partial class ClienteViewModel : ObservableObject, IBuscable
 
         // Prefill fields
         (win.FindName("TxtNombre") as System.Windows.Controls.TextBox)!.Text = cliente.Nombre;
-        (win.FindName("TxtDni") as System.Windows.Controls.TextBox)!.Text = cliente.Dni;
+        (win.FindName("TxtDni") as System.Windows.Controls.TextBox)!.Text = cliente.Instagram;
         (win.FindName("TxtTelefonos") as System.Windows.Controls.TextBox)!.Text = cliente.Telefonos;
 
         var ok = win.ShowDialog();
         if (ok == true)
         {
             var nombre = (win.FindName("TxtNombre") as System.Windows.Controls.TextBox)?.Text?.Trim() ?? cliente.Nombre;
-            var dni = (win.FindName("TxtDni") as System.Windows.Controls.TextBox)?.Text?.Trim() ?? cliente.Dni;
+            var instagram = (win.FindName("TxtDni") as System.Windows.Controls.TextBox)?.Text?.Trim() ?? cliente.Instagram;
             var telefonosStr = (win.FindName("TxtTelefonos") as System.Windows.Controls.TextBox)?.Text ?? cliente.Telefonos ?? string.Empty;
 
             var telefonos = string.IsNullOrWhiteSpace(telefonosStr)
@@ -74,7 +74,7 @@ public partial class ClienteViewModel : ObservableObject, IBuscable
             {
                 Id = cliente.Id,
                 Nombre = nombre,
-                Dni = dni,
+                Instagram = instagram,
                 Telefonos = telefonos
             };
 
@@ -179,10 +179,10 @@ public partial class ClienteViewModel : ObservableObject, IBuscable
         if (ok == true)
         {
             var nombre = win.FindName("TxtNombre") is System.Windows.Controls.TextBox t1 ? t1.Text?.Trim() : string.Empty;
-            var dni = win.FindName("TxtDni") is System.Windows.Controls.TextBox t2 ? t2.Text?.Trim() : string.Empty;
+            var instagram = win.FindName("TxtDni") is System.Windows.Controls.TextBox t2 ? t2.Text?.Trim() : null;
             var telefonosStr = win.FindName("TxtTelefonos") is System.Windows.Controls.TextBox t3 ? t3.Text : string.Empty;
 
-            var cliente = new VentasApp.Domain.Modelo.Cliente.Cliente(nombre, dni);
+            var cliente = new VentasApp.Domain.Modelo.Cliente.Cliente(nombre, string.IsNullOrWhiteSpace(instagram) ? null : instagram);
             var numeros = string.IsNullOrWhiteSpace(telefonosStr)
                 ? Enumerable.Empty<string>()
                 : telefonosStr
@@ -209,21 +209,20 @@ public partial class ClienteViewModel : ObservableObject, IBuscable
         var esNumero = texto.All(char.IsDigit);
         List<VentasApp.Domain.Modelo.Cliente.Cliente> resultados = new();
 
-        if (esNumero)
+        // Buscar por ID si es número
+        if (esNumero && int.TryParse(texto, out var id))
         {
-            // Buscar por ID, DNI o Teléfono
-            if (int.TryParse(texto, out var id))
-            {
-                var c = await _clienteRepository.ObtenerClientePorId(id);
-                if (c != null) resultados.Add(c);
-            }
-            
-            var porDni = await _clienteRepository.ObtenerClientePorDni(texto);
-            if (porDni != null) resultados.Add(porDni);
-            
-            var porTelefono = await _clienteRepository.ObtenerClientePorTelefono(texto);
-            if (porTelefono != null) resultados.Add(porTelefono);
+            var c = await _clienteRepository.ObtenerClientePorId(id);
+            if (c != null) resultados.Add(c);
         }
+        
+        // Buscar por Instagram (parcial)
+        var porInstagram = await _clienteRepository.BuscarPorInstagram(texto);
+        resultados.AddRange(porInstagram);
+        
+        // Buscar por Teléfono (parcial)
+        var porTelefono = await _clienteRepository.ObtenerClientePorTelefono(texto);
+        if (porTelefono != null) resultados.Add(porTelefono);
         
         // Siempre buscar por nombre, incluso si es número (podría ser un nombre con números)
         var porNombre = await _clienteRepository.BuscarPorNombre(texto);
@@ -281,7 +280,7 @@ public partial class ClienteViewModel : ObservableObject, IBuscable
             {
                 Id = c.Id,
                 Nombre = c.Nombre ?? string.Empty,
-                Dni = c.DNI ?? string.Empty,
+                Instagram = c.Instagram ?? string.Empty,
                 Telefonos = string.Join(" / ", (c.Telefonos ?? new List<VentasApp.Domain.Modelo.Cliente.Telefono>()).Select(t => t.Numero)),
                 DeudaTotal = deudaTotal,
                 UltimasCompras = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaResumenDto>(ventas),

@@ -35,8 +35,8 @@
                         <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="10,0">
                             <TextBlock Text="{Binding Nombre}" FontWeight="Bold" FontSize="16" Foreground="{DynamicResource TextDark}"/>
                             <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="CardAccountDetails" Width="14" Height="14" Foreground="{DynamicResource TextMuted}"/>
-                                <TextBlock Text="{Binding Dni}" Margin="5,0,10,0" Foreground="{DynamicResource TextMuted}"/>
+                                <materialDesign:PackIcon Kind="Instagram" Width="14" Height="14" Foreground="{DynamicResource TextMuted}"/>
+                                <TextBlock Text="{Binding Instagram}" Margin="5,0,10,0" Foreground="{DynamicResource TextMuted}"/>
 
                                 <materialDesign:PackIcon Kind="Phone" Width="14" Height="14" Foreground="{DynamicResource TextMuted}"/>
                                 <TextBlock Text="{Binding Telefonos}" Margin="5,0,0,0" Foreground="{DynamicResource TextMuted}"/>

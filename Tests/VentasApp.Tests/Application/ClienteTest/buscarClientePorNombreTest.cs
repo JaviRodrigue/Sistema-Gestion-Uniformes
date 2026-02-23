@@ -19,7 +19,7 @@ public class BuscarClientePorNombreTest
     {
         // Arrange
         var repoMock = new Mock<IClienteRepository>();
-        var cliente = new Cliente("Juan", "44048885");
+        var cliente = new Cliente("Juan", "@juan");
         typeof(Entidad)
             .GetProperty("Id", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
             .SetValue(cliente, 1);
@@ -40,7 +40,7 @@ public class BuscarClientePorNombreTest
         var dto = resultado.First();
         dto.Id.Should().Be(1);
         dto.Nombre.Should().Be("Juan");
-        dto.Dni.Should().Be("44048885");
+        dto.Instagram.Should().Be("@juan");
     }
 
     [Fact]

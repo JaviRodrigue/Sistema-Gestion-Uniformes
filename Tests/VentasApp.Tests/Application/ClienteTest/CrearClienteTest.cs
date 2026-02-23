@@ -28,7 +28,7 @@ public class CrearClienteTest
         var dto = new CrearClienteDto
         {
             Nombre = "Juan",
-            Dni = "44048885",
+            Instagram = "@juan",
             Telefonos = ["1234567890"]
         };
 
@@ -36,7 +36,7 @@ public class CrearClienteTest
         await crearClienteCasoDeUso.EjecutarAsync(dto);
 
         //assert
-        repoMock.Verify(r => r.Agregar(It.Is<Cliente>(c => c.Nombre == dto.Nombre && c.DNI == dto.Dni)), Times.Once);
+        repoMock.Verify(r => r.Agregar(It.Is<Cliente>(c => c.Nombre == dto.Nombre && c.Instagram == dto.Instagram)), Times.Once);
         unitMock.Verify(u => u.SaveChanges(), Times.Once);
     }
 
@@ -54,7 +54,7 @@ public class CrearClienteTest
         var dto = new CrearClienteDto
         {
             Nombre = "Ana",
-            Dni = "12345678",
+            Instagram = "@ana",
             Telefonos = null
         };
 
@@ -62,7 +62,7 @@ public class CrearClienteTest
         await crearClienteCasoDeUso.EjecutarAsync(dto);
 
         //assert
-        repoMock.Verify(r => r.Agregar(It.Is<Cliente>(c => c.Nombre == dto.Nombre && c.DNI == dto.Dni)), Times.Once);
+        repoMock.Verify(r => r.Agregar(It.Is<Cliente>(c => c.Nombre == dto.Nombre && c.Instagram == dto.Instagram)), Times.Once);
         unitMock.Verify(u => u.SaveChanges(), Times.Once);
     }
 

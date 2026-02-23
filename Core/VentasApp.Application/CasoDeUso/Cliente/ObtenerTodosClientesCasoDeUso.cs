@@ -22,7 +22,7 @@ public class ObtenerTodosClientesCasoDeUso(IClienteRepository repo)
                 {
                     Id = c.Id,
                     Nombre = c.Nombre,
-                    Dni = c.DNI,
+                    Instagram = c.Instagram,
                     Telefonos = c.Telefonos?.Select(t => t.Numero).ToList(),
                     FechaAlta = c.FechaAlta
                 };

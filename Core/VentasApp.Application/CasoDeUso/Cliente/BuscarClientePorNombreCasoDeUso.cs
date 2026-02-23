@@ -23,7 +23,7 @@ public class BuscarClientePorNombreCasoDeUso(IClienteRepository repo)
         var resultado = clientes.Select(cliente => new BuscarClienteDTO
         {
             Id = cliente.Id,
-            Dni = cliente.DNI,
+            Instagram = cliente.Instagram,
             Nombre = cliente.Nombre,
             Telefonos = cliente.Telefonos?.Select(t => t.Numero).ToList(),
             FechaAlta = cliente.FechaAlta

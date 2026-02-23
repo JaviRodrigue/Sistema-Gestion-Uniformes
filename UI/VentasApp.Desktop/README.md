@@ -156,8 +156,12 @@ Representa variantes de producto (ej. talles, colores) con código de barras ún
 - ✅ Botón "NUEVO PRODUCTO" (modal)
 - ✅ Editar producto (botón en tarjeta)
 - ✅ Eliminar producto (botón en tarjeta)
+- ✅ Gestión de ItemVendibles (variantes con talles)
+- ✅ Gestión de stock por ItemVendible
 - ✅ Filtrado por categoría (visual)
 - ✅ Badge de stock agotado
+- ✅ Ajuste de stock mínimo
+- ✅ Actualización automática de stock en ventas
 
 ### Vista de Clientes
 - ✅ Listado de clientes en tarjetas expandibles
@@ -166,6 +170,27 @@ Representa variantes de producto (ej. talles, colores) con código de barras ún
 - ✅ Eliminar cliente (botón en tarjeta)
 - ✅ Identificación visual de deudores
 - ✅ Historial de compras por cliente
+- ✅ Asignación de cliente a ventas
+- ✅ Búsqueda por nombre, DNI y teléfono
+
+### Vista de Ventas
+- ✅ Listado de ventas en tarjetas
+- ✅ Crear nueva venta (abre modal automáticamente)
+- ✅ Ver/editar detalle de venta (modal)
+- ✅ Anular venta (devuelve stock)
+- ✅ Gestión de items de venta con validación de stock
+- ✅ Gestión de pagos múltiples
+- ✅ Cálculo automático de totales y saldos
+- ✅ Estados de venta (Pendiente, Pagada, Cancelada)
+- ✅ Marcado de items como entregados
+- ✅ Búsqueda por ID, cliente (nombre, DNI, teléfono)
+- ✅ Validación de stock en tiempo real
+- ✅ Mensajes de error amigables
+
+### Configuración
+- ✅ Tema claro/oscuro
+- ✅ Persistencia de preferencias
+- ✅ Paleta de colores adaptativa
 
 ### Formularios Modales
 
@@ -287,16 +312,6 @@ dotnet run
 - Click en botón "Editar" (azul) en tarjeta → abre modal de edición
 - Click en botón "Eliminar" (rojo) en tarjeta → confirma y elimina
 
-## 🔄 Próximas Implementaciones
-
-- [ ] Conectar ViewModels a casos de uso reales (UseCase)
-- [ ] Implementar Repository pattern para persistencia
-- [ ] Agregar validaciones de negocio desde dominio
-- [ ] Implementar búsqueda y filtros avanzados
-- [ ] Gestión de stock por ItemVendible
-- [ ] Módulo de Ventas y DetalleVenta
-- [ ] Reportes y estadísticas
-- [ ] Gestión de categorías desde UI
 
 ## 📚 Referencias
 
@@ -307,9 +322,10 @@ dotnet run
 ## 👥 Equipo
 
 - **Frontend:** Juanchi (branch: `frontend-juanchi`)
+- **Frontend:** Javier (branch: `frontend-javi`)
 - **Repository:** [Sistema-Gestion-Uniformes](https://github.com/JaviRodrigue/Sistema-Gestion-Uniformes)
 
 ---
 
 **Versión:** 1.0.0  
-**Última actualización:** 2024
+**Última actualización:** 2026

@@ -19,8 +19,7 @@ public class ActualizarClienteCasoDeUso(IClienteRepository repo, IUnitOfWork uni
         if (!string.IsNullOrWhiteSpace(dto.Nombre))
             cliente.CambiarNombre(dto.Nombre);
 
-        if (!string.IsNullOrWhiteSpace(dto.Dni))
-            cliente.CambiarDni(dto.Dni);
+        cliente.CambiarInstagram(dto.Instagram);
 
         if (dto.Telefonos != null)
             cliente.ReemplazarTelefonos(dto.Telefonos);

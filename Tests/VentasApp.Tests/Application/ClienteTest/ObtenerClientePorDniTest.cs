@@ -18,19 +18,19 @@ public class ObtenerClientePorDniTest
     {
         // Arrange
         var repoMock = new Mock<IClienteRepository>();
-        var cliente = new Cliente("Juan", "44048885");
+        var cliente = new Cliente("Juan", "@juan");
 
-        repoMock.Setup(r => r.ObtenerClientePorDni("44048885"))
+        repoMock.Setup(r => r.ObtenerClientePorDni("@juan"))
                 .ReturnsAsync(cliente);
 
         var obtenerClientePorDniCasoDeUso = new ObtenerClientePorDniCasoDeUso(repoMock.Object);
 
         // Act
-        var resultado = await obtenerClientePorDniCasoDeUso.EjecutarAsync("44048885");
+        var resultado = await obtenerClientePorDniCasoDeUso.EjecutarAsync("@juan");
 
         // Assert
         resultado.Nombre.Should().Be("Juan");
-        resultado.Dni.Should().Be("44048885");
+        resultado.Instagram.Should().Be("@juan");
     }
 
     [Fact]

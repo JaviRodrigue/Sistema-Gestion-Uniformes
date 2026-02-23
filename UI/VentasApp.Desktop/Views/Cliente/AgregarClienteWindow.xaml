@@ -34,7 +34,7 @@
                                  Margin="0,0,0,12"/>
 
                         <TextBox x:Name="TxtDni"
-                                 materialDesign:HintAssist.Hint="DNI / CUIT (obligatorio)"
+                                 materialDesign:HintAssist.Hint="Instagram (opcional)"
                                  Style="{StaticResource CustomOutlinedTextBox}"
                                  Margin="0,0,0,12"/>
 

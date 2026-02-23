@@ -1,12 +1,10 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Core",
-    "\\Core\\VentasApp.Application",
-    "\\Core\\VentasApp.Domain",
     "\\UI",
-    "\\UI\\VentasApp.Desktop"
+    "\\UI\\VentasApp.Desktop",
+    "\\UI\\VentasApp.Desktop\\Views"
   ],
-  "SelectedNode": "\\UI\\VentasApp.Desktop\\App.xaml",
+  "SelectedNode": "\\VentasApp.sln",
   "PreviewInSolutionExplorer": false
 }

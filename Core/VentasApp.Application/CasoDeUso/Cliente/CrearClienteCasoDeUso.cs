@@ -12,7 +12,7 @@ public class CrearClienteCasoDeUso(IClienteRepository repo, IUnitOfWork unit)
 
     public async Task EjecutarAsync(CrearClienteDto dto)
     {
-        var cliente = new VentasApp.Domain.Modelo.Cliente.Cliente(dto.Nombre, dto.Dni);
+        var cliente = new VentasApp.Domain.Modelo.Cliente.Cliente(dto.Nombre, dto.Instagram);
         if (dto.Telefonos != null && dto.Telefonos.Count != 0)
         {
             cliente.ReemplazarTelefonos(dto.Telefonos);

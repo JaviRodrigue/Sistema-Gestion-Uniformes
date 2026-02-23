@@ -4,7 +4,7 @@ namespace VentasApp.Domain.Modelo.Cliente;
 
 public class Cliente : Entidad
 {
-    public string? DNI { get; private set; }
+    public string? Instagram { get; private set; }
     public string? Nombre { get; private set; }
     public DateTime FechaAlta { get; private set; }
     public List<Telefono> Telefonos { get; private set; }
@@ -16,19 +16,19 @@ public class Cliente : Entidad
         Activado = true;
     }
 
-    public Cliente(string nombre, string dni)
+    public Cliente(string nombre, string? instagram = null)
     {
         this.Nombre = nombre;
-        this.DNI = dni;
+        this.Instagram = instagram;
         this.FechaAlta = DateTime.Now;
         this.Telefonos = [];
         Activado = true;
     }
 
-    public Cliente(string nombre, string dni, List<Telefono> telefonos)
+    public Cliente(string nombre, List<Telefono> telefonos, string? instagram = null)
     {
         this.Nombre = nombre;
-        this.DNI = dni;
+        this.Instagram = instagram;
         this.FechaAlta = DateTime.Now;
         this.Telefonos = telefonos ?? [];
         Activado = true;
@@ -41,10 +41,9 @@ public class Cliente : Entidad
         Nombre = nombre;
     }
 
-    public void CambiarDni(string dni)
+    public void CambiarInstagram(string? instagram)
     {
-        if (string.IsNullOrWhiteSpace(dni)) throw new ArgumentException("DNI inválido", nameof(dni));
-        DNI = dni;
+        Instagram = instagram;
     }
 
     public void AgregarTelefono(string numero)

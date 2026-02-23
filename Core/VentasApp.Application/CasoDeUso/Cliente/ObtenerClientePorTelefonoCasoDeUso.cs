@@ -19,7 +19,7 @@ public class ObtenerClientePorTelefonoCasoDeUso(IClienteRepository repo)
         {
             Id = cliente.Id,
             Nombre = cliente.Nombre,
-            Dni = cliente.DNI,
+            Instagram = cliente.Instagram,
             Telefonos = cliente.Telefonos?.Select(t => t.Numero).ToList(),
             FechaAlta = cliente.FechaAlta
         };

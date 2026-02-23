@@ -7,7 +7,7 @@ public class ClienteCardDto
 {
     public int Id { get; set; }
     public string Nombre { get; set; }
-    public string Dni { get; set; }
+    public string Instagram { get; set; }
     public string Telefonos { get; set; } // Ej: "11223344 / 55667788" (Concatenados)
     public decimal DeudaTotal { get; set; } // Calculado desde el backend
     public bool TieneDeuda => DeudaTotal > 0;

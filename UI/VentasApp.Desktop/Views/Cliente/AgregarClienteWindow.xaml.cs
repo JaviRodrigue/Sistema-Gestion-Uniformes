@@ -11,9 +11,9 @@ namespace VentasApp.Desktop.Views.Cliente
 
         private void OnGuardarClick(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(TxtNombre.Text) || string.IsNullOrWhiteSpace(TxtDni.Text))
+            if (string.IsNullOrWhiteSpace(TxtNombre.Text))
             {
-                MessageBox.Show("Complete Nombre y DNI/CUIT", "Datos incompletos", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Complete el Nombre", "Datos incompletos", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             DialogResult = true;

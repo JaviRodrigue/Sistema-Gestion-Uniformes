@@ -23,7 +23,7 @@ public class ActualizarClienteTest
         var repoMock = new Mock<IClienteRepository>();
         var unitMock = new Mock<IUnitOfWork>();
 
-        var clienteExistente = new Cliente("Juan", "44048885");
+        var clienteExistente = new Cliente("Juan", "@juan");
         typeof(Entidad)
             .GetProperty("Id", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
             .SetValue(clienteExistente, 1);
@@ -47,7 +47,7 @@ public class ActualizarClienteTest
         await actualizarClienteCasoDeUso.EjecutarAsync(dtoActualizacion);
 
         //assert: debe haberse llamado a Actualizar
-        repoMock.Verify(r => r.Actualizar(It.Is<Cliente>(c => c.Nombre == dtoActualizacion.Nombre && c.DNI == clienteExistente.DNI)), Times.Once);
+        repoMock.Verify(r => r.Actualizar(It.Is<Cliente>(c => c.Nombre == dtoActualizacion.Nombre && c.Instagram == clienteExistente.Instagram)), Times.Once);
         unitMock.Verify(u => u.SaveChanges(), Times.Once);
 
 
@@ -81,7 +81,7 @@ public class ActualizarClienteTest
         var repoMock = new Mock<IClienteRepository>();
         var unitMock = new Mock<IUnitOfWork>();
 
-        var clienteExistente = new Cliente("Juan", "44048885");
+        var clienteExistente = new Cliente("Juan", "@juan");
         typeof(Entidad)
             .GetProperty("Id", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public)!
             .SetValue(clienteExistente, 1);
@@ -90,7 +90,7 @@ public class ActualizarClienteTest
         {
             Id = 1,
             Nombre = "Pedro",
-            Dni = "99999999",
+            Instagram = "@pedro",
             Telefonos = ["555", "666"]
         };
 
@@ -104,7 +104,7 @@ public class ActualizarClienteTest
         await actualizarClienteCasoDeUso.EjecutarAsync(dtoActualizacion);
 
         // Assert: verificar que se llamó a Actualizar con los cambios aplicados
-        repoMock.Verify(r => r.Actualizar(It.Is<Cliente>(c => c.Nombre == dtoActualizacion.Nombre && c.DNI == dtoActualizacion.Dni && c.Telefonos.Any(t => t.Numero == "555") && c.Telefonos.Any(t => t.Numero == "666"))), Times.Once);
+        repoMock.Verify(r => r.Actualizar(It.Is<Cliente>(c => c.Nombre == dtoActualizacion.Nombre && c.Instagram == dtoActualizacion.Instagram && c.Telefonos.Any(t => t.Numero == "555") && c.Telefonos.Any(t => t.Numero == "666"))), Times.Once);
         unitMock.Verify(u => u.SaveChanges(), Times.Once);
     }
 }

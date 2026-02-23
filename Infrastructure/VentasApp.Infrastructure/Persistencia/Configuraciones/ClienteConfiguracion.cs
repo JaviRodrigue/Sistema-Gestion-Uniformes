@@ -12,10 +12,10 @@ public class ClienteConfiguracion : IEntityTypeConfiguration<Cliente>
             builder.Property(c => c.Id)
                   .HasColumnName("id_cliente")
                   .ValueGeneratedOnAdd();
-            builder.Property(c => c.DNI)
-                  .HasColumnName("dni")
-                  .HasColumnType("BIGINT")
-                  .IsRequired();
+            builder.Property(c => c.Instagram)
+                  .HasColumnName("instagram")
+                  .HasColumnType("VARCHAR(100)")
+                  .IsRequired(false);
             builder.Property(c => c.Nombre)
                   .HasColumnName("nombre")
                   .HasColumnType("VARCHAR(50)")

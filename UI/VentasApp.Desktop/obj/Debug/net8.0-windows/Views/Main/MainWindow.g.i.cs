@@ -106,7 +106,7 @@ namespace VentasApp.Desktop.Views.Main {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/VentasApp.Desktop;V1.0.0.0;component/views/main/mainwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/VentasApp.Desktop;component/views/main/mainwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\Views\Main\MainWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

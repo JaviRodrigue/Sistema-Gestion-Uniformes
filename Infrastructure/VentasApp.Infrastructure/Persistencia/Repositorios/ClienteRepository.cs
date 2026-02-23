@@ -39,19 +39,23 @@ public class ClienteRepository(DatabaseContext context) : IClienteRepository
             .FirstOrDefaultAsync(c => c.Id == id && c.Activado);
     }
 
-    public async Task<Cliente?> ObtenerClientePorDni(string dni)
+    public async Task<Cliente?> ObtenerClientePorDni(string instagram)
     {
-        var str = dni.ToString();
+        if (string.IsNullOrWhiteSpace(instagram)) return null;
+        
+        var str = instagram.ToString();
         return await _context.Clientes
             .Include(c => c.Telefonos)
-            .FirstOrDefaultAsync(c => c.DNI == str && c.Activado);
+            .FirstOrDefaultAsync(c => c.Instagram != null && c.Instagram == str && c.Activado);
     }
 
     public async Task<Cliente?> ObtenerClientePorTelefono(string telefono)
     {
+        if (string.IsNullOrWhiteSpace(telefono)) return null;
+        
         return await _context.Clientes
             .Include(c => c.Telefonos)
-            .FirstOrDefaultAsync(c => c.Activado && c.Telefonos.Any(t => t.Numero == telefono && t.Activado));
+            .FirstOrDefaultAsync(c => c.Activado && c.Telefonos.Any(t => t.Numero.Contains(telefono) && t.Activado));
     }
 
     public async Task<List<Cliente>> BuscarPorNombre(string nombre)
@@ -59,6 +63,17 @@ public class ClienteRepository(DatabaseContext context) : IClienteRepository
         var q = nombre?.Trim().ToLower() ?? string.Empty;
         return await _context.Clientes
             .Where(c => c.Activado && c.Nombre != null && EF.Functions.Like(c.Nombre.ToLower(), $"%{q}%"))
+            .Include(c => c.Telefonos)
+            .ToListAsync();
+    }
+    
+    public async Task<List<Cliente>> BuscarPorInstagram(string instagram)
+    {
+        if (string.IsNullOrWhiteSpace(instagram)) return new List<Cliente>();
+        
+        var q = instagram.Trim().ToLower();
+        return await _context.Clientes
+            .Where(c => c.Activado && c.Instagram != null && EF.Functions.Like(c.Instagram.ToLower(), $"%{q}%"))
             .Include(c => c.Telefonos)
             .ToListAsync();
     }

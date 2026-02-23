@@ -18,14 +18,14 @@ public class ClienteTest
     {
         // Arrange
         string nombre = "Juan Perez";
-        string dni = "12345678";
+        string instagram = "@juanperez";
 
         // Act
-        var cliente = new Cliente(nombre, dni);
+        var cliente = new Cliente(nombre, instagram);
 
         // Assert
         cliente.Nombre.Should().Be(nombre);
-        cliente.DNI.Should().Be(dni);
+        cliente.Instagram.Should().Be(instagram);
         cliente.Activado.Should().BeTrue();
         cliente.Telefonos.Should().BeEmpty();
         cliente.FechaAlta.Should().BeCloseTo(DateTime.Now, TimeSpan.FromSeconds(1));
@@ -40,7 +40,7 @@ public class ClienteTest
                                               // aquí probamos el constructor que acepta la lista, aunque la lista venga vacía o pre-llenada externamente.
 
         // Act
-        var cliente = new Cliente("Juan", "123", telefonos);
+        var cliente = new Cliente("Juan", telefonos, "@juan");
 
         // Assert
         cliente.Telefonos.Should().NotBeNull();
@@ -76,27 +76,23 @@ public class ClienteTest
     }
 
     [Fact]
-    public void CambiarDni_Valido_DeberiaActualizarDni()
+    public void CambiarInstagram_Valido_DeberiaActualizarInstagram()
     {
         var cliente = ClienteValido();
 
-        cliente.CambiarDni("87654321");
+        cliente.CambiarInstagram("@nuevoinstagram");
 
-        cliente.DNI.Should().Be("87654321");
+        cliente.Instagram.Should().Be("@nuevoinstagram");
     }
 
-    [Theory]
-    [InlineData("")]
-    [InlineData(" ")]
-    [InlineData(null)]
-    public void CambiarDni_Invalido_DeberiaLanzarExcepcion(string? dniInvalido)
+    [Fact]
+    public void CambiarInstagram_Nulo_DeberiaPermitirlo()
     {
         var cliente = ClienteValido();
 
-        Action act = () => cliente.CambiarDni(dniInvalido!);
+        cliente.CambiarInstagram(null);
 
-        act.Should().Throw<ArgumentException>()
-            .WithMessage("*DNI inválido*");
+        cliente.Instagram.Should().BeNull();
     }
 
     // =============================
@@ -204,6 +200,6 @@ public class ClienteTest
 
     private static Cliente ClienteValido()
     {
-        return new Cliente("Cliente Test", "99999999");
+        return new Cliente("Cliente Test", "@clientetest");
     }
 }
