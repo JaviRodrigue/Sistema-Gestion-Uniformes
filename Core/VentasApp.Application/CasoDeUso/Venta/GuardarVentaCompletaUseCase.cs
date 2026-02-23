@@ -25,6 +25,8 @@ public class GuardarVentaCompletaUseCase
 
     public async Task EjecutarAsync(VentaDetalleDto dto)
     {
+        System.Diagnostics.Debug.WriteLine($"[GUARDAR_VENTA_COMPLETA] Inicio - VentaId: {dto.Id}, Items: {dto.Items.Count}");
+        
         var venta = await _ventaRepo.ObtenerPorId(dto.Id) ?? throw new Exception("Venta no encontrada");
 
         // Aplicar cambio de fecha si fue modificada
@@ -33,90 +35,75 @@ public class GuardarVentaCompletaUseCase
             venta.ModificarFecha(dto.Fecha);
         }
 
-        // Fase 1: Validar disponibilidad de stock para TODOS los ítems antes de realizar cambios
+        System.Diagnostics.Debug.WriteLine("[GUARDAR_VENTA_COMPLETA] Iniciando validación de stock");
+        
+        // PRE-VALIDAR todo el stock ANTES de hacer cualquier cambio
+        // Esto evita que el DbContext quede en estado inconsistente si falla
         foreach (var item in dto.Items)
         {
             if (item.IdDetalle == 0)
             {
-                var stockValidacion = await _stockRepo.ObtenerPorItemVendible(item.IdItemVendible);
-                if (stockValidacion == null)
+                // Nuevo item: validar stock completo
+                var stock = await _stockRepo.ObtenerPorItemVendible(item.IdItemVendible);
+                if (stock == null)
                     throw new ExcepcionDominio("No se encontró stock para el producto seleccionado");
 
-                if (stockValidacion.CantidadDisponible < item.Cantidad)
+                System.Diagnostics.Debug.WriteLine($"[VALIDACION] ItemVendible: {item.IdItemVendible}, Disponible: {stock.CantidadDisponible}, Solicitado: {item.Cantidad}");
+
+                if (stock.CantidadDisponible < item.Cantidad)
                 {
                     var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
                     var nombre = itemVendible?.Nombre ?? "el producto";
                     if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
                         nombre = $"{nombre} - Talle {itemVendible.Talle}";
-                    throw new ExcepcionDominio(
-                        $"Stock insuficiente para '{nombre}'.\n\nDisponible: {stockValidacion.CantidadDisponible} unidades\nSolicitado: {item.Cantidad} unidades\n\nPor favor, reduzca la cantidad o verifique el stock disponible.");
+                    
+                    System.Diagnostics.Debug.WriteLine($"[VALIDACION] Stock insuficiente detectado - Lanzando ExcepcionDominio");
+                    throw new ExcepcionDominio($"Stock insuficiente para '{nombre}'.\n\nDisponible: {stock.CantidadDisponible} unidades\nSolicitado: {item.Cantidad} unidades\n\nPor favor, reduzca la cantidad o verifique el stock disponible.");
                 }
             }
             else
             {
+                // Item existente: validar solo si aumenta la cantidad
                 var original = venta.Detalles.FirstOrDefault(d => d.Id == item.IdDetalle);
                 if (original is not null && item.Cantidad > original.Cantidad)
                 {
                     var diferencia = item.Cantidad - original.Cantidad;
-                    var stockValidacion = await _stockRepo.ObtenerPorItemVendible(item.IdItemVendible);
-                    if (stockValidacion == null)
+                    var stock = await _stockRepo.ObtenerPorItemVendible(item.IdItemVendible);
+                    if (stock == null)
                         throw new ExcepcionDominio("No se encontró stock para el producto");
 
-                    if (stockValidacion.CantidadDisponible < diferencia)
+                    if (stock.CantidadDisponible < diferencia)
                     {
                         var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
                         var nombre = itemVendible?.Nombre ?? "el producto";
                         if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
                             nombre = $"{nombre} - Talle {itemVendible.Talle}";
-                        throw new ExcepcionDominio(
-                            $"Stock insuficiente para '{nombre}'.\n\nDisponible: {stockValidacion.CantidadDisponible} unidades\nAdicional requerido: {diferencia} unidades\n\nPor favor, ajuste la cantidad.");
+                        throw new ExcepcionDominio($"Stock insuficiente para '{nombre}'.\n\nDisponible: {stock.CantidadDisponible} unidades\nAdicional requerido: {diferencia} unidades\n\nPor favor, ajuste la cantidad.");
                     }
                 }
             }
         }
 
-        // Fase 2: Aplicar cambios (validaciones de stock superadas)
+        // Todas las validaciones pasaron, proceder con los cambios
         var existentes = venta.Detalles.Select(d => d.Id).ToList();
 
         foreach (var item in dto.Items)
         {
             if (item.IdDetalle == 0)
             {
-                // Verificar stock disponible antes de agregar
                 var stock = await _stockRepo.ObtenerPorItemVendible(item.IdItemVendible);
                 if (stock == null)
                 {
                     throw new ExcepcionDominio($"No se encontró stock para el producto seleccionado");
                 }
                 
-                // Obtener nombre del producto para mensaje más claro
-                var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
-                var nombreProducto = itemVendible?.Nombre ?? "el producto";
-                if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
-                {
-                    nombreProducto = $"{nombreProducto} - Talle {itemVendible.Talle}";
-                }
+                System.Diagnostics.Debug.WriteLine($"[STOCK] Agregando detalle - ItemVendible: {item.IdItemVendible}, Stock disponible: {stock.CantidadDisponible}, Cantidad: {item.Cantidad}");
                 
-                System.Diagnostics.Debug.WriteLine($"[STOCK] Antes de agregar - ItemVendible: {item.IdItemVendible}, Stock disponible: {stock.CantidadDisponible}, Solicitado: {item.Cantidad}");
+                venta.AgregarDetalle(item.IdItemVendible, item.Cantidad, item.PrecioUnitario);
+                stock.Descontar(item.Cantidad);
+                await _stockRepo.Actualizar(stock);
                 
-                if (stock.CantidadDisponible < item.Cantidad)
-                {
-                    throw new ExcepcionDominio($"Stock insuficiente para '{nombreProducto}'.\n\nDisponible: {stock.CantidadDisponible} unidades\nSolicitado: {item.Cantidad} unidades\n\nPor favor, reduzca la cantidad o verifique el stock disponible.");
-                }
-                
-                try
-                {
-                    venta.AgregarDetalle(item.IdItemVendible, item.Cantidad, item.PrecioUnitario);
-                    // Descontar del stock
-                    stock.Descontar(item.Cantidad);
-                    await _stockRepo.Actualizar(stock);
-                    
-                    System.Diagnostics.Debug.WriteLine($"[STOCK] Después de agregar - ItemVendible: {item.IdItemVendible}, Stock disponible: {stock.CantidadDisponible}");
-                }
-                catch (ExcepcionDominio ex)
-                {
-                    throw new ExcepcionDominio($"No se puede agregar el producto: {ex.Message}");
-                }
+                System.Diagnostics.Debug.WriteLine($"[STOCK] Después de agregar - Stock disponible: {stock.CantidadDisponible}");
             }
             else
             {
@@ -136,40 +123,32 @@ public class GuardarVentaCompletaUseCase
                             
                             var diferencia = item.Cantidad - original.Cantidad;
                             
+                            System.Diagnostics.Debug.WriteLine($"[STOCK] Modificando cantidad - Diferencia: {diferencia}, Stock disponible: {stock.CantidadDisponible}");
+                            
                             if (diferencia > 0)
                             {
-                                // Se aumentó la cantidad, verificar stock
-                                if (stock.CantidadDisponible < diferencia)
+                                try
                                 {
-                                    // Obtener nombre del producto para mensaje más claro
-                                    var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
-                                    var nombreProducto = itemVendible?.Nombre ?? "el producto";
-                                    if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
-                                    {
-                                        nombreProducto = $"{nombreProducto} - Talle {itemVendible.Talle}";
-                                    }
-                                    
-                                    throw new ExcepcionDominio($"Stock insuficiente para '{nombreProducto}'.\n\nDisponible: {stock.CantidadDisponible} unidades\nAdicional requerido: {diferencia} unidades\n\nPor favor, ajuste la cantidad.");
+                                    stock.Descontar(diferencia);
                                 }
-                                stock.Descontar(diferencia);
+                                catch (ExcepcionDominio ex) when (ex.Message.Contains("Stock insuficiente"))
+                                {
+                                    var itemVendible = await _itemRepo.ObtenerItem(item.IdItemVendible);
+                                    var nombre = itemVendible?.Nombre ?? "el producto";
+                                    if (!string.IsNullOrWhiteSpace(itemVendible?.Talle))
+                                        nombre = $"{nombre} - Talle {itemVendible.Talle}";
+                                    throw new ExcepcionDominio($"Stock insuficiente para '{nombre}'.\n\nDisponible: {stock.CantidadDisponible} unidades\nAdicional requerido: {diferencia} unidades\n\nPor favor, ajuste la cantidad.");
+                                }
                                 await _stockRepo.Actualizar(stock);
                             }
                             else if (diferencia < 0)
                             {
-                                // Se redujo la cantidad, devolver al stock
                                 stock.Aumentar(Math.Abs(diferencia));
                                 await _stockRepo.Actualizar(stock);
                             }
                         }
                         
-                        try
-                        {
-                            venta.ModificarDetalle(item.IdDetalle, item.Cantidad, item.PrecioUnitario);
-                        }
-                        catch (ExcepcionDominio ex)
-                        {
-                            throw new ExcepcionDominio($"No se puede modificar el producto: {ex.Message}");
-                        }
+                        venta.ModificarDetalle(item.IdDetalle, item.Cantidad, item.PrecioUnitario);
                     }
                     
                     // Actualizar estado de entrega
@@ -204,14 +183,7 @@ public class GuardarVentaCompletaUseCase
                 }
             }
             
-            try
-            {
-                venta.EliminarDetalle(idToRemove);
-            }
-            catch (ExcepcionDominio ex)
-            {
-                throw new ExcepcionDominio($"No se puede eliminar el producto: {ex.Message}");
-            }
+            venta.EliminarDetalle(idToRemove);
         }
 
         // Manejo pagos
@@ -240,14 +212,7 @@ public class GuardarVentaCompletaUseCase
                 pago.MarcarComoVerificado();
             }
             
-            try
-            {
-                venta.RegistrarPago(pago.Total);
-            }
-            catch (ExcepcionDominio ex)
-            {
-                throw new ExcepcionDominio($"No se puede registrar el pago: {ex.Message}");
-            }
+            venta.RegistrarPago(pago.Total);
             
             await _pagoRepo.Agregar(pago);
         }

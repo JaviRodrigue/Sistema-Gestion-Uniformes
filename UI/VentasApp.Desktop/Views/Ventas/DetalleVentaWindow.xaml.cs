@@ -132,12 +132,24 @@ namespace VentasApp.Desktop.Views.Ventas;
         {
             try
             {
+                System.Diagnostics.Debug.WriteLine("[GUARDAR_CLICK] Iniciando GuardarVentaAsync");
                 await GuardarVentaAsync();
+                System.Diagnostics.Debug.WriteLine("[GUARDAR_CLICK] GuardarVentaAsync completado exitosamente");
             }
-            catch
+            catch (Exception ex)
             {
-                // Las excepciones ya fueron manejadas y mostradas en GuardarVentaAsync
-                // Este catch solo previene que las excepciones lleguen al manejador global
+                System.Diagnostics.Debug.WriteLine($"[GUARDAR_CLICK] Excepción capturada: {ex.GetType().Name} - {ex.Message}");
+                // Si llegamos aquí, significa que GuardarVentaAsync no manejó la excepción correctamente
+                // Esto NO debería suceder si los catches internos funcionan bien
+                
+                if (ex is VentasApp.Domain.Base.ExcepcionDominio exDom)
+                {
+                    MessageBox.Show(exDom.Message, "Validación", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    MessageBox.Show($"Error inesperado: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
 
@@ -208,27 +220,31 @@ namespace VentasApp.Desktop.Views.Ventas;
                     }).ToList()
                 };
 
+
+
                 // Guardar todo (detalles y pagos) usando el caso de uso que unifica la operación
                 // Use a scoped provider so all repos/DbContext used by the use case are
                 // from the same scope and see in-memory tracked entities before SaveChanges.
+                System.Diagnostics.Debug.WriteLine("[GUARDAR_VENTA_ASYNC] Llamando a GuardarVentaCompletaUseCase");
                 using (var scope = App.AppHost!.Services.CreateScope())
                 {
                     var guardarCompleto = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.Venta.GuardarVentaCompletaUseCase>();
                     await guardarCompleto.EjecutarAsync(appDto);
-                }
-
-                // Vincular cliente a la venta via Compra si fue seleccionado
-                var vm2 = DataContext as DetalleVentaViewModel;
-                if (vm2?.IdCliente > 0)
-                {
-                    var db = App.AppHost!.Services.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
-                    var existeCompra = db.Compras.Any(c => c.IdVenta == _dto.Id && c.IdCliente == vm2.IdCliente);
-                    if (!existeCompra)
+                    
+                    // Vincular cliente a la venta via Compra si fue seleccionado
+                    var vm2 = DataContext as DetalleVentaViewModel;
+                    if (vm2?.IdCliente > 0)
                     {
-                        db.Compras.Add(new VentasApp.Domain.Modelo.Venta.Compra(_dto.Id, vm2.IdCliente));
-                        await db.SaveChangesAsync();
+                        var db = scope.ServiceProvider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
+                        var existeCompra = db.Compras.Any(c => c.IdVenta == _dto.Id && c.IdCliente == vm2.IdCliente);
+                        if (!existeCompra)
+                        {
+                            db.Compras.Add(new VentasApp.Domain.Modelo.Venta.Compra(_dto.Id, vm2.IdCliente));
+                            await db.SaveChangesAsync();
+                        }
                     }
                 }
+                System.Diagnostics.Debug.WriteLine("[GUARDAR_VENTA_ASYNC] GuardarVentaCompletaUseCase completado exitosamente");
 
                 // Force the main VentaViewModel to refresh so the list reflects the
                 // changes immediately (some DbContext lifetimes may cause slight
@@ -250,19 +266,18 @@ namespace VentasApp.Desktop.Views.Ventas;
             }
             catch (VentasApp.Domain.Base.ExcepcionDominio ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[EXCEPCION CAPTURADA] ExcepcionDominio: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[GUARDAR_VENTA_ASYNC] ExcepcionDominio capturada: {ex.Message}");
                 try { ItemsDataGrid.CancelEdit(); } catch { }
                 try { PagosDataGrid.CancelEdit(); } catch { }
                 MessageBox.Show(ex.Message, "Validación", MessageBoxButton.OK, MessageBoxImage.Warning);
-                // No cerrar la ventana, permitir al usuario corregir
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"[EXCEPCION CAPTURADA] Exception: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[GUARDAR_VENTA_ASYNC] Exception capturada: {ex.GetType().Name} - {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($"[GUARDAR_VENTA_ASYNC] StackTrace: {ex.StackTrace}");
                 try { ItemsDataGrid.CancelEdit(); } catch { }
                 try { PagosDataGrid.CancelEdit(); } catch { }
                 MessageBox.Show($"Error inesperado: {ex.Message}", "Error al guardar", MessageBoxButton.OK, MessageBoxImage.Error);
-                // No cerrar la ventana, permitir al usuario corregir
             }
         }
 
