@@ -33,6 +33,21 @@
                     <TextBlock Text="NUEVO PRODUCTO"/>
                 </StackPanel>
             </Button>
+
+            <!-- Filtros -->
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,20,0" VerticalAlignment="Center">
+                <TextBlock Text="Categoria:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextMuted}"/>
+                <ComboBox ItemsSource="{Binding FiltrosCategoria}" 
+                          SelectedItem="{Binding FiltroCategoria}" 
+                          Width="120" Margin="0,0,15,0"
+                          Style="{StaticResource CustomFilledComboBox}"/>
+                          
+                <TextBlock Text="Stock:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextMuted}"/>
+                <ComboBox ItemsSource="{Binding FiltrosStock}" 
+                          SelectedItem="{Binding FiltroStock}" 
+                          Width="120" 
+                          Style="{StaticResource CustomFilledComboBox}"/>
+            </StackPanel>
         </DockPanel>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Margin="5">
 

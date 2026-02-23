@@ -35,6 +35,15 @@
                     <TextBlock Text="NUEVO CLIENTE"/>
                 </StackPanel>
             </Button>
+
+            <!-- Filtros -->
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,20,0" VerticalAlignment="Center">
+                <TextBlock Text="Filtro:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextMuted}"/>
+                <ComboBox ItemsSource="{Binding FiltrosDeuda}" 
+                          SelectedItem="{Binding FiltroDeuda}" 
+                          Width="120" 
+                          Style="{StaticResource CustomFilledComboBox}"/>
+            </StackPanel>
         </DockPanel>
 
         <!-- Listado -->

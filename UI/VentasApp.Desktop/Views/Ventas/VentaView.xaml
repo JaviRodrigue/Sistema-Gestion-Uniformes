@@ -23,7 +23,7 @@
         </Grid.RowDefinitions>
 
         <!-- HEADER -->
-        <DockPanel Grid.Row="0" Margin="10" LastChildFill="True">
+        <DockPanel Grid.Row="0" Margin="10" LastChildFill="False">
 
             <TextBlock Text="Listado de Ventas"
                        FontSize="24"
@@ -46,6 +46,21 @@
                 </StackPanel>
 
             </Button>
+
+            <!-- Filtros -->
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,20,0" VerticalAlignment="Center">
+                <TextBlock Text="Estado:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextMuted}"/>
+                <ComboBox ItemsSource="{Binding FiltrosEstadoVenta}" 
+                          SelectedItem="{Binding FiltroEstadoVenta}" 
+                          Width="120" Margin="0,0,15,0"
+                          Style="{StaticResource CustomFilledComboBox}"/>
+                          
+                <TextBlock Text="Pago:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextMuted}"/>
+                <ComboBox ItemsSource="{Binding FiltrosEstadoPago}" 
+                          SelectedItem="{Binding FiltroEstadoPago}" 
+                          Width="120" 
+                          Style="{StaticResource CustomFilledComboBox}"/>
+            </StackPanel>
 
         </DockPanel>
 

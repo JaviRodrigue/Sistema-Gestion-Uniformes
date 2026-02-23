@@ -222,8 +222,18 @@ namespace VentasApp.Desktop.Views.Ventas;
                 if (vm2?.IdCliente > 0)
                 {
                     var db = App.AppHost!.Services.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
-                    var existeCompra = db.Compras.Any(c => c.IdVenta == _dto.Id && c.IdCliente == vm2.IdCliente);
-                    if (!existeCompra)
+                    var compraExistente = db.Compras.FirstOrDefault(c => c.IdVenta == _dto.Id);
+                    
+                    if (compraExistente != null)
+                    {
+                        if (compraExistente.IdCliente != vm2.IdCliente)
+                        {
+                            db.Compras.Remove(compraExistente);
+                            db.Compras.Add(new VentasApp.Domain.Modelo.Venta.Compra(_dto.Id, vm2.IdCliente));
+                            await db.SaveChangesAsync();
+                        }
+                    }
+                    else
                     {
                         db.Compras.Add(new VentasApp.Domain.Modelo.Venta.Compra(_dto.Id, vm2.IdCliente));
                         await db.SaveChangesAsync();
