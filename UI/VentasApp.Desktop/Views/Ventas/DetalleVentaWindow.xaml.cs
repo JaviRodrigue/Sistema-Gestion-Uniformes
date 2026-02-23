@@ -230,36 +230,24 @@ namespace VentasApp.Desktop.Views.Ventas;
                 {
                     var guardarCompleto = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.Venta.GuardarVentaCompletaUseCase>();
                     await guardarCompleto.EjecutarAsync(appDto);
-<<<<<<< HEAD
                     
                     // Vincular cliente a la venta via Compra si fue seleccionado
                     var vm2 = DataContext as DetalleVentaViewModel;
                     if (vm2?.IdCliente > 0)
-=======
-                }
-
-                // Vincular cliente a la venta via Compra si fue seleccionado
-                var vm2 = DataContext as DetalleVentaViewModel;
-                if (vm2?.IdCliente > 0)
-                {
-                    var db = App.AppHost!.Services.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
-                    var compraExistente = db.Compras.FirstOrDefault(c => c.IdVenta == _dto.Id);
-                    
-                    if (compraExistente != null)
-                    {
-                        if (compraExistente.IdCliente != vm2.IdCliente)
-                        {
-                            db.Compras.Remove(compraExistente);
-                            db.Compras.Add(new VentasApp.Domain.Modelo.Venta.Compra(_dto.Id, vm2.IdCliente));
-                            await db.SaveChangesAsync();
-                        }
-                    }
-                    else
->>>>>>> 0372e4b62b2fa64d84c2c273769831f88d156617
                     {
                         var db = scope.ServiceProvider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
-                        var existeCompra = db.Compras.Any(c => c.IdVenta == _dto.Id && c.IdCliente == vm2.IdCliente);
-                        if (!existeCompra)
+                        var compraExistente = db.Compras.FirstOrDefault(c => c.IdVenta == _dto.Id);
+                        
+                        if (compraExistente != null)
+                        {
+                            if (compraExistente.IdCliente != vm2.IdCliente)
+                            {
+                                db.Compras.Remove(compraExistente);
+                                db.Compras.Add(new VentasApp.Domain.Modelo.Venta.Compra(_dto.Id, vm2.IdCliente));
+                                await db.SaveChangesAsync();
+                            }
+                        }
+                        else
                         {
                             db.Compras.Add(new VentasApp.Domain.Modelo.Venta.Compra(_dto.Id, vm2.IdCliente));
                             await db.SaveChangesAsync();
