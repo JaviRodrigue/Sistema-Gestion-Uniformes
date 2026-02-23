@@ -47,7 +47,8 @@ namespace VentasApp.Desktop.Views.Ventas;
                                             ? iv.Producto.Nombre 
                                             : $"{iv.Producto.Nombre} - Talle {iv.Talle}")
                                         : iv.CodigoBarra,
-                                    PrecioVenta = iv.Producto != null ? iv.Producto.PrecioVenta : 0m
+                                    PrecioVenta = iv.Producto != null ? iv.Producto.PrecioVenta : 0m,
+                                    StockDisponible = scopedDb.Stock.Where(s => s.IdItemVendible == iv.Id).Select(s => s.CantidadDisponible).FirstOrDefault()
                                 }).ToList();
 
                 // Exponer en la ventana un campo Productos usando code-behind (DetalleVentaViewModel no tiene lista de productos)

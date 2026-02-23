@@ -71,7 +71,10 @@ public class Venta : Entidad
 
     public void AgregarDetalle(int itemVendible, int cantidad, decimal precioUnitario)
     {
-        
+        if (Estado != EstadoVenta.Pendiente)
+        {
+            throw new ExcepcionDominio("Solo se puede agregar items a una venta pendiente");
+        }
         
         var detalle = new DetalleVenta(itemVendible,cantidad,precioUnitario);
         _detalles.Add(detalle);
