@@ -1,0 +1,107 @@
+﻿# Gestión Automática de Stock en Ventas
+
+## Descripción
+Se ha implementado un sistema automático de gestión de stock que se integra con el proceso de ventas, siguiendo los principios de Arquitectura Limpia. Incluye visualización de talles de productos para diferenciar items vendibles.
+
+## Funcionalidades Implementadas
+
+### 1. **Visualización de Productos con Talle**
+El sistema ahora muestra el talle de cada producto en el selector de ventas:
+- Productos sin talle: "Remera"
+- Productos con talle: "Remera - Talle 16" o "Remera - Talle L"
+- Esto permite diferenciar claramente qué variante del producto se está agregando a la venta
+Cuando se agrega un producto a una venta, el sistema:
+- Verifica que exista stock disponible
+- Valida que la cantidad solicitada no exceda el stock disponible
+- Descuenta automáticamente la cantidad del stock
+- Muestra un mensaje de error si no hay stock suficiente
+
+### 2. **Devolución Automática de Stock**
+Cuando se elimina un producto de una venta, el sistema:
+- Devuelve automáticamente la cantidad al stock disponible
+
+### 3. **Ajuste de Stock en Modificaciones**
+Cuando se modifica la cantidad de un producto en una venta:
+- Si **aumenta** la cantidad: verifica stock disponible y descuenta la diferencia
+- Si **disminuye** la cantidad: devuelve la diferencia al stock
+
+### 4. **Validación de Stock Insuficiente**
+El sistema lanza mensajes claros cuando:
+- No hay suficiente stock para agregar un producto
+- No hay suficiente stock para aumentar la cantidad de un producto existente
+- No se encuentra registro de stock para un producto
+
+## Arquitectura
+
+### Capa de Dominio
+- **`Stock.cs`**: Entidad que maneja las operaciones de stock
+  - `Descontar(cantidad)`: Reduce el stock disponible
+  - `Aumentar(cantidad)`: Incrementa el stock disponible
+  - `Reservar(cantidad)`: Maneja reservas para pedidos
+
+### Capa de Aplicación
+- **`IStockRepository`**: Interfaz para acceso a datos de stock
+  - `ObtenerPorItemVendible(idItem)`: Obtiene el stock de un item vendible
+  - `Actualizar(stock)`: Actualiza el stock
+
+- **`GuardarVentaCompletaUseCase`**: Caso de uso principal modificado
+  - Integra validación y gestión de stock al agregar/modificar/eliminar productos
+  - Lanza `ExcepcionDominio` con mensajes claros
+
+- **`AgregarItemAVentaUseCase`**: Caso de uso para agregar items
+  - Valida stock antes de agregar
+  - Descuenta automáticamente del stock
+
+- **`AnularVentaUseCase`**: Caso de uso para anular ventas (ya existía)
+  - Devuelve el stock cuando se anula una venta
+
+### Capa de Presentación
+- **`DetalleVentaWindow.xaml.cs`**: Validación preventiva
+  - Verifica el estado de la venta antes de permitir guardar
+  - Muestra mensaje de advertencia si la venta está cancelada
+
+- **`DetalleVentaViewModel`**: ViewModel con validación de estado
+  - Propiedad `EsEditable` que controla si se pueden hacer cambios
+
+## Mensajes de Error
+- `"Stock insuficiente. Disponible: X, Solicitado: Y"`
+- `"Stock insuficiente. Disponible: X, Adicional requerido: Y"`
+- `"No se encontró stock para el producto seleccionado"`
+- `"No se puede modificar una venta cancelada"`
+
+## Flujo de Operaciones
+
+### Agregar Producto
+1. Usuario selecciona un producto y cantidad
+2. Sistema verifica stock disponible
+3. Si hay stock: descuenta y agrega a la venta
+4. Si no hay stock: muestra mensaje de error
+
+### Modificar Cantidad
+1. Usuario cambia la cantidad de un producto
+2. Sistema calcula la diferencia
+3. Si aumenta: verifica y descuenta la diferencia del stock
+4. Si disminuye: devuelve la diferencia al stock
+
+### Eliminar Producto
+1. Usuario elimina un producto de la venta
+2. Sistema devuelve la cantidad completa al stock
+
+### Anular Venta
+1. Usuario anula la venta completa
+2. Sistema devuelve todo el stock de todos los productos
+
+## Notas Técnicas
+- Los cambios de stock se guardan en la misma transacción que los cambios de venta (UnitOfWork)
+- Entity Framework Core rastrea automáticamente los cambios en las entidades de Stock mediante `AsTracking()`
+- El método `Actualizar` del repositorio verifica el estado de tracking y marca como modificado solo si es necesario
+- Las excepciones de dominio se propagan hasta la UI con mensajes descriptivos
+- Los controles se deshabilitan visualmente cuando una venta está en estado no editable
+- Se agregan logs de diagnóstico para facilitar el debugging del flujo de stock
+
+## Verificación del Funcionamiento
+Para verificar que el stock se descuenta correctamente:
+1. Abrir la ventana de Output en Visual Studio (Debug)
+2. Agregar un producto a una venta
+3. Verificar los mensajes `[STOCK] Antes de agregar` y `[STOCK] Después de agregar` en la salida de Debug
+4. Verificar en la vista de Productos que el stock se haya actualizado

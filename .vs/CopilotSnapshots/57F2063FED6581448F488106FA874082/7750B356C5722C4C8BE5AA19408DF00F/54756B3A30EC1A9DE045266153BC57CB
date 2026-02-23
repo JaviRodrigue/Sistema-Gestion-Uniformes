@@ -1,0 +1,206 @@
+﻿using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using VentasApp.Desktop.ViewModels.DTOs;
+using VentasApp.Desktop.ViewModels.Ventas;
+using VentasApp.Application.CasoDeUso.DetalleVenta;
+using System.Collections.ObjectModel;
+using VentasApp.Application.DTOs.Productos;
+
+namespace VentasApp.Desktop.Views.Ventas;
+
+    public partial class DetalleVentaWindow : Window
+    {
+        private readonly GuardarDetalleVentaUseCase _guardar;
+        private readonly VentaDetalleDto _dto;
+
+        public static readonly DependencyProperty ProductsProperty = DependencyProperty.Register(
+            "Productos", typeof(System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto>), typeof(DetalleVentaWindow), new PropertyMetadata(null));
+
+        public System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto> Productos
+        {
+            get => (System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto>)GetValue(ProductsProperty);
+            set => SetValue(ProductsProperty, value);
+        }
+
+        public DetalleVentaWindow(VentaDetalleDto dto, GuardarDetalleVentaUseCase guardar)
+        {
+            InitializeComponent();
+            _dto = dto;
+            _guardar = guardar;
+            var vm = new DetalleVentaViewModel(dto);
+            DataContext = vm;
+
+            // cargar lista de productos en la ventana para el ComboBox
+            // Obtener la lista de productos desde el contenedor de servicios
+            var provider = App.AppHost!.Services;
+            var listarProductos = provider.GetRequiredService<VentasApp.Application.CasoDeUso.Productos.ListarProductoUseCase>();
+            var productos = listarProductos.EjecutarAsync().GetAwaiter().GetResult();
+            // Exponer en la ventana un campo Productos usando code-behind (DetalleVentaViewModel no tiene lista de productos)
+            this.Productos = productos;
+            // Add items into existing collection so binding is notified
+            vm.Productos.Clear();
+            foreach (var p in productos)
+                vm.Productos.Add(p);
+
+            // Cargar medios de pago para el ComboBox de pagos
+            var mediosRepo = provider.GetRequiredService<VentasApp.Application.Interfaces.Repositorios.IMedioPagoRepository>();
+            // No existe un usecase de listar medios; haremos una consulta directa rápida via context (repo solo trae por id),
+            // por simplicidad leemos desde el DbContext
+            var db = provider.GetRequiredService<VentasApp.Infrastructure.Persistencia.Contexto.DatabaseContext>();
+            var medios = db.MedioPagos.Select(m => new { m.Id, m.Nombre }).ToList();
+            // Ensure common medios exist: Efectivo, Tarjeta, Transferencia
+            var needSave = false;
+            if (!db.MedioPagos.Any(m => m.Nombre == "Efectivo")) { db.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Efectivo", false)); needSave = true; }
+            if (!db.MedioPagos.Any(m => m.Nombre == "Tarjeta")) { db.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Tarjeta", true)); needSave = true; }
+            if (!db.MedioPagos.Any(m => m.Nombre == "Transferencia")) { db.MedioPagos.Add(new VentasApp.Domain.Modelo.Pago.MedioPago("Transferencia", false)); needSave = true; }
+            if (needSave) db.SaveChanges();
+
+            medios = db.MedioPagos.Select(m => new { m.Id, m.Nombre }).ToList();
+
+            var mediosDto = medios.Select(m => new VentasApp.Application.DTOs.Productos.ListadoProductoDto { Id = m.Id, Nombre = m.Nombre }).ToList();
+            // Exponer en DataContext: actualizar la colección existente para notificar bindings
+            vm.MediosPago.Clear();
+            foreach (var m in mediosDto)
+                vm.MediosPago.Add(m);
+
+            // Attach event handlers for ComboBox text input to provide filtering suggestions
+            ItemsDataGrid.Loaded += (s, e) =>
+            {
+                // Walk visual tree to find all ComboBoxes in the DataGrid rows
+                ItemsDataGrid.Dispatcher.InvokeAsync(() =>
+                {
+                    foreach (var item in ItemsDataGrid.Items)
+                    {
+                        var row = (System.Windows.Controls.DataGridRow)ItemsDataGrid.ItemContainerGenerator.ContainerFromItem(item);
+                        if (row == null) continue;
+                        var presenter = FindVisualChild<System.Windows.Controls.ContentPresenter>(row);
+                        if (presenter == null) continue;
+                        var combo = FindVisualChild<System.Windows.Controls.ComboBox>(presenter);
+                        if (combo == null) continue;
+                        combo.IsTextSearchEnabled = false;
+                        combo.IsEditable = true;
+                        combo.AddHandler(System.Windows.Controls.Primitives.TextBoxBase.TextChangedEvent, new System.Windows.Controls.TextChangedEventHandler(ComboBox_TextChanged));
+                    }
+                });
+            };
+        }
+
+        private static T? FindVisualChild<T>(DependencyObject depObj) where T : DependencyObject
+        {
+            if (depObj == null) return null;
+            for (int i = 0; i < System.Windows.Media.VisualTreeHelper.GetChildrenCount(depObj); i++)
+            {
+                var child = System.Windows.Media.VisualTreeHelper.GetChild(depObj, i);
+                if (child is T t) return t;
+                var result = FindVisualChild<T>(child);
+                if (result != null) return result;
+            }
+            return null;
+        }
+
+        private void ComboBox_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            if (sender is null) return;
+            var tb = e.OriginalSource as System.Windows.Controls.TextBox;
+            if (tb == null) return;
+
+            var combo = FindAncestor<System.Windows.Controls.ComboBox>(tb);
+            if (combo == null) return;
+
+            var vm = DataContext as DetalleVentaViewModel;
+            if (vm == null) return;
+
+            var text = tb.Text ?? string.Empty;
+            var filtered = vm.Productos.Where(p => p.Nombre.Contains(text, System.StringComparison.OrdinalIgnoreCase)).ToList();
+            combo.ItemsSource = filtered;
+            combo.IsDropDownOpen = filtered.Any();
+        }
+
+        private static T? FindAncestor<T>(DependencyObject current) where T : DependencyObject
+        {
+            while (current != null)
+            {
+                if (current is T) return (T)current;
+                current = System.Windows.Media.VisualTreeHelper.GetParent(current);
+            }
+            return null;
+        }
+
+        private async void Guardar_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Map UI DTO to application DTO
+                var appDto = new VentasApp.Application.DTOs.Venta.VentaDetalleDto
+                {
+                    Id = _dto.Id,
+                    Codigo = _dto.Codigo,
+                    Cliente = _dto.Cliente,
+                    Items = _dto.Items.Select(i => new VentasApp.Application.DTOs.Venta.VentaItemDto
+                    {
+                        IdDetalle = i.IdDetalle,
+                        Descripcion = i.Producto,
+                        IdItemVendible = i.ProductId,
+                        Cantidad = i.Cantidad,
+                        PrecioUnitario = i.PrecioUnitario
+                    }).ToList(),
+                    Pagos = _dto.Pagos.Select(p => new VentasApp.Application.DTOs.Pago.PagoDto
+                    {
+                        Id = p.Id,
+                        IdVenta = _dto.Id,
+                        FechaPago = p.Fecha,
+                        Total = p.Monto,
+                        Metodos = new List<VentasApp.Application.DTOs.Pago.PagoMetodoDetalleDto>
+                        {
+                            new VentasApp.Application.DTOs.Pago.PagoMetodoDetalleDto { IdMedioPago = p.MedioPagoId, MedioPago = "", Monto = p.Monto }
+                        }
+                    }).ToList()
+                };
+
+                await _guardar.EjecutarAsync(_dto.Id, appDto);
+
+                // Registrar pagos nuevos (solo los que tengan Id == 0) y eliminar pagos que fueron borrados en UI
+                var registrar = App.AppHost!.Services.GetRequiredService<VentasApp.Application.CasoDeUso.Pago.RegistrarPagoUseCase>();
+                var pagoRepo = App.AppHost!.Services.GetRequiredService<VentasApp.Application.Interfaces.Repositorios.IPagoRepository>();
+
+                // Persistir nuevos pagos
+                foreach (var pago in _dto.Pagos.Where(p => p.Id == 0))
+                {
+                    var crear = new VentasApp.Application.DTOs.Pago.CrearPagoDto
+                    {
+                        IdVenta = _dto.Id,
+                        EsSenia = false,
+                        Metodos = new List<VentasApp.Domain.Modelo.Pago.PagoMetodo>
+                        {
+                            new VentasApp.Domain.Modelo.Pago.PagoMetodo(pago.MedioPagoId, pago.Monto)
+                        }
+                    };
+
+                    await registrar.EjecutarAsync(crear);
+                }
+
+                // Eliminar pagos que fueron removidos en la UI: comparamos ids
+                var pagosPersistidos = await pagoRepo.ObtenerPorVenta(_dto.Id);
+                var idsPersistidos = pagosPersistidos.Select(p => p.Id).ToList();
+                var idsEnUI = _dto.Pagos.Where(p => p.Id != 0).Select(p => p.Id).ToList();
+                var idsAEliminar = idsPersistidos.Except(idsEnUI).ToList();
+                foreach (var idEl in idsAEliminar)
+                {
+                    await pagoRepo.Eliminar(idEl);
+                }
+
+                DialogResult = true;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al guardar detalle", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Cancelar_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
+    }

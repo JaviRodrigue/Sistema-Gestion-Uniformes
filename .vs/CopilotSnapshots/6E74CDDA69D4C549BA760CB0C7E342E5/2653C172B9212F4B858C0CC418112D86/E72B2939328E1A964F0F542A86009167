@@ -1,0 +1,60 @@
+﻿using Xunit;
+using Moq;
+using VentasApp.Application.CasoDeUso.Venta;
+using VentasApp.Application.DTOs.Venta;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Modelo.Venta;
+using VentasApp.Domain.Enum;
+using VentasApp.Domain.Base;
+using VentasApp.Domain.Modelo.Productos;
+using FluentAssertions;
+
+
+public class ConfirmarVentaUseCaseTest
+{
+    private readonly Mock<IVentaRepository> _venta = new();
+    private readonly Mock<IUnitOfWork> _unit = new ();
+
+    [Fact]
+    public async Task ConfirmarVenta_SinDetalles_DeberiaFallar()
+    {
+        var venta = new Venta(TipoVenta.Presencial);
+
+        var repo = new Mock<IVentaRepository>();
+        var stockRepo = new Mock<IStockRepository>();
+        var uow = new Mock<IUnitOfWork>();
+
+        repo.Setup(r => r.ObtenerPorId(1)).ReturnsAsync(venta);
+
+        var useCase = new ConfirmarVentaUseCase(repo.Object, uow.Object, stockRepo.Object);
+
+        await Assert.ThrowsAsync<ExcepcionDominio>(() =>
+            useCase.EjecutarAsync(1)
+        );
+    }
+
+    [Fact]
+    public async Task ConfirmarVenta_Contado_DeberiaDescontarStock()
+    {
+        var venta = new Venta(TipoVenta.Presencial);
+        venta.AgregarDetalle(1, 2, 100);
+
+        var stock = new Stock(1, 10, 1);
+
+        var repo = new Mock<IVentaRepository>();
+        var stockRepo = new Mock<IStockRepository>();
+        var uow = new Mock<IUnitOfWork>();
+
+        repo.Setup(r => r.ObtenerPorId(1)).ReturnsAsync(venta);
+        stockRepo.Setup(s => s.ObtenerPorItemVendible(1)).ReturnsAsync(stock);
+
+        var useCase = new ConfirmarVentaUseCase(repo.Object, uow.Object, stockRepo.Object);
+
+        await useCase.EjecutarAsync(1);
+
+        stock.CantidadDisponible.Should().Be(8);
+        venta.Estado.Should().Be(EstadoVenta.Confirmada);
+    }
+
+
+}

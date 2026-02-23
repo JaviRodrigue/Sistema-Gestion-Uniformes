@@ -1,0 +1,54 @@
+﻿namespace VentasApp.Application.CasoDeUso.Venta;
+
+using VentasApp.Application.DTOs.Venta;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Base;
+
+public class AgregarItemAVentaUseCase
+{
+    private readonly IVentaRepository _ventaRepository;
+    private readonly IStockRepository _stockRepository;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public AgregarItemAVentaUseCase(IVentaRepository ventaRepository, IStockRepository stockRepository, IUnitOfWork unit)
+    {
+        _ventaRepository = ventaRepository;
+        _stockRepository = stockRepository;
+        _unitOfWork = unit;
+    }
+
+    public async Task EjecutarAsync(int idVenta, AgregarDetalleDto dto)
+    {
+        //Primero busco si la venta existe, para poder agregar un item
+        var venta = await _ventaRepository.ObtenerPorId(idVenta) ?? throw new Exception("La venta no existe");
+        
+        // Verificar stock disponible
+        var stock = await _stockRepository.ObtenerPorItemVendible(dto.IdItemVendible);
+        if (stock == null)
+        {
+            throw new ExcepcionDominio($"No se encontró stock para el producto seleccionado");
+        }
+        
+        if (stock.CantidadDisponible < dto.Cantidad)
+        {
+            throw new ExcepcionDominio($"Stock insuficiente. Disponible: {stock.CantidadDisponible}, Solicitado: {dto.Cantidad}");
+        }
+        
+        var cantidad = dto.Cantidad;
+        var idItemVendible = dto.IdItemVendible;
+        var precioUnitario = dto.PrecioUnitario;
+        
+        try
+        {
+            venta.AgregarDetalle(idItemVendible, cantidad, precioUnitario);
+            // Descontar del stock
+            stock.Descontar(cantidad);
+        }
+        catch (ExcepcionDominio ex)
+        {
+            throw new ExcepcionDominio($"No se puede agregar el producto: {ex.Message}");
+        }
+
+        await _unitOfWork.SaveChanges();
+    }
+}

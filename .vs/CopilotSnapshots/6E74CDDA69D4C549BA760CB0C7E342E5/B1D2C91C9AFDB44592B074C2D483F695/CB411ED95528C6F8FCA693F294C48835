@@ -1,0 +1,150 @@
+﻿using System;
+using Xunit;
+using VentasApp.Domain.Modelo.Venta;
+using VentasApp.Domain.Enum;
+using VentasApp.Domain.Base;
+
+
+    public class VentaTests
+    {
+        [Fact]
+        public void CrearVenta_InicializaCorrectamente()
+        {
+            // Act
+            var venta = new Venta(TipoVenta.Presencial);
+
+            // Assert
+            Assert.Equal(TipoVenta.Presencial, venta.TipoVenta);
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
+            Assert.Equal(0, venta.MontoTotal);
+            Assert.Equal(0, venta.MontoPagado);
+            Assert.Empty(venta.Detalles);
+        }
+
+        [Fact]
+        public void AgregarDetalle_RecalculaMontoTotal()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+
+            venta.AgregarDetalle(itemVendible: 1, cantidad: 2, precioUnitario: 1000);
+
+            Assert.Single(venta.Detalles);
+            Assert.Equal(2000, venta.MontoTotal);
+        }
+
+        [Fact]
+        public void AgregarDetalle_NoPermiteSiVentaNoEstaPendiente()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.Confirmar();
+
+            var ex = Assert.Throws<ExcepcionDominio>(() =>
+                venta.AgregarDetalle(2, 1, 500));
+
+            Assert.Equal("Solo se puede agregar items a una venta pendiente", ex.Message);
+        }
+
+        [Fact]
+        public void ConfirmarVenta_SinDetalles_LanzaExcepcion()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+
+            var ex = Assert.Throws<ExcepcionDominio>(() => venta.Confirmar());
+
+            Assert.Equal("La venta debe tener al menos un item", ex.Message);
+        }
+
+        [Fact]
+        public void ConfirmarVenta_ConDetalles_CambiaEstado()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+
+            venta.Confirmar();
+
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
+        }
+
+        [Fact]
+        public void RegistrarPago_Parcial_NoCambiaAPagada()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 2000);
+            venta.Confirmar();
+
+            venta.RegistrarPago(500);
+
+            Assert.Equal(500, venta.MontoPagado);
+            Assert.Equal(EstadoVenta.Completada, venta.Estado);
+        }
+
+        [Fact]
+        public void RegistrarPago_Completo_CambiaAPagada()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 2, 1000);
+            venta.Confirmar();
+
+            venta.RegistrarPago(2000);
+
+            Assert.Equal(EstadoVenta.Completada, venta.Estado);
+            Assert.Equal(0, venta.SaldoPendiente);
+        }
+
+        [Fact]
+        public void RegistrarPago_Excedido_LanzaExcepcion()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.Confirmar();
+
+            var ex = Assert.Throws<ExcepcionDominio>(() =>
+                venta.RegistrarPago(1500));
+
+            Assert.Equal("El monto excede al total de la venta", ex.Message);
+        }
+
+        [Fact]
+        public void AnularVenta_Pagada_LanzaExcepcion()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.Confirmar();
+            venta.RegistrarPago(1000);
+
+            var ex = Assert.Throws<ExcepcionDominio>(() =>
+                venta.AnularVenta());
+
+            Assert.Equal("No se puede anular una venta pagada", ex.Message);
+        }
+
+        [Fact]
+        public void EliminarDetalle_RecalculaTotal()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 2, 1000);
+            venta.AgregarDetalle(2, 1, 500);
+
+            var detalle = venta.Detalles.First();
+
+            venta.EliminarDetalle(detalle.Id);
+
+            Assert.Single(venta.Detalles);
+            Assert.Equal(500, venta.MontoTotal);
+        }
+
+        [Fact]
+        public void ModificarDetalle_RecalculaTotal()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+
+            var detalle = venta.Detalles.First();
+
+            venta.ModificarDetalle(detalle.Id, cantidad: 3, precio: 900);
+
+            Assert.Equal(2700, venta.MontoTotal);
+        }
+    }
+

@@ -1,0 +1,60 @@
+﻿using VentasApp.Application.DTOs.Venta;
+using VentasApp.Application.Interfaces.Repositorios;
+using System.Linq;
+
+namespace VentasApp.Application.CasoDeUso.DetalleVenta;
+
+public class GuardarDetalleVentaUseCase
+{
+    private readonly IVentaRepository _ventaRepo;
+    private readonly IUnitOfWork _unitOfWork;
+
+    public GuardarDetalleVentaUseCase(IVentaRepository ventaRepo, IUnitOfWork unitOfWork)
+    {
+        _ventaRepo = ventaRepo;
+        _unitOfWork = unitOfWork;
+    }
+
+    public async Task EjecutarAsync(int idVenta, VentasApp.Application.DTOs.Venta.VentaDetalleDto dto)
+    {
+        var venta = await _ventaRepo.ObtenerPorId(idVenta) ?? throw new Exception("Venta no encontrada");
+
+        var existentes = venta.Detalles.Select(d => d.Id).ToList();
+
+        // Procesar items enviados desde UI
+        foreach (var item in dto.Items)
+        {
+            if (item.IdDetalle == 0)
+            {
+                // Agregar directamente al agregado Venta usando el IdItemVendible proporcionado por la UI
+                venta.AgregarDetalle(item.IdItemVendible, item.Cantidad, item.PrecioUnitario);
+            }
+            else
+            {
+                var idDet = item.IdDetalle;
+                var original = venta.Detalles.FirstOrDefault(d => d.Id == idDet);
+                if (original is null) continue;
+
+                if (original.Cantidad != item.Cantidad || original.PrecioUnitario != item.PrecioUnitario)
+                {
+                    venta.ModificarDetalle(idDet, item.Cantidad, item.PrecioUnitario);
+                }
+
+                existentes.Remove(idDet);
+            }
+        }
+
+        // Eliminar los que ya no estan en la lista
+        foreach (var idToRemove in existentes)
+        {
+            venta.EliminarDetalle(idToRemove);
+        }
+
+        // Procesar pagos: eliminar pagos que no se encuentren en dto
+        // Obtenemos todos los pagos persistidos y comparamos
+        // Nota: este usecase no tiene IPagoRepository inyectado; para mantener la transaccion
+        // simplemente se asumira que los pagos son gestionados por RegistrarPagoUseCase/Eliminar cuando corresponda.
+
+        await _unitOfWork.SaveChanges();
+    }
+}

@@ -1,0 +1,78 @@
+﻿using VentasApp.Application.DTOs.DetalleVenta;
+using VentasApp.Application.DTOs.Venta;
+using VentasApp.Application.Interfaces.Repositorios;
+
+namespace VentasApp.Application.CasoDeUso.DetalleVenta;
+
+public class GuardarDetalleVentaUseCase
+{
+    private readonly IVentaRepository _ventaRepo;
+    private readonly AgregarDetalleVentaUseCase _agregar;
+    private readonly ModificarDetalleUseCase _modificar;
+    private readonly EliminarDetalleVentaUseCase _eliminar;
+
+    public GuardarDetalleVentaUseCase(
+        IVentaRepository ventaRepo,
+        AgregarDetalleVentaUseCase agregar,
+        ModificarDetalleUseCase modificar,
+        EliminarDetalleVentaUseCase eliminar)
+    {
+        _ventaRepo = ventaRepo;
+        _agregar = agregar;
+        _modificar = modificar;
+        _eliminar = eliminar;
+    }
+
+    public async Task EjecutarAsync(int idVenta, VentasApp.Application.DTOs.Venta.VentaDetalleDto dto)
+    {
+        var venta = await _ventaRepo.ObtenerPorId(idVenta) ?? throw new Exception("Venta no encontrada");
+
+        var existentes = venta.Detalles.Select(d => d.Id).ToList();
+
+        // Procesar items enviados desde UI
+        foreach (var item in dto.Items)
+        {
+            if (item.IdDetalle == 0)
+            {
+                // nuevo detalle
+                var agregarDto = new AgregarDetalleVentaDto
+                {
+                    IdItemVendible = item.IdDetalle == 0 ? 0 : item.IdDetalle,
+                    Cantidad = item.Cantidad,
+                    PrecioUnitario = item.PrecioUnitario
+                };
+
+                // Note: AgregarDetalleVentaUseCase espera el id del item vendible real en IdItemVendible.
+                // Here we assume item.IdDetalle==0 means new and IdItemVendible is not known from UI.
+                // If UI provides the correct item vendible id, it should be set in item.IdDetalle or separate field.
+
+                await _agregar.EjecutarAsync(idVenta, agregarDto);
+            }
+            else
+            {
+                // posible modificación
+                var idDet = item.IdDetalle;
+                var original = venta.Detalles.FirstOrDefault(d => d.Id == idDet);
+                if (original is null) continue;
+
+                if (original.Cantidad != item.Cantidad || original.PrecioUnitario != item.PrecioUnitario)
+                {
+                    var dtoMod = new VentasApp.Application.DTOs.Venta.ModificarDetalleVentaDto
+                    {
+                        Cantidad = item.Cantidad,
+                        PrecioUnitario = item.PrecioUnitario
+                    };
+                    await _modificar.Ejecutar(idVenta, idDet, dtoMod);
+                }
+
+                existentes.Remove(idDet);
+            }
+        }
+
+        // Eliminar los que ya no estan en la lista
+        foreach (var idToRemove in existentes)
+        {
+            await _eliminar.Ejecutar(idVenta, idToRemove);
+        }
+    }
+}

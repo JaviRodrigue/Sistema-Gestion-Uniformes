@@ -1,0 +1,79 @@
+﻿using System.Windows;
+using Microsoft.Extensions.DependencyInjection;
+using VentasApp.Desktop.ViewModels.DTOs;
+using VentasApp.Desktop.ViewModels.Ventas;
+using VentasApp.Application.CasoDeUso.DetalleVenta;
+using System.Collections.ObjectModel;
+using VentasApp.Application.DTOs.Productos;
+
+namespace VentasApp.Desktop.Views.Ventas;
+
+    public partial class DetalleVentaWindow : Window
+    {
+        private readonly GuardarDetalleVentaUseCase _guardar;
+        private readonly VentaDetalleDto _dto;
+
+        public static readonly DependencyProperty ProductsProperty = DependencyProperty.Register(
+            "Productos", typeof(System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto>), typeof(DetalleVentaWindow), new PropertyMetadata(null));
+
+        public System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto> Productos
+        {
+            get => (System.Collections.Generic.List<VentasApp.Application.DTOs.Productos.ListadoProductoDto>)GetValue(ProductsProperty);
+            set => SetValue(ProductsProperty, value);
+        }
+
+        public DetalleVentaWindow(VentaDetalleDto dto, GuardarDetalleVentaUseCase guardar)
+        {
+            InitializeComponent();
+            _dto = dto;
+            _guardar = guardar;
+            var vm = new DetalleVentaViewModel(dto);
+            DataContext = vm;
+
+            // cargar lista de productos en la ventana para el ComboBox
+            // Obtener la lista de productos desde el contenedor de servicios
+            var provider = App.AppHost!.Services;
+            var listarProductos = provider.GetRequiredService<VentasApp.Application.CasoDeUso.Productos.ListarProductoUseCase>();
+            var productos = listarProductos.EjecutarAsync().GetAwaiter().GetResult();
+            // Exponer en la ventana un campo Productos usando code-behind (DetalleVentaViewModel no tiene lista de productos)
+            this.Productos = productos;
+        }
+
+        private async void Guardar_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                // Map UI DTO to application DTO
+                var appDto = new VentasApp.Application.DTOs.Venta.VentaDetalleDto
+                {
+                    Id = _dto.Id,
+                    Codigo = _dto.Codigo,
+                    Cliente = _dto.Cliente,
+                    Items = _dto.Items.Select(i => new VentasApp.Application.DTOs.Venta.VentaItemDto
+                    {
+                        IdDetalle = i.IdDetalle,
+                        Descripcion = i.Producto,
+                        IdItemVendible = i.ProductId,
+                        Cantidad = i.Cantidad,
+                        PrecioUnitario = i.PrecioUnitario
+                    }).ToList(),
+                    Pagos = new List<VentasApp.Application.DTOs.Pago.PagoDto>()
+                };
+
+                await _guardar.EjecutarAsync(_dto.Id, appDto);
+
+                DialogResult = true;
+                Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al guardar detalle", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void Cancelar_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+            Close();
+        }
+    }

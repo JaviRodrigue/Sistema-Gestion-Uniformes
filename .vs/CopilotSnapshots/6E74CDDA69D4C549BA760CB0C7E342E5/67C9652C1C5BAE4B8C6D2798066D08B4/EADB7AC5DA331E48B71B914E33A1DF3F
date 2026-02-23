@@ -1,0 +1,264 @@
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
+
+using System.Collections.Generic;
+
+using System.Collections.ObjectModel;
+using System.Linq;
+using VentasApp.Application.CasoDeUso.Venta;
+using VentasApp.Application.DTOs.Venta;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Desktop.ViewModels;
+using VentasApp.Desktop.ViewModels.DTOs;
+using VentasApp.Desktop.Views.Ventas;
+using VentasApp.Desktop.Messages;
+using VentasApp.Infrastructure.Persistencia.Contexto;
+
+namespace VentasApp.Desktop.ViewModels.Ventas;
+
+public partial class VentaViewModel : ObservableObject, IBuscable
+{
+    private readonly IServiceProvider _provider;
+
+    // note: use-cases are resolved per-operation from a scoped provider to avoid capturing
+    // a scoped DbContext inside a long-lived singleton ViewModel which causes stale data.
+
+    private List<VentaCardDto> _todasLasVentas = new();
+
+    [ObservableProperty]
+    private ObservableCollection<VentaCardDto> _ventas = new();
+
+    public VentaViewModel(IServiceProvider provider)
+    {
+        _provider = provider;
+
+        _ = CargarAsync();
+    }
+
+    // Public helper to allow external callers (e.g. detail window) to request a refresh
+    public Task RefreshAsync()
+    {
+        return CargarAsync();
+    }
+
+    private async Task CargarAsync()
+    {
+        // Resolve use case from a scoped provider to ensure a fresh DbContext is used
+        using var scope = _provider.CreateScope();
+        var listar = scope.ServiceProvider.GetRequiredService<ListarVentasUseCase>();
+        var lista = await listar.EjecutarAsync();
+
+        _todasLasVentas = lista.Select(v => new VentaCardDto
+        {
+            Id = v.Id,
+            Codigo = v.Codigo,
+            Fecha = v.Fecha,
+            Cliente = v.Cliente,
+            EstadoVenta = v.EstadoVenta,
+            EstadoPago = v.EstadoPago,
+            Total = v.Total,
+            Restante = v.Restante
+        }).ToList();
+
+        Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas);
+    }
+
+    // ================= IBuscable =================
+
+    public async Task BuscarAsync(string texto)
+    {
+        if (string.IsNullOrWhiteSpace(texto)) { await RestablecerAsync(); return; }
+
+        var esNumero = texto.All(char.IsDigit);
+
+        if (esNumero)
+        {
+            if (texto.Length < 5)
+            {
+                var id = int.Parse(texto);
+                Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas.Where(v => v.Id == id));
+            }
+            else
+            {
+                var ids = await ObtenerIdsVentasPorClienteAsync(async repo =>
+                {
+                    var porDni = await repo.ObtenerClientePorDni(texto);
+                    var porTel = await repo.ObtenerClientePorTelefono(texto);
+                    return new[] { porDni, porTel }
+                        .Where(c => c is not null)
+                        .DistinctBy(c => c!.Id)
+                        .Select(c => c!.Id)
+                        .ToList();
+                });
+                Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas.Where(v => ids.Contains(v.Id)));
+            }
+        }
+        else
+        {
+            var ids = await ObtenerIdsVentasPorClienteAsync(async repo =>
+            {
+                var clientes = await repo.BuscarPorNombre(texto);
+                return clientes.Select(c => c.Id).ToList();
+            });
+            Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas.Where(v => ids.Contains(v.Id)));
+        }
+    }
+
+    public Task RestablecerAsync()
+    {
+        Ventas = new ObservableCollection<VentaCardDto>(_todasLasVentas);
+        return Task.CompletedTask;
+    }
+
+    private static async Task<List<int>> ObtenerIdsVentasPorClienteAsync(
+        Func<IClienteRepository, Task<List<int>>> obtenerClienteIds)
+    {
+        using var scope = App.AppHost!.Services.CreateScope();
+        var repo = scope.ServiceProvider.GetRequiredService<IClienteRepository>();
+        var clienteIds = await obtenerClienteIds(repo);
+        if (!clienteIds.Any()) return [];
+
+        var db = scope.ServiceProvider.GetRequiredService<DatabaseContext>();
+        return db.Compras
+            .Where(c => clienteIds.Contains(c.IdCliente))
+            .Select(c => c.IdVenta)
+            .Distinct()
+            .ToList();
+    }
+
+    [RelayCommand]
+    private async Task VerDetalle(VentaCardDto card)
+    {
+        using var scope = _provider.CreateScope();
+        var obtener = scope.ServiceProvider.GetRequiredService<ObtenerVentaUseCase>();
+        var detalle = await obtener.EjecutarAsync(card.Id);
+        if (detalle is null) return;
+
+        var uiDetalle = MapDetalle(detalle);
+        uiDetalle.Id = detalle.Id;
+        // Resolve the GuardarDetalle usecase from transient scope and pass it to the window
+        var guardar = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
+        var win = new DetalleVentaWindow(uiDetalle, guardar);
+        var result = win.ShowDialog();
+
+        // Si el usuario guardó cambios, recargar la lista para actualizar totales en el listado
+        if (result == true)
+        {
+            await CargarAsync();
+        }
+    }
+
+    [RelayCommand]
+    private async Task EliminarVenta(VentaCardDto card)
+    {
+        var result = System.Windows.MessageBox.Show($"¿Anular la venta {card.Codigo}?", "Confirmar anulación", System.Windows.MessageBoxButton.YesNo, System.Windows.MessageBoxImage.Question);
+        if (result != System.Windows.MessageBoxResult.Yes) return;
+
+        using var scope = _provider.CreateScope();
+        var anular = scope.ServiceProvider.GetRequiredService<AnularVentaUseCase>();
+        await anular.EjecutarAsync(card.Id);
+        
+        WeakReferenceMessenger.Default.Send(new StockChangedMessage());
+        
+        await CargarAsync();
+    }
+
+    private static VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto MapDetalle(VentasApp.Application.DTOs.Venta.VentaDetalleDto src)
+    {
+        return new VentasApp.Desktop.ViewModels.DTOs.VentaDetalleDto
+        {
+            Id = src.Id,
+            Codigo = src.Codigo,
+            Fecha = src.Fecha,
+            Cliente = src.Cliente,
+            IdCliente = src.IdCliente,
+            Estado = src.Estado,
+            // FechaEstimada no existe en el DTO de aplicación
+            Items = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.VentaItemDto>(
+                src.Items.Select(i => new VentasApp.Desktop.ViewModels.DTOs.VentaItemDto
+                {
+                    IdDetalle = i.IdDetalle,
+                    ProductId = i.IdItemVendible,
+                    Producto = i.Descripcion,
+                    PrecioUnitario = i.PrecioUnitario,
+                    Cantidad = i.Cantidad,
+                    Entregado = i.Entregado
+                })),
+            Pagos = new ObservableCollection<VentasApp.Desktop.ViewModels.DTOs.PagoDto>(
+                src.Pagos.Select(p =>
+                    {
+                        var metodo = p.Metodos.FirstOrDefault();
+                        return new VentasApp.Desktop.ViewModels.DTOs.PagoDto
+                        {
+                            Id = p.Id,
+                            Fecha = p.FechaPago,
+                            Monto = p.Total,
+                            Verificado = p.Verificado,
+                            MedioPago = metodo?.MedioPago ?? string.Empty,
+                            MedioPagoId = metodo?.IdMedioPago ?? 0
+                        };
+                    }))
+        };
+    }
+
+    [RelayCommand]
+    private async Task AgregarVenta()
+    {
+        int idVentaCreada = 0;
+        
+        try
+        {
+            // 1. Crear venta
+            using var scope = _provider.CreateScope();
+            var crear = scope.ServiceProvider.GetRequiredService<CrearVentaUseCase>();
+            idVentaCreada = await crear.EjecutarAsync(new CrearVentaDto());
+
+            // 2. Obtener detalle recién creado (evita listar todo)
+            var obtener = scope.ServiceProvider.GetRequiredService<ObtenerVentaUseCase>();
+            var detalle = await obtener.EjecutarAsync(idVentaCreada);
+            if (detalle is null) return;
+
+            // 3. Mapear
+            var uiDetalle = MapDetalle(detalle);
+            uiDetalle.Id = detalle.Id;
+
+            // 4. Abrir ventana directamente
+            var guardar = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
+            var win = new DetalleVentaWindow(uiDetalle, guardar);
+            var result = win.ShowDialog();
+
+            // 5. Solo si guardó, refrescar listado
+            if (result == true)
+            {
+                await CargarAsync();
+            }
+            else
+            {
+                // Si el usuario canceló, eliminar la venta vacía recién creada
+                var anular = scope.ServiceProvider.GetRequiredService<AnularVentaUseCase>();
+                await anular.EjecutarAsync(idVentaCreada);
+            }
+        }
+        catch (Exception ex)
+        {
+            // Si hay error y se creó una venta, intentar limpiarla
+            if (idVentaCreada > 0)
+            {
+                try
+                {
+                    using var scope = _provider.CreateScope();
+                    var anular = scope.ServiceProvider.GetRequiredService<AnularVentaUseCase>();
+                    await anular.EjecutarAsync(idVentaCreada);
+                }
+                catch
+                {
+                    // Ignorar errores al limpiar
+                }
+            }
+            
+            System.Windows.MessageBox.Show($"Error al crear venta: {ex.Message}", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
+        }
+    }
+}

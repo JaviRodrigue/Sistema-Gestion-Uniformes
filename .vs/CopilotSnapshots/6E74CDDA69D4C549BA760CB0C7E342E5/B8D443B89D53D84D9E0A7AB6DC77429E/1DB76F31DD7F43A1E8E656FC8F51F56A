@@ -1,0 +1,164 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dtos="clr-namespace:VentasApp.Desktop.ViewModels.DTOs"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+
+    <DataTemplate x:Key="VentaCardTemplate"
+                  DataType="{x:Type dtos:VentaCardDto}">
+
+        <!-- Compact card without dropdown. Border color indicates sale state. -->
+        <Border CornerRadius="10" Margin="0,0,0,15" Padding="15" Background="{DynamicResource SurfaceCard}">
+            <Border.Effect>
+                <DropShadowEffect Color="#000000" BlurRadius="10" Opacity="0.18"/>
+            </Border.Effect>
+
+            <Grid VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- ICON -->
+                <Border Grid.Column="0" Width="60" Height="60" CornerRadius="10" Margin="0,0,15,0" Background="{DynamicResource PrimaryPastel}">
+                    <materialDesign:PackIcon Kind="Cart" Width="30" Height="30" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="{DynamicResource TextDark}"/>
+                </Border>
+
+                <!-- INFO -->
+                <StackPanel Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch">
+                    <Border HorizontalAlignment="Left" CornerRadius="4" Padding="6,2" Margin="0,0,0,5">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{DynamicResource SurfaceLight}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EstadoVenta}" Value="Completada">
+                                        <Setter Property="Background" Value="{DynamicResource SuccessSoft}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding EstadoVenta}" Value="Pendiente">
+                                        <Setter Property="Background" Value="{DynamicResource WarningSoft}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding EstadoVenta}" Value="Cancelada">
+                                        <Setter Property="Background" Value="{DynamicResource DangerSoft}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <TextBlock Text="{Binding EstadoVenta}" FontSize="10">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding EstadoVenta}" Value="Completada">
+                                            <Setter Property="Foreground" Value="{DynamicResource TextOnDark}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EstadoVenta}" Value="Pendiente">
+                                            <Setter Property="Foreground" Value="{DynamicResource TextOnDark}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding EstadoVenta}" Value="Cancelada">
+                                            <Setter Property="Foreground" Value="{DynamicResource TextOnDark}"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Border>
+
+                    <TextBlock Text="{Binding Codigo}" FontWeight="Bold" FontSize="18" Foreground="{DynamicResource TextDark}"/>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <materialDesign:PackIcon Kind="Account" Width="14" Height="14" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="{Binding Cliente}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="5,0,0,0"/>
+                    </StackPanel>
+                    
+                    <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+                        <materialDesign:PackIcon Kind="Calendar" Width="14" Height="14" Foreground="{DynamicResource TextMuted}"/>
+                        <TextBlock Text="{Binding Fecha, StringFormat='dd/MM/yyyy'}" Foreground="{DynamicResource TextMuted}" FontSize="12" Margin="5,0,0,0"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- TOTALES -->
+                <StackPanel Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,15,0">
+                    <TextBlock Text="{Binding Total, StringFormat='${0:N2}'}" FontSize="20" FontWeight="Bold" Foreground="{DynamicResource AccentBlue}" HorizontalAlignment="Right" Margin="0,0,0,5"/>
+                    
+                    <Border CornerRadius="5" Padding="8,4" HorizontalAlignment="Right" Background="{DynamicResource SecondaryPastel}" Margin="0,0,0,5">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Restante: " FontSize="12" Foreground="{DynamicResource TextMuted}"/>
+                            <TextBlock Text="{Binding Restante, StringFormat='${0:N2}'}" Foreground="{DynamicResource DangerSoft}" FontWeight="SemiBold" FontSize="12"/>
+                        </StackPanel>
+                    </Border>
+                    
+                    <Border CornerRadius="5" Padding="6,3" HorizontalAlignment="Right">
+                        <Border.Style>
+                            <Style TargetType="Border">
+                                <Setter Property="Background" Value="{DynamicResource WarningSoft}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EstaPagada}" Value="True">
+                                        <Setter Property="Background" Value="{DynamicResource SuccessSoft}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Width="14" Height="14" VerticalAlignment="Center" Margin="0,0,4,0" Foreground="{DynamicResource TextOnDark}">
+                                <materialDesign:PackIcon.Style>
+                                    <Style TargetType="materialDesign:PackIcon">
+                                        <Setter Property="Kind" Value="ClockAlert"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EstaPagada}" Value="True">
+                                                <Setter Property="Kind" Value="CheckCircle"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </materialDesign:PackIcon.Style>
+                            </materialDesign:PackIcon>
+                            <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextOnDark}">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="PENDIENTE DE PAGO"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding EstaPagada}" Value="True">
+                                                <Setter Property="Text" Value="PAGADA"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- BOTONES -->
+                <StackPanel Grid.Column="3" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="15,0,0,0">
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="{DynamicResource SecondaryPastel}"
+                            BorderBrush="{DynamicResource SecondaryPastel}"
+                            ToolTip="Ver detalle"
+                            Command="{Binding DataContext.VerDetalleCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            CommandParameter="{Binding}" Margin="0,0,0,6">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Eye" Width="16" Height="16" Foreground="{DynamicResource TextMuted}"/>
+                            <TextBlock Text="Detalle" Margin="6,0,0,0" Foreground="{DynamicResource TextMuted}"/>
+                        </StackPanel>
+                    </Button>
+
+                    <Button Style="{StaticResource MaterialDesignRaisedButton}"
+                            Background="{DynamicResource AccentRed}"
+                            BorderBrush="{DynamicResource AccentRed}"
+                            Foreground="{DynamicResource TextOnDark}"
+                            ToolTip="Eliminar venta"
+                            Command="{Binding DataContext.EliminarVentaCommand, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                            CommandParameter="{Binding}">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="TrashCan" Width="16" Height="16" Foreground="{DynamicResource TextOnDark}"/>
+                            <TextBlock Text="Eliminar" Margin="6,0,0,0" Foreground="{DynamicResource TextOnDark}"/>
+                        </StackPanel>
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Border>
+
+    </DataTemplate>
+
+</ResourceDictionary>

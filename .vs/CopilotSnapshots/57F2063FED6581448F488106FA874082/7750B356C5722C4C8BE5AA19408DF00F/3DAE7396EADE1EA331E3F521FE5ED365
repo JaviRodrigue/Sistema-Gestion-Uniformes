@@ -1,0 +1,47 @@
+﻿using Microsoft.EntityFrameworkCore;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Modelo.Pago;
+using VentasApp.Infrastructure.Persistencia.Contexto;
+
+namespace VentasApp.Infrastructure.Persistencia.Repositorios;
+
+public class PagoRepository : IPagoRepository
+{
+    private DatabaseContext _context;
+
+    public PagoRepository(DatabaseContext context)
+    {
+        _context = context;
+    }
+
+    public async Task Agregar(Pago pago)
+    {
+        await _context.Pagos.AddAsync(pago);
+    }
+
+    public async Task<Pago?> ObtenerPorId(int idPago)
+    {
+        return await _context.Pagos.Include(p => p.Metodos).FirstOrDefaultAsync(p => p.Id == idPago);
+    }
+
+    public async Task Eliminar(int idPago)
+    {
+        var pago = await ObtenerPorId(idPago);
+        if (pago is null) return;
+        _context.Pagos.Remove(pago);
+        // Ajustar montos en la venta asociada
+        var venta = await _context.Ventas.Include(v => v.Detalles).FirstOrDefaultAsync(v => v.Id == pago.IdVenta);
+        if (venta != null)
+        {
+            venta.RegistrarPago(0); // no cambia pero recalcular saldo
+        }
+    }
+
+    public async Task<List<Pago>> ObtenerPorVenta(int idVenta)
+    {
+        return await _context.Pagos
+                .Include(p => p.Metodos).ThenInclude(m => m.MedioPago)
+                .Where(p => p.IdVenta == idVenta)
+                .ToListAsync();
+    }
+}

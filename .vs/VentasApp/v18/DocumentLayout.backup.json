@@ -1,0 +1,246 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\casodeuso\\venta\\guardarventacompletausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\venta\\guardarventacompletausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\views\\ventas\\detalleventawindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\views\\ventas\\detalleventawindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\casodeuso\\stocks\\crearstockusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\stocks\\crearstockusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\viewmodels\\dtos\\ventaitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\viewmodels\\dtos\\ventaitemdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\views\\ventas\\detalleventawindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\views\\ventas\\detalleventawindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\resources\\templates\\ventacardtemplate.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\resources\\templates\\ventacardtemplate.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.domain\\modelo\\venta\\venta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|solutionrelative:core\\ventasapp.domain\\modelo\\venta\\venta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\viewmodels\\ventas\\ventaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\viewmodels\\ventas\\ventaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{85676BF4-B5B1-4214-8C0E-732E65BE869B}|Tests\\VentasApp.Tests\\VentasApp.Tests.csproj|c:\\users\\javier\\desktop\\ventasapp\\tests\\ventasapp.tests\\domain\\venta\\ventatest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{85676BF4-B5B1-4214-8C0E-732E65BE869B}|Tests\\VentasApp.Tests\\VentasApp.Tests.csproj|solutionrelative:tests\\ventasapp.tests\\domain\\venta\\ventatest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\viewmodels\\dtos\\ventacarddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\viewmodels\\dtos\\ventacarddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\casodeuso\\venta\\listarventasusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\venta\\listarventasusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\casodeuso\\stock\\obtenerstockdisponibleusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\stock\\obtenerstockdisponibleusecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\viewmodels\\ventas\\detalleventaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\viewmodels\\ventas\\detalleventaviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 5,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "VentaItemDto.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaItemDto.cs",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaItemDto.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaItemDto.cs",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaItemDto.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAA5wEEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T12:15:41.358Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DetalleVentaWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-23T05:26:07.075Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GuardarVentaCompletaUseCase.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
+              "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
+              "ViewState": "AgIAACQAAAAAAAAAAAApwCkAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T04:57:05.336Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "CrearStockUseCase.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Stocks\\CrearStockUseCase.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Stocks\\CrearStockUseCase.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Stocks\\CrearStockUseCase.cs",
+              "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Stocks\\CrearStockUseCase.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAIA3wAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T12:16:57.747Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "DetalleVentaWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml.cs",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml.cs",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml.cs",
+              "ViewState": "AgIAALgAAAAAAAAAAAApwMcAAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T04:58:18.301Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "ObtenerStockDisponibleUseCase.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Stock\\ObtenerStockDisponibleUseCase.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Stock\\ObtenerStockDisponibleUseCase.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Stock\\ObtenerStockDisponibleUseCase.cs",
+              "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Stock\\ObtenerStockDisponibleUseCase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T12:14:49.164Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "DetalleVentaViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\Ventas\\DetalleVentaViewModel.cs",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\ViewModels\\Ventas\\DetalleVentaViewModel.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\Ventas\\DetalleVentaViewModel.cs",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\ViewModels\\Ventas\\DetalleVentaViewModel.cs",
+              "ViewState": "AgIAAFsAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T12:15:56.283Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "VentaCardTemplate.xaml",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Resources\\Templates\\VentaCardTemplate.xaml",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Resources\\Templates\\VentaCardTemplate.xaml",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Resources\\Templates\\VentaCardTemplate.xaml",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\Resources\\Templates\\VentaCardTemplate.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-23T05:15:58.941Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "VentaCardDto.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaCardDto.cs",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaCardDto.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaCardDto.cs",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaCardDto.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAIBQwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T05:20:23.967Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ListarVentasUseCase.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\ListarVentasUseCase.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\ListarVentasUseCase.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\ListarVentasUseCase.cs",
+              "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\ListarVentasUseCase.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T05:23:48.293Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "VentaViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\Ventas\\VentaViewModel.cs",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\ViewModels\\Ventas\\VentaViewModel.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\Ventas\\VentaViewModel.cs",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\ViewModels\\Ventas\\VentaViewModel.cs",
+              "ViewState": "AgIAACIAAAAAAAAAAMBUwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T05:11:58.053Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Venta.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
+              "RelativeToolTip": "Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
+              "ViewState": "AgIAACMAAAAAAAAAAABRwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T05:11:57.629Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "VentaTest.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\Domain\\Venta\\VentaTest.cs",
+              "RelativeDocumentMoniker": "Tests\\VentasApp.Tests\\Domain\\Venta\\VentaTest.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\Domain\\Venta\\VentaTest.cs",
+              "RelativeToolTip": "Tests\\VentasApp.Tests\\Domain\\Venta\\VentaTest.cs",
+              "ViewState": "AgIAANMAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-23T05:12:13.381Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
