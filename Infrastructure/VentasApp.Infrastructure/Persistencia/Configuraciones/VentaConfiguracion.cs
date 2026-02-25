@@ -15,6 +15,13 @@ public class VentaConfiguracion : IEntityTypeConfiguration<Venta>
         builder.Property(v => v.FechaVenta)
                .IsRequired();
 
+        builder.Property(v => v.CodigoVenta)
+               .IsRequired()
+               .HasMaxLength(50);
+        
+        builder.HasIndex(v => v.CodigoVenta)
+               .IsUnique();
+
         builder.Property(v => v.MontoTotal)
                .HasColumnType("DOUBLE");
 

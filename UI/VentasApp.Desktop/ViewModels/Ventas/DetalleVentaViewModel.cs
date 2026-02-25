@@ -26,6 +26,27 @@ public partial class DetalleVentaViewModel : ObservableObject
         }
     }
 
+    private string? _clienteTelefono;
+    public string? ClienteTelefono
+    {
+        get => _clienteTelefono;
+        set
+        {
+            _clienteTelefono = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public string Codigo
+    {
+        get => Venta.Codigo;
+        set
+        {
+            Venta.Codigo = value;
+            OnPropertyChanged();
+        }
+    }
+
     public int IdCliente
     {
         get => Venta.IdCliente;
@@ -98,7 +119,12 @@ public partial class DetalleVentaViewModel : ObservableObject
                 var prod = Productos.FirstOrDefault(p => p.Id == item.ProductId);
                 if (prod is not null)
                 {
-                    item.PrecioUnitario = prod.PrecioVenta;
+                    // Solo actualizar el precio si es un item nuevo (IdDetalle == 0)
+                    // Si ya tiene IdDetalle, significa que ya existe en la BD y tiene un precio guardado
+                    if (item.IdDetalle == 0)
+                    {
+                        item.PrecioUnitario = prod.PrecioVenta;
+                    }
                     item.Producto = prod.Nombre;
                     item.StockMaximo = prod.StockDisponible;
                 }

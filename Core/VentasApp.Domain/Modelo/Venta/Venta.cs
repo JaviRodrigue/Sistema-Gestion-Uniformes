@@ -6,6 +6,7 @@ public class Venta : Entidad
 {
     private readonly List<DetalleVenta> _detalles = new();
     public DateTime FechaVenta { get; private set; }
+    public string CodigoVenta { get; private set; } = string.Empty;
     public TipoVenta TipoVenta { get; private set; }
     public decimal MontoTotal { get; private set; }
     public decimal MontoPagado { get; private set; }
@@ -20,11 +21,21 @@ public class Venta : Entidad
     public Venta(TipoVenta tipoVenta)
     {
         this.TipoVenta = tipoVenta;
+        this.CodigoVenta = string.Empty;
         this.MontoPagado = 0;
         this.MontoTotal = 0;
         this.SaldoPendiente = 0;
         this.Estado = EstadoVenta.Pendiente;
         this.FechaVenta = DateTime.Now;
+    }
+
+    public void EstablecerCodigoVenta(string codigo)
+    {
+        if (string.IsNullOrWhiteSpace(codigo))
+        {
+            throw new ExcepcionDominio("El código de venta no puede estar vacío");
+        }
+        this.CodigoVenta = codigo;
     }
 
     public void RecalcularMontosDesdePagos(decimal montoPagado)
@@ -62,10 +73,7 @@ public class Venta : Entidad
 
     public void AgregarDetalle(int itemVendible, int cantidad, decimal precioUnitario)
     {
-        if (Estado != EstadoVenta.Pendiente)
-        {
-            throw new ExcepcionDominio("Solo se puede agregar items a una venta pendiente");
-        }
+        
         
         var detalle = new DetalleVenta(itemVendible,cantidad,precioUnitario);
         _detalles.Add(detalle);

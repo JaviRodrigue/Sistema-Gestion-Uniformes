@@ -7,7 +7,7 @@ namespace VentasApp.Desktop.Views.Productos
     public partial class EditarProductoWindow : Window
     {
         private static readonly string[] _talles =
-            ["SinTalle", "4", "6", "8", "10", "12", "14", "16", "S", "M", "L", "XL"];
+            ["SinTalle", "2", "4", "6", "8", "10", "12", "14", "16", "UNICO", "S", "M", "L", "XL", "XXL"];
 
         public string? TalleSeleccionado { get; private set; }
 

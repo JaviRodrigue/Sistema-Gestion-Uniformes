@@ -24,6 +24,7 @@ public class ObtenerProductosParaVentaUseCase
                     ? iv.Producto.Nombre 
                     : $"{iv.Producto.Nombre} - Talle {iv.Talle}")
                 : iv.CodigoBarra,
+            CodigoBarra = iv.CodigoBarra,
             PrecioVenta = iv.Producto != null ? iv.Producto.PrecioVenta : 0m,
             StockDisponible = iv.Stock?.CantidadDisponible ?? 0
         }).ToList();

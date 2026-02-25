@@ -35,11 +35,16 @@ public partial class VentaViewModel : ObservableObject, IBuscable
     [ObservableProperty]
     private string _filtroEstadoPago = "Todos";
 
+    [ObservableProperty]
+    private string _ordenamiento = "Fecha (Recientes)";
+
     public List<string> FiltrosEstadoVenta { get; } = new() { "Todas", "Pendiente", "Completada", "Cancelada" };
     public List<string> FiltrosEstadoPago { get; } = new() { "Todos", "Pendiente", "Pagada" };
+    public List<string> OpcionesOrdenamiento { get; } = new() { "Fecha (Recientes)", "Fecha (Antiguas)", "Codigo (Ascendente)", "Codigo (Descendente)" };
 
     partial void OnFiltroEstadoVentaChanged(string value) => AplicarFiltros();
     partial void OnFiltroEstadoPagoChanged(string value) => AplicarFiltros();
+    partial void OnOrdenamientoChanged(string value) => AplicarFiltros();
 
     private List<VentaCardDto> _ventasBusqueda = new();
 
@@ -88,6 +93,15 @@ public partial class VentaViewModel : ObservableObject, IBuscable
             
         if (FiltroEstadoPago != "Todos")
             filtrados = filtrados.Where(v => v.EstadoPago == FiltroEstadoPago);
+
+        // Aplicar ordenamiento
+        filtrados = _ordenamiento switch
+        {
+            "Fecha (Antiguas)" => filtrados.OrderBy(v => v.Fecha),
+            "Codigo (Ascendente)" => filtrados.OrderBy(v => int.TryParse(v.Codigo, out var n) ? n : int.MaxValue),
+            "Codigo (Descendente)" => filtrados.OrderByDescending(v => int.TryParse(v.Codigo, out var n) ? n : int.MaxValue),
+            _ => filtrados.OrderByDescending(v => v.Fecha) // "Fecha (Recientes)" por defecto
+        };
 
         Ventas = new ObservableCollection<VentaCardDto>(filtrados);
     }
@@ -257,39 +271,49 @@ public partial class VentaViewModel : ObservableObject, IBuscable
         
         try
         {
-            // 1. Crear venta
+            // 1. Solicitar codigo de venta
+            var ventanaCodigo = new IngresarCodigoVentaWindow();
+            if (ventanaCodigo.ShowDialog() != true || string.IsNullOrWhiteSpace(ventanaCodigo.CodigoVenta))
+            {
+                return; // Usuario cancelo
+            }
+
+            // 2. Crear venta con el codigo ingresado
             using var scope = _provider.CreateScope();
             var crear = scope.ServiceProvider.GetRequiredService<CrearVentaUseCase>();
-            idVentaCreada = await crear.EjecutarAsync(new CrearVentaDto());
+            idVentaCreada = await crear.EjecutarAsync(new CrearVentaDto 
+            { 
+                CodigoVenta = ventanaCodigo.CodigoVenta 
+            });
 
-            // 2. Obtener detalle recién creado (evita listar todo)
+            // 3. Obtener detalle recien creado (evita listar todo)
             var obtener = scope.ServiceProvider.GetRequiredService<ObtenerVentaUseCase>();
             var detalle = await obtener.EjecutarAsync(idVentaCreada);
             if (detalle is null) return;
 
-            // 3. Mapear
+            // 4. Mapear
             var uiDetalle = MapDetalle(detalle);
 
-            // 4. Abrir ventana directamente
+            // 5. Abrir ventana directamente
             var guardar = scope.ServiceProvider.GetRequiredService<VentasApp.Application.CasoDeUso.DetalleVenta.GuardarDetalleVentaUseCase>();
             var win = new DetalleVentaWindow(uiDetalle, guardar);
             var result = win.ShowDialog();
 
-            // 5. Solo si guardó, refrescar listado
+            // 6. Solo si guardo, refrescar listado
             if (result == true)
             {
                 await CargarAsync();
             }
             else
             {
-                // Si el usuario canceló, eliminar la venta vacía recién creada
+                // Si el usuario cancelo, eliminar la venta vacia recien creada
                 var anular = scope.ServiceProvider.GetRequiredService<AnularVentaUseCase>();
                 await anular.EjecutarAsync(idVentaCreada);
             }
         }
         catch (Exception ex)
         {
-            // Si hay error y se creó una venta, intentar limpiarla
+            // Si hay error y se creo una venta, intentar limpiarla
             if (idVentaCreada > 0)
             {
                 try
@@ -303,6 +327,7 @@ public partial class VentaViewModel : ObservableObject, IBuscable
                     // Ignorar errores al limpiar
                 }
             }
+            
             
             System.Windows.MessageBox.Show($"Error al crear venta: {ex.Message}", "Error", System.Windows.MessageBoxButton.OK, System.Windows.MessageBoxImage.Error);
         }

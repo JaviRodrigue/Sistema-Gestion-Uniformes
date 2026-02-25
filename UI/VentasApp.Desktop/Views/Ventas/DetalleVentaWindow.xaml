@@ -63,6 +63,18 @@ Background="{DynamicResource SecondaryPastel}">
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Margin="0,5,0,10">
+                    <materialDesign:PackIcon Kind="Barcode" Width="16" Height="16" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                    <TextBox materialDesign:HintAssist.Hint="Codigo de venta"
+                             Text="{Binding Codigo, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             IsEnabled="{Binding EsEditable}"
+                             Margin="8,0,16,0"
+                             Width="150"
+                             FontSize="13"
+                             BorderBrush="{DynamicResource AccentBlue}"
+                             VerticalAlignment="Center"
+                             materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource AccentBlue}"
+                             Style="{StaticResource MaterialDesignFloatingHintTextBox}"/>
+                    
                     <materialDesign:PackIcon Kind="Calendar" Width="16" Height="16" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
                     <DatePicker materialDesign:HintAssist.Hint="Fecha de venta"
                                 SelectedDate="{Binding Fecha, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -98,37 +110,56 @@ Background="{DynamicResource SecondaryPastel}">
                             </Style.Triggers>
                         </Style>
                     </Border.Style>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Account" Width="18" Height="18" VerticalAlignment="Center">
-                            <materialDesign:PackIcon.Style>
-                                <Style TargetType="materialDesign:PackIcon">
-                                    <Setter Property="Foreground" Value="{DynamicResource AccentBlue}"/>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Account" Width="18" Height="18" VerticalAlignment="Center">
+                                <materialDesign:PackIcon.Style>
+                                    <Style TargetType="materialDesign:PackIcon">
+                                        <Setter Property="Foreground" Value="{DynamicResource AccentBlue}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Cliente}" Value="">
+                                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </materialDesign:PackIcon.Style>
+                            </materialDesign:PackIcon>
+                            <TextBlock Margin="8,0,0,0" VerticalAlignment="Center">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="{Binding Cliente}"/>
+                                        <Setter Property="FontWeight" Value="SemiBold"/>
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="Foreground" Value="{DynamicResource AccentBlue}"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Cliente}" Value="">
+                                                <Setter Property="Text" Value="Sin cliente asignado"/>
+                                                <Setter Property="FontStyle" Value="Italic"/>
+                                                <Setter Property="FontWeight" Value="Normal"/>
+                                                <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="26,4,0,0">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Visibility" Value="Visible"/>
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Cliente}" Value="">
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
+                                        <DataTrigger Binding="{Binding ClienteTelefono}" Value="{x:Null}">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding ClienteTelefono}" Value="">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </materialDesign:PackIcon.Style>
-                        </materialDesign:PackIcon>
-                        <TextBlock Margin="8,0,0,0" VerticalAlignment="Center">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Text" Value="{Binding Cliente}"/>
-                                    <Setter Property="FontWeight" Value="SemiBold"/>
-                                    <Setter Property="FontSize" Value="14"/>
-                                    <Setter Property="Foreground" Value="{DynamicResource AccentBlue}"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding Cliente}" Value="">
-                                            <Setter Property="Text" Value="Sin cliente asignado"/>
-                                            <Setter Property="FontStyle" Value="Italic"/>
-                                            <Setter Property="FontWeight" Value="Normal"/>
-                                            <Setter Property="Foreground" Value="{DynamicResource TextMuted}"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                            </StackPanel.Style>
+                            <materialDesign:PackIcon Kind="Phone" Width="12" Height="12" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding ClienteTelefono}" Margin="4,0,0,0" FontSize="12" Foreground="{DynamicResource TextMuted}" VerticalAlignment="Center"/>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </StackPanel>
@@ -223,7 +254,12 @@ Background="{DynamicResource SecondaryPastel}">
                                             ItemsSource="{Binding DataContext.Productos, RelativeSource={RelativeSource AncestorType=Window}}"
                                             DisplayMemberPath="Nombre"
                                             SelectedValuePath="Id"
-                                            SelectedValue="{Binding ProductId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                            SelectedValue="{Binding ProductId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            IsEditable="True"
+                                            IsTextSearchEnabled="False"
+                                            StaysOpenOnEdit="True"
+                                            MaxDropDownHeight="300"
+                                            TextBoxBase.TextChanged="ComboBox_TextChanged"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>

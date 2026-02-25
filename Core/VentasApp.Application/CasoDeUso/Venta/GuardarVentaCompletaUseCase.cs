@@ -29,6 +29,16 @@ public class GuardarVentaCompletaUseCase
         
         var venta = await _ventaRepo.ObtenerPorId(dto.Id) ?? throw new Exception("Venta no encontrada");
 
+        // Actualizar código de venta si cambió
+        if (!string.IsNullOrWhiteSpace(dto.Codigo) && dto.Codigo != venta.CodigoVenta)
+        {
+            if (await _ventaRepo.ExisteCodigoVenta(dto.Codigo))
+            {
+                throw new ExcepcionDominio($"El código de venta '{dto.Codigo}' ya existe");
+            }
+            venta.EstablecerCodigoVenta(dto.Codigo);
+        }
+
         // Aplicar cambio de fecha si fue modificada
         if (dto.Fecha != venta.FechaVenta)
         {
@@ -108,6 +118,7 @@ public class GuardarVentaCompletaUseCase
 
         // Todas las validaciones pasaron, proceder con los cambios
         var existentes = venta.Detalles.Select(d => d.Id).ToList();
+        var nuevosItemsParaMarcarEntregados = new List<int>(); // ItemVendibleIds de nuevos items marcados como entregados
 
         foreach (var item in dto.Items)
         {
@@ -124,6 +135,12 @@ public class GuardarVentaCompletaUseCase
                 venta.AgregarDetalle(item.IdItemVendible, item.Cantidad, item.PrecioUnitario);
                 stock.Descontar(item.Cantidad);
                 await _stockRepo.Actualizar(stock);
+                
+                // Guardar para marcar como entregado después del SaveChanges
+                if (item.Entregado)
+                {
+                    nuevosItemsParaMarcarEntregados.Add(item.IdItemVendible);
+                }
                 
                 System.Diagnostics.Debug.WriteLine($"[STOCK] Después de agregar - Stock disponible: {stock.CantidadDisponible}");
             }
@@ -275,6 +292,29 @@ public class GuardarVentaCompletaUseCase
         // Actualizar venta y guardar todo en una sola transaccion
         await _ventaRepo.Actualizar(venta);
         await _unitOfWork.SaveChanges();
+        
+        // Marcar items nuevos como entregados si fue necesario
+        if (nuevosItemsParaMarcarEntregados.Any())
+        {
+            // Recargar la venta para obtener los IDs de los detalles recién creados
+            var ventaActualizada = await _ventaRepo.ObtenerPorId(venta.Id);
+            if (ventaActualizada != null)
+            {
+                foreach (var itemVendibleId in nuevosItemsParaMarcarEntregados)
+                {
+                    var detalle = ventaActualizada.Detalles.FirstOrDefault(d => d.IdItemVendible == itemVendibleId && !d.Entregado);
+                    if (detalle != null)
+                    {
+                        ventaActualizada.MarcarItemComoEntregado(detalle.Id);
+                    }
+                }
+                await _ventaRepo.Actualizar(ventaActualizada);
+                await _unitOfWork.SaveChanges();
+                
+                // Actualizar la referencia de venta para el resto del método
+                venta = ventaActualizada;
+            }
+        }
         
         // Asegurar que el monto pagado en la venta refleje exactamente los pagos
         // persistidos (por si hubiera discrepancias entre el contexto y la consulta)

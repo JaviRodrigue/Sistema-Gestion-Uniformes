@@ -49,6 +49,12 @@
 
             <!-- Filtros -->
             <StackPanel Orientation="Horizontal" DockPanel.Dock="Right" Margin="0,0,20,0" VerticalAlignment="Center">
+                <TextBlock Text="Ordenar:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextMuted}"/>
+                <ComboBox ItemsSource="{Binding OpcionesOrdenamiento}" 
+                          SelectedItem="{Binding Ordenamiento}" 
+                          Width="160" Margin="0,0,15,0"
+                          Style="{StaticResource CustomFilledComboBox}"/>
+                          
                 <TextBlock Text="Estado:" VerticalAlignment="Center" Margin="0,0,10,0" Foreground="{DynamicResource TextMuted}"/>
                 <ComboBox ItemsSource="{Binding FiltrosEstadoVenta}" 
                           SelectedItem="{Binding FiltroEstadoVenta}" 

@@ -27,7 +27,7 @@ public class ListarVentasUseCase
             resultado.Add(new VentaResumenDto
             {
                 Id = v.Id,
-                Codigo = $"V-{v.Id:0000}",
+                Codigo = v.CodigoVenta,
                 Fecha = v.FechaVenta,
                 Cliente = cliente?.Nombre ?? "Sin cliente",
                 Total = v.MontoTotal,
@@ -37,7 +37,8 @@ public class ListarVentasUseCase
             });
         }
 
-        return resultado;
+        // Ordenar por codigo (ID) descendente - las mas recientes primero
+        return resultado.OrderByDescending(v => v.Id).ToList();
     }
 
 }

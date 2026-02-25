@@ -83,9 +83,27 @@ namespace VentasApp.Desktop.Views.Ventas;
             if (vm == null) return;
 
             var text = tb.Text ?? string.Empty;
-            var filtered = vm.Productos.Where(p => p.Nombre.Contains(text, System.StringComparison.OrdinalIgnoreCase)).ToList();
+            
+            // Si el texto esta vacio, mostrar todos los productos
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                combo.ItemsSource = vm.Productos;
+                return;
+            }
+            
+            // Buscar por nombre o codigo de barras
+            var filtered = vm.Productos.Where(p => 
+                p.Nombre.Contains(text, System.StringComparison.OrdinalIgnoreCase) ||
+                (p.CodigoBarra != null && p.CodigoBarra.Contains(text, System.StringComparison.OrdinalIgnoreCase))
+            ).ToList();
+            
             combo.ItemsSource = filtered;
-            combo.IsDropDownOpen = filtered.Any();
+            
+            // Solo abrir el dropdown si hay resultados y el combo no tiene un item seleccionado valido
+            if (filtered.Any() && !combo.IsDropDownOpen)
+            {
+                combo.IsDropDownOpen = true;
+            }
         }
 
         private static T? FindAncestor<T>(DependencyObject current) where T : DependencyObject
@@ -269,6 +287,7 @@ namespace VentasApp.Desktop.Views.Ventas;
                 {
                     vm.Cliente = selector.ClienteNombre;
                     vm.IdCliente = selector.IdCliente;
+                    vm.ClienteTelefono = selector.ClienteTelefono;
                 }
             }
         }

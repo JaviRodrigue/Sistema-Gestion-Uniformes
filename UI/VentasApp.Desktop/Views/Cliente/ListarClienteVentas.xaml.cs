@@ -16,6 +16,7 @@ namespace VentasApp.Desktop.Views.Cliente
 
         public string? ClienteNombre { get; private set; }
         public int IdCliente { get; private set; }
+        public string? ClienteTelefono { get; private set; }
 
         public ListarClienteVentas()
         {

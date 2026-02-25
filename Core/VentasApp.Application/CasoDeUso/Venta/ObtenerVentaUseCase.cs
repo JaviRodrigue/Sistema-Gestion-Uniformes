@@ -33,7 +33,7 @@ public class ObtenerVentaUseCase
         var dto = new VentaDetalleDto
         {
             Id = v.Id,
-            Codigo = $"V-{v.Id:0000}",
+            Codigo = v.CodigoVenta,
             Fecha = v.FechaVenta,
             Cliente = clienteVenta?.Nombre ?? string.Empty,
             IdCliente = clienteVenta?.Id ?? 0,

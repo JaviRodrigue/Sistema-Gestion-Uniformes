@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP;WINDOWS;WINDOWS7_0;NET5_0_OR_GREATER;NET6_0_OR_GREATER;NET7_0_OR_GREATER;NET8_0_OR_GREATER;NETCOREAPP3_0_OR_GREATER;NETCOREAPP3_1_OR_GREATER;WINDOWS7_0_OR_GREATER
 C:\Users\Javier\Desktop\VentasApp\UI\VentasApp.Desktop\App.xaml
-25-1287337695
+26-1359865576
 22-861227899
-43-1223182216
+442084862487
 245-2093395953
-Resources\Styles\Button.xaml;Resources\Styles\Colors.xaml;Resources\Styles\ColorsDark.xaml;Resources\Styles\Style.xaml;Resources\Styles\TextBoxes.xaml;Resources\Templates\ClienteCardTemplate.xaml;Resources\Templates\ProductoCardTemplate.xaml;Resources\Templates\VentaCardTemplate.xaml;Resources\Templates\ViewTemplate.xaml;Views\Categorias\CategoriaView.xaml;Views\Cliente\AgregarClienteWindow.xaml;Views\Cliente\ClienteView.xaml;Views\Cliente\EditarClienteWindow.xaml;Views\Cliente\ListarClienteVentas.xaml;Views\Config\ConfigView.xaml;Views\Main\MainWindow.xaml;Views\Productos\AgregarProductoWindow.xaml;Views\Productos\EditarProductoWindow.xaml;Views\Productos\ItemVendibleView.xaml;Views\Productos\ProductoView.xaml;Views\Productos\ProductoViewTest.xaml;Views\Productos\StockView.xaml;Views\Ventas\DetalleVentaWindow.xaml;Views\Ventas\PagoView.xaml;Views\Ventas\VentaView.xaml;
+Resources\Styles\Button.xaml;Resources\Styles\Colors.xaml;Resources\Styles\ColorsDark.xaml;Resources\Styles\Style.xaml;Resources\Styles\TextBoxes.xaml;Resources\Templates\ClienteCardTemplate.xaml;Resources\Templates\ProductoCardTemplate.xaml;Resources\Templates\VentaCardTemplate.xaml;Resources\Templates\ViewTemplate.xaml;Views\Categorias\CategoriaView.xaml;Views\Cliente\AgregarClienteWindow.xaml;Views\Cliente\ClienteView.xaml;Views\Cliente\EditarClienteWindow.xaml;Views\Cliente\ListarClienteVentas.xaml;Views\Config\ConfigView.xaml;Views\Main\MainWindow.xaml;Views\Productos\AgregarProductoWindow.xaml;Views\Productos\EditarProductoWindow.xaml;Views\Productos\ItemVendibleView.xaml;Views\Productos\ProductoView.xaml;Views\Productos\ProductoViewTest.xaml;Views\Productos\StockView.xaml;Views\Ventas\DetalleVentaWindow.xaml;Views\Ventas\IngresarCodigoVentaWindow.xaml;Views\Ventas\PagoView.xaml;Views\Ventas\VentaView.xaml;
 
-True
+False
 

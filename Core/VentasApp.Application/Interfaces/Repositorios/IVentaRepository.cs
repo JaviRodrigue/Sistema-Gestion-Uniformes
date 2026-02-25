@@ -8,4 +8,6 @@ public interface IVentaRepository
     Task Actualizar(Venta venta);
     Task VincularClienteVenta(int idVenta, int idCliente);
     Task<List<int>> ObtenerIdsVentasPorClientes(List<int> clientesIds);
+    Task<string> ObtenerUltimoCodigoVenta();
+    Task<bool> ExisteCodigoVenta(string codigo);
 }

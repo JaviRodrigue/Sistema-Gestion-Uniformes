@@ -19,7 +19,21 @@ public class CrearVentaUseCase
 
     public async Task<int> EjecutarAsync(CrearVentaDto VentaDto)
     {
+        // El codigo es obligatorio ahora
+        if (string.IsNullOrWhiteSpace(VentaDto.CodigoVenta))
+        {
+            throw new Exception("El codigo de venta es obligatorio");
+        }
+
+        // Verificar que el codigo no exista
+        if (await _ventaRepository.ExisteCodigoVenta(VentaDto.CodigoVenta))
+        {
+            throw new Exception($"El codigo de venta '{VentaDto.CodigoVenta}' ya existe");
+        }
+
         var venta = new Venta(VentaDto.TipoVenta);
+        venta.EstablecerCodigoVenta(VentaDto.CodigoVenta);
+        
         await _ventaRepository.Agregar(venta);
         try
         {

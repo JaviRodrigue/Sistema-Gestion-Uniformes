@@ -18,6 +18,21 @@ public class VentaRepository : IVentaRepository
         await _context.Ventas.AddAsync(venta);
     }
 
+    public async Task<string> ObtenerUltimoCodigoVenta()
+    {
+        var ultimoCodigo = await _context.Ventas
+            .OrderByDescending(v => v.Id)
+            .Select(v => v.CodigoVenta)
+            .FirstOrDefaultAsync();
+
+        return ultimoCodigo ?? "0";
+    }
+
+    public async Task<bool> ExisteCodigoVenta(string codigo)
+    {
+        return await _context.Ventas.AnyAsync(v => v.CodigoVenta == codigo);
+    }
+
     public async Task<Venta?> ObtenerPorId(int idVenta)
     {
         return await _context.Ventas.Include(v => v.Detalles)

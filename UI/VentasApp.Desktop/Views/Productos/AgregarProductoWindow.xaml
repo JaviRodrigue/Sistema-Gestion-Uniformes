@@ -49,6 +49,7 @@
                             <StackPanel>
                                 <!-- Talles numéricos -->
                                 <WrapPanel>
+                                    <RadioButton x:Name="Talle2"   Content="2"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                     <RadioButton x:Name="Talle4"   Content="4"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                     <RadioButton x:Name="Talle6"   Content="6"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                     <RadioButton x:Name="Talle8"   Content="8"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
@@ -59,10 +60,12 @@
                                 </WrapPanel>
                                 <!-- Talles con letra -->
                                 <WrapPanel Margin="0,4,0,0">
+                                    <RadioButton x:Name="TalleUNICO" Content="UNICO" GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                     <RadioButton x:Name="TalleS"   Content="S"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                     <RadioButton x:Name="TalleM"   Content="M"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                     <RadioButton x:Name="TalleL"   Content="L"   GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                     <RadioButton x:Name="TalleXL"  Content="XL"  GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
+                                    <RadioButton x:Name="TalleXXL" Content="XXL" GroupName="Talles" Margin="4,2" Style="{StaticResource MaterialDesignChoiceChipPrimaryOutlineRadioButton}"/>
                                 </WrapPanel>
                             </StackPanel>
                         </StackPanel>

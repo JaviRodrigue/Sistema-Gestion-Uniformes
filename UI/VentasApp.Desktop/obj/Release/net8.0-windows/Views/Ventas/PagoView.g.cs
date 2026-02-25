@@ -30,8 +30,6 @@ using System.Windows.Media.TextFormatting;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Shell;
-using VentasApp.Desktop.Converters;
-using VentasApp.Desktop.ViewModels.Ventas;
 
 
 namespace VentasApp.Desktop.Views.Ventas {

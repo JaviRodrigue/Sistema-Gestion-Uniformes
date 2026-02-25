@@ -7,7 +7,7 @@ namespace VentasApp.Desktop.Views.Productos
     public partial class AgregarProductoWindow : Window
     {
         private static readonly string[] _talles =
-            ["4", "6", "8", "10", "12", "14", "16", "S", "M", "L", "XL"];
+            ["2", "4", "6", "8", "10", "12", "14", "16", "UNICO", "S", "M", "L", "XL", "XXL"];
 
         /// <summary>Talle seleccionado; null si la categoría no es Uniforme.</summary>
         public string? TalleSeleccionado { get; private set; }

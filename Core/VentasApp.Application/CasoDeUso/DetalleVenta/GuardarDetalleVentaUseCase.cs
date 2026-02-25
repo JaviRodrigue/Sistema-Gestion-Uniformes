@@ -19,6 +19,16 @@ public class GuardarDetalleVentaUseCase
     {
         var venta = await _ventaRepo.ObtenerPorId(idVenta) ?? throw new Exception("Venta no encontrada");
 
+        // Actualizar código de venta si cambió
+        if (!string.IsNullOrWhiteSpace(dto.Codigo) && dto.Codigo != venta.CodigoVenta)
+        {
+            if (await _ventaRepo.ExisteCodigoVenta(dto.Codigo))
+            {
+                throw new Exception($"El código de venta '{dto.Codigo}' ya existe");
+            }
+            venta.EstablecerCodigoVenta(dto.Codigo);
+        }
+
         var existentes = venta.Detalles.Select(d => d.Id).ToList();
 
         // Procesar items enviados desde UI
