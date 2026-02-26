@@ -1,4 +1,3 @@
-UI\VentasApp.Desktop\Views\Ventas\SeleccionarItemWindow.xaml.cs
 using System;
 using System.Linq;
 using System.Windows;
