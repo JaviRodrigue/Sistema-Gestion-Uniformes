@@ -1,0 +1,44 @@
+namespace VentasApp.Application.CasoDeUso.Venta;
+using VentasApp.Application.DTOs.Venta;
+using VentasApp.Application.Interfaces;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Modelo.Venta;
+
+public class ListarVentasUseCase
+{
+    private readonly IVentaRepository _ventaRepository;
+    private readonly IClienteRepository _clienteRepository;
+
+    public ListarVentasUseCase(IVentaRepository ventaRepository, IClienteRepository clienteRepository)
+    {
+        _ventaRepository = ventaRepository;
+        _clienteRepository = clienteRepository;
+    }
+
+    public async Task<List<VentaResumenDto>> EjecutarAsync()
+    {
+        var ventas = await _ventaRepository.ObtenerTodas();
+        var resultado = new List<VentaResumenDto>();
+
+        foreach (var v in ventas)
+        {
+            var cliente = await _clienteRepository.ObtenerClientePorVenta(v.Id);
+            
+            resultado.Add(new VentaResumenDto
+            {
+                Id = v.Id,
+                Codigo = v.CodigoVenta,
+                Fecha = v.FechaVenta,
+                Cliente = cliente?.Nombre ?? "Sin cliente",
+                Total = v.MontoTotal,
+                Restante = v.SaldoPendiente,
+                EstadoVenta = v.Estado.ToString(),
+                EstadoPago = v.SaldoPendiente <= 0.01m ? "Pagada" : "Pendiente"
+            });
+        }
+
+        // Ordenar por codigo (ID) descendente - las mas recientes primero
+        return resultado.OrderByDescending(v => v.Id).ToList();
+    }
+
+}

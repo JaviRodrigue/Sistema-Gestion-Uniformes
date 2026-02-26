@@ -1,0 +1,54 @@
+using Microsoft.EntityFrameworkCore;
+using VentasApp.Application.Interfaces.Repositorios;
+using VentasApp.Domain.Modelo.Productos;
+using VentasApp.Infrastructure.Persistencia.Contexto;
+
+namespace VentasApp.Infrastructure.Persistencia.Repositorios;
+
+public class StockRepository : IStockRepository
+{
+    private readonly DatabaseContext _context;
+
+    public StockRepository(DatabaseContext context)
+    {
+        _context = context;
+    }
+
+    public async Task Agregar(Stock stock)
+    {
+        await _context.Stock.AddAsync(stock);
+    }
+
+    //Revisar!!
+    public async Task<Stock?> ObtenerPorId(int id)
+    {
+        return await _context.Stock.FindAsync(id);
+    }
+
+    public async Task<Stock?> ObtenerPorItemVendible(int idItem)
+    {
+        return await _context.Stock
+                .AsTracking()
+                .FirstOrDefaultAsync(s => s.IdItemVendible == idItem);
+    }
+
+    public async Task<List<Stock>> ObtenerTodosConProducto()
+    {
+        return await _context.Stock
+            .Include(s => s.ItemVendible)
+            .ThenInclude(i => i.Producto)
+            .AsTracking()
+            .ToListAsync();
+    }
+
+    public Task Actualizar(Stock stock)
+    {
+        // EF Core ya rastrea los cambios si la entidad fue obtenida con AsTracking()
+        // Solo necesitamos marcar como modificado si está desacoplado
+        if (_context.Entry(stock).State == EntityState.Detached)
+        {
+            _context.Stock.Update(stock);
+        }
+        return Task.CompletedTask;
+    }
+}

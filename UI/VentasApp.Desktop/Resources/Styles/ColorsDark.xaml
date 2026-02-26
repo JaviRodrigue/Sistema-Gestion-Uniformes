@@ -1,0 +1,41 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- Dark palette -->
+    <!-- Base Neutral (Backgrounds) -->
+    <SolidColorBrush x:Key="BackgroundMain"      Color="#1A1B2E"/>
+    <SolidColorBrush x:Key="SurfaceLight"        Color="#16213E"/>
+    <SolidColorBrush x:Key="SurfaceSoftPurple"   Color="#2D2B55"/>
+    <SolidColorBrush x:Key="SurfaceSoftBlue"     Color="#1A3A5C"/>
+
+    <!-- Primary / Accent -->
+    <SolidColorBrush x:Key="PrimarySoft"         Color="#9FA8DA"/>
+    <SolidColorBrush x:Key="PrimaryHover"        Color="#7986CB"/>
+    <SolidColorBrush x:Key="AccentBlueSoft"      Color="#4285F4"/>
+
+    <!-- States / Alerts -->
+    <SolidColorBrush x:Key="SuccessSoft"         Color="#69F0AE"/>
+    <SolidColorBrush x:Key="WarningSoft"         Color="#FFD740"/>
+    <SolidColorBrush x:Key="DangerSoft"          Color="#FF5252"/>
+
+    <!-- Typography -->
+    <SolidColorBrush x:Key="TextPrimary"         Color="#E8EAED"/>
+    <SolidColorBrush x:Key="TextSecondary"       Color="#BDBDBD"/>
+    <SolidColorBrush x:Key="TextMuted"           Color="#9E9E9E"/>
+    <SolidColorBrush x:Key="TextOnDark"          Color="#FFFFFF"/>
+
+    <!-- Inputs -->
+    <SolidColorBrush x:Key="InputBackground"     Color="#233044"/>
+    <SolidColorBrush x:Key="InputHint"           Color="#E8EAED"/>
+
+    <!-- Compatibility mappings (same keys used across XAML) -->
+    <SolidColorBrush x:Key="PrimaryPastel"       Color="#2D2B55"/>
+    <SolidColorBrush x:Key="SecondaryPastel"     Color="#1A1B2E"/>
+    <SolidColorBrush x:Key="AccentBlue"          Color="#4285F4"/>
+    <SolidColorBrush x:Key="AccentRed"           Color="#FF5252"/>
+    <SolidColorBrush x:Key="TextDark"            Color="#E8EAED"/>
+    <SolidColorBrush x:Key="TextLight"           Color="#BDBDBD"/>
+    <SolidColorBrush x:Key="CardBackground"      Color="#16213E"/>
+    <SolidColorBrush x:Key="SurfaceCard"         Color="#1C2736"/>  <!-- modal/card inner surface -->
+
+</ResourceDictionary>

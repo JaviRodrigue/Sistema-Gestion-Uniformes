@@ -1,0 +1,215 @@
+using System;
+using Xunit;
+using VentasApp.Domain.Modelo.Venta;
+using VentasApp.Domain.Enum;
+using VentasApp.Domain.Base;
+
+
+    public class VentaTests
+    {
+        [Fact]
+        public void CrearVenta_InicializaCorrectamente()
+        {
+            // Act
+            var venta = new Venta(TipoVenta.Presencial);
+
+            // Assert
+            Assert.Equal(TipoVenta.Presencial, venta.TipoVenta);
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
+            Assert.Equal(0, venta.MontoTotal);
+            Assert.Equal(0, venta.MontoPagado);
+            Assert.Empty(venta.Detalles);
+        }
+
+        [Fact]
+        public void AgregarDetalle_RecalculaMontoTotal()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+
+            venta.AgregarDetalle(itemVendible: 1, cantidad: 2, precioUnitario: 1000);
+
+            Assert.Single(venta.Detalles);
+            Assert.Equal(2000, venta.MontoTotal);
+        }
+
+        [Fact]
+        public void AgregarDetalle_NoPermiteSiVentaNoEstaPendiente()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.RegistrarPago(1000); // Esto cambia el estado a Completada
+
+            var ex = Assert.Throws<ExcepcionDominio>(() =>
+                venta.AgregarDetalle(2, 1, 500));
+
+            Assert.Equal("Solo se puede agregar items a una venta pendiente", ex.Message);
+        }
+
+        [Fact]
+        public void ConfirmarVenta_SinDetalles_LanzaExcepcion()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+
+            var ex = Assert.Throws<ExcepcionDominio>(() => venta.Confirmar());
+
+            Assert.Equal("La venta debe tener al menos un item", ex.Message);
+        }
+
+        [Fact]
+        public void ConfirmarVenta_ConDetalles_CambiaEstado()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+
+            venta.Confirmar();
+
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
+        }
+
+        [Fact]
+        public void RegistrarPago_Parcial_NoCambiaAPagada()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 2000);
+            venta.Confirmar();
+
+            venta.RegistrarPago(500);
+
+            Assert.Equal(500, venta.MontoPagado);
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
+        }
+
+        [Fact]
+        public void RegistrarPago_Completo_ActualizaMontos()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 2, 1000);
+            venta.Confirmar();
+
+            venta.RegistrarPago(2000);
+
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
+            Assert.Equal(0, venta.SaldoPendiente);
+            Assert.Equal(2000, venta.MontoPagado);
+        }
+
+        [Fact]
+        public void RegistrarPago_Excedido_LanzaExcepcion()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.Confirmar();
+
+            var ex = Assert.Throws<ExcepcionDominio>(() =>
+                venta.RegistrarPago(1500));
+
+            Assert.Equal("El monto excede al total de la venta", ex.Message);
+        }
+
+        [Fact]
+        public void AnularVenta_Completada_DeberiaPermitir()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.Confirmar();
+            venta.RegistrarPago(1000);
+
+            venta.AnularVenta();
+
+            Assert.Equal(EstadoVenta.Cancelada, venta.Estado);
+        }
+
+        [Fact]
+        public void ModificarFecha_DeberiaActualizarLaFechaCuandoEsValida()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            var nuevaFecha = DateTime.Now.AddDays(-5);
+
+            venta.ModificarFecha(nuevaFecha);
+
+            Assert.Equal(nuevaFecha.Date, venta.FechaVenta.Date);
+        }
+
+        [Fact]
+        public void ModificarFecha_DeberiaLanzarExcepcionCuandoFechaEsFutura()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            var fechaFutura = DateTime.Now.AddDays(1);
+
+            var ex = Assert.Throws<ExcepcionDominio>(() =>
+                venta.ModificarFecha(fechaFutura));
+
+            Assert.Equal("La fecha de la venta no puede ser futura", ex.Message);
+        }
+
+        [Fact]
+        public void ModificarFecha_DeberiaLanzarExcepcionCuandoVentaEstaCancelada()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.AnularVenta();
+            var nuevaFecha = DateTime.Now.AddDays(-1);
+
+            var ex = Assert.Throws<ExcepcionDominio>(() =>
+                venta.ModificarFecha(nuevaFecha));
+
+            Assert.Equal("No se puede modificar la fecha de una venta cancelada", ex.Message);
+        }
+
+        [Fact]
+        public void EliminarDetalle_RecalculaTotal()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 2, 1000);
+            venta.AgregarDetalle(2, 1, 500);
+
+            var detalle = venta.Detalles.First();
+
+            venta.EliminarDetalle(detalle.Id);
+
+            Assert.Single(venta.Detalles);
+            Assert.Equal(500, venta.MontoTotal);
+        }
+
+        [Fact]
+        public void ModificarDetalle_RecalculaTotal()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+
+            var detalle = venta.Detalles.First();
+
+            venta.ModificarDetalle(detalle.Id, cantidad: 3, precio: 900);
+
+            Assert.Equal(2700, venta.MontoTotal);
+        }
+
+        [Fact]
+        public void MarcarTodosLosItemsComoEntregados_CambiaACompletada()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.AgregarDetalle(2, 2, 500);
+
+            var detalles = venta.Detalles.ToList();
+            venta.MarcarItemComoEntregado(detalles[0].Id);
+            venta.MarcarItemComoEntregado(detalles[1].Id);
+
+            Assert.Equal(EstadoVenta.Completada, venta.Estado);
+        }
+
+        [Fact]
+        public void PagoCompleto_SinEntregas_NoDeberiaMarcarComoCompletada()
+        {
+            var venta = new Venta(TipoVenta.Presencial);
+            venta.AgregarDetalle(1, 1, 1000);
+            venta.Confirmar();
+
+            venta.RegistrarPago(1000);
+
+            Assert.Equal(EstadoVenta.Pendiente, venta.Estado);
+            Assert.Equal(0, venta.SaldoPendiente);
+        }
+    }
+
+
