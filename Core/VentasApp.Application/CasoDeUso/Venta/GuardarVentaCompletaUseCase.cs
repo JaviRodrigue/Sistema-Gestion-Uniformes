@@ -268,9 +268,23 @@ public class GuardarVentaCompletaUseCase
         foreach (var pagoDto in dto.Pagos.Where(p => p.Id > 0))
         {
             var pagoExistente = pagosPersistidos.FirstOrDefault(p => p.Id == pagoDto.Id);
-            if (pagoExistente != null && pagoExistente.FechaPago != pagoDto.FechaPago)
+            if (pagoExistente != null)
             {
-                pagoExistente.ModificarFecha(pagoDto.FechaPago);
+                // Actualizar fecha si cambió
+                if (pagoExistente.FechaPago != pagoDto.FechaPago)
+                {
+                    pagoExistente.ModificarFecha(pagoDto.FechaPago);
+                }
+                
+                // Actualizar estado de verificado si cambió
+                if (pagoExistente.Verificado != pagoDto.Verificado)
+                {
+                    if (pagoDto.Verificado)
+                        pagoExistente.MarcarComoVerificado();
+                    else
+                        pagoExistente.DesmarcarVerificacion();
+                }
+                
                 await _pagoRepo.Actualizar(pagoExistente);
             }
         }

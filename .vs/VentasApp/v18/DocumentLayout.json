@@ -3,6 +3,46 @@
   "WorkspaceRootPath": "C:\\Users\\Javier\\Desktop\\VentasApp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\resources\\templates\\ventacardtemplate.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\resources\\templates\\ventacardtemplate.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\views\\ventas\\detalleventawindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\views\\ventas\\detalleventawindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.domain\\modelo\\productos\\stock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|solutionrelative:core\\ventasapp.domain\\modelo\\productos\\stock.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\casodeuso\\venta\\guardarventacompletausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\venta\\guardarventacompletausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.domain\\modelo\\pago\\pagometodo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|solutionrelative:core\\ventasapp.domain\\modelo\\pago\\pagometodo.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.domain\\modelo\\pago\\pago.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|solutionrelative:core\\ventasapp.domain\\modelo\\pago\\pago.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.domain\\modelo\\venta\\detalleventa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|solutionrelative:core\\ventasapp.domain\\modelo\\venta\\detalleventa.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\interfaces\\repositorios\\iventarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\interfaces\\repositorios\\iventarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\casodeuso\\venta\\crearventausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\venta\\crearventausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.domain\\modelo\\venta\\venta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|solutionrelative:core\\ventasapp.domain\\modelo\\venta\\venta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\views\\ventas\\ingresarcodigoventawindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\views\\ventas\\ingresarcodigoventawindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -17,18 +57,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\views\\cliente\\listarclienteventas.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\views\\cliente\\listarclienteventas.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\views\\ventas\\detalleventawindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\views\\ventas\\detalleventawindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\casodeuso\\venta\\guardarventacompletausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\venta\\guardarventacompletausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.domain\\modelo\\venta\\venta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{3F47D3F4-DC97-4259-B37E-E3FEA418E7DD}|Core\\VentasApp.Domain\\VentasApp.Domain.csproj|solutionrelative:core\\ventasapp.domain\\modelo\\venta\\venta.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{36EF7BA8-6B9F-42D2-988B-950D32D93D0B}|Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj|c:\\users\\javier\\desktop\\ventasapp\\infrastructure\\ventasapp.infrastructure\\persistencia\\configuraciones\\ventaconfiguracion.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -183,14 +211,6 @@
       "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\dtos\\venta\\crearventadto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\interfaces\\repositorios\\iventarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\interfaces\\repositorios\\iventarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\casodeuso\\venta\\crearventausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\casodeuso\\venta\\crearventausecase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{36EF7BA8-6B9F-42D2-988B-950D32D93D0B}|Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj|c:\\users\\javier\\desktop\\ventasapp\\infrastructure\\ventasapp.infrastructure\\persistencia\\repositorios\\ventarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{36EF7BA8-6B9F-42D2-988B-950D32D93D0B}|Infrastructure\\VentasApp.Infrastructure\\VentasApp.Infrastructure.csproj|solutionrelative:infrastructure\\ventasapp.infrastructure\\persistencia\\repositorios\\ventarepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -212,6 +232,14 @@
     {
       "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\views\\ventas\\ingresarcodigoventawindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\views\\ventas\\ingresarcodigoventawindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|c:\\users\\javier\\desktop\\ventasapp\\ui\\ventasapp.desktop\\viewmodels\\dtos\\ventacarddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7F54099E-3F4D-4DAB-8F1D-58830670B9E7}|UI\\VentasApp.Desktop\\VentasApp.Desktop.csproj|solutionrelative:ui\\ventasapp.desktop\\viewmodels\\dtos\\ventacarddto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|c:\\users\\javier\\desktop\\ventasapp\\core\\ventasapp.application\\dtos\\venta\\ventaresumendto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B8221E18-A85B-41AD-ABB8-AC321B2695A1}|Core\\VentasApp.Application\\VentasApp.Application.csproj|solutionrelative:core\\ventasapp.application\\dtos\\venta\\ventaresumendto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -237,7 +265,173 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 52,
+              "DocumentIndex": 59,
+              "Title": "VentaResumenDto.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\DTOs\\Venta\\VentaResumenDto.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\DTOs\\Venta\\VentaResumenDto.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\DTOs\\Venta\\VentaResumenDto.cs",
+              "RelativeToolTip": "Core\\VentasApp.Application\\DTOs\\Venta\\VentaResumenDto.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAIBIwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T19:33:15.566Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "VentaCardTemplate.xaml",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Resources\\Templates\\VentaCardTemplate.xaml",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Resources\\Templates\\VentaCardTemplate.xaml",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Resources\\Templates\\VentaCardTemplate.xaml",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\Resources\\Templates\\VentaCardTemplate.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-26T19:18:04.246Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 58,
+              "Title": "VentaCardDto.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaCardDto.cs",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaCardDto.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaCardDto.cs",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\ViewModels\\DTOs\\VentaCardDto.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAIBIwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T19:18:02.962Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Stock.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Productos\\Stock.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Domain\\Modelo\\Productos\\Stock.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Productos\\Stock.cs",
+              "RelativeToolTip": "Core\\VentasApp.Domain\\Modelo\\Productos\\Stock.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAADwvwAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T15:28:31.182Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PagoMetodo.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Pago\\PagoMetodo.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Domain\\Modelo\\Pago\\PagoMetodo.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Pago\\PagoMetodo.cs",
+              "RelativeToolTip": "Core\\VentasApp.Domain\\Modelo\\Pago\\PagoMetodo.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T01:56:58.401Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Pago.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Pago\\Pago.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Domain\\Modelo\\Pago\\Pago.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Pago\\Pago.cs",
+              "RelativeToolTip": "Core\\VentasApp.Domain\\Modelo\\Pago\\Pago.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T01:56:33.989Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "DetalleVenta.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Venta\\DetalleVenta.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Domain\\Modelo\\Venta\\DetalleVenta.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Venta\\DetalleVenta.cs",
+              "RelativeToolTip": "Core\\VentasApp.Domain\\Modelo\\Venta\\DetalleVenta.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-26T01:55:56.648Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GuardarVentaCompletaUseCase.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
+              "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
+              "ViewState": "AgIAAP8AAAAAAAAAAAApwBYAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-25T03:01:19.863Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "IngresarCodigoVentaWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-25T15:17:45.868Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "VentaView.xaml",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\VentaView.xaml",
+              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Ventas\\VentaView.xaml",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\VentaView.xaml",
+              "RelativeToolTip": "UI\\VentasApp.Desktop\\Views\\Ventas\\VentaView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-25T03:50:45.375Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Venta.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
+              "RelativeToolTip": "Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-24T20:29:08.961Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CrearVentaUseCase.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\CrearVentaUseCase.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\CrearVentaUseCase.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\CrearVentaUseCase.cs",
+              "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\CrearVentaUseCase.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-24T22:26:10.818Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "IVentaRepository.cs",
+              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\Interfaces\\Repositorios\\IVentaRepository.cs",
+              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\Interfaces\\Repositorios\\IVentaRepository.cs",
+              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\Interfaces\\Repositorios\\IVentaRepository.cs",
+              "RelativeToolTip": "Core\\VentasApp.Application\\Interfaces\\Repositorios\\IVentaRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-24T22:26:02.764Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 57,
               "Title": "IngresarCodigoVentaWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml.cs",
@@ -250,55 +444,32 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "IngresarCodigoVentaWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml",
-              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml",
-              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml",
-              "RelativeToolTip": "UI\\VentasApp.Desktop\\Views\\Ventas\\IngresarCodigoVentaWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-02-25T15:17:45.868Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "VentaView.xaml",
-              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\VentaView.xaml",
-              "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Ventas\\VentaView.xaml",
-              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\VentaView.xaml",
-              "RelativeToolTip": "UI\\VentasApp.Desktop\\Views\\Ventas\\VentaView.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-02-25T03:50:45.375Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 51,
+              "DocumentIndex": 56,
               "Title": "VentaViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\Ventas\\VentaViewModel.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\ViewModels\\Ventas\\VentaViewModel.cs",
               "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\Ventas\\VentaViewModel.cs",
               "RelativeToolTip": "UI\\VentasApp.Desktop\\ViewModels\\Ventas\\VentaViewModel.cs",
-              "ViewState": "AgIAABcBAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFAAAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-25T03:50:33.207Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 1,
               "Title": "DetalleVentaWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml",
               "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml",
               "RelativeToolTip": "UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-02-25T03:07:32.624Z"
+              "WhenOpened": "2026-02-25T03:07:32.624Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 13,
               "Title": "ListarClienteVentas.xaml",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Cliente\\ListarClienteVentas.xaml",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Cliente\\ListarClienteVentas.xaml",
@@ -309,7 +480,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 12,
               "Title": "ListarClienteVentas.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Cliente\\ListarClienteVentas.xaml.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Cliente\\ListarClienteVentas.xaml.cs",
@@ -321,43 +492,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "GuardarVentaCompletaUseCase.cs",
-              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
-              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
-              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
-              "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\GuardarVentaCompletaUseCase.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAEsBAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-25T03:01:19.863Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 45,
-              "Title": "IVentaRepository.cs",
-              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\Interfaces\\Repositorios\\IVentaRepository.cs",
-              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\Interfaces\\Repositorios\\IVentaRepository.cs",
-              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\Interfaces\\Repositorios\\IVentaRepository.cs",
-              "RelativeToolTip": "Core\\VentasApp.Application\\Interfaces\\Repositorios\\IVentaRepository.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAEBUwAwAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-24T22:26:02.764Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Venta.cs",
-              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
-              "RelativeDocumentMoniker": "Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
-              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
-              "RelativeToolTip": "Core\\VentasApp.Domain\\Modelo\\Venta\\Venta.cs",
-              "ViewState": "AgIAAI8AAAAAAAAAAAAgwEsAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-24T20:29:08.961Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 44,
+              "DocumentIndex": 51,
               "Title": "CrearVentaDto.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\DTOs\\Venta\\CrearVentaDto.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\DTOs\\Venta\\CrearVentaDto.cs",
@@ -369,20 +504,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 46,
-              "Title": "CrearVentaUseCase.cs",
-              "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\CrearVentaUseCase.cs",
-              "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\CrearVentaUseCase.cs",
-              "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\CrearVentaUseCase.cs",
-              "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\CrearVentaUseCase.cs",
-              "ViewState": "AgIAABUAAAAAAAAAAIBJwAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-24T22:26:10.818Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 50,
+              "DocumentIndex": 55,
               "Title": "20260224222903_AgregarCodigoVenta.Designer.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-212592001\\20260224222903_AgregarCodigoVenta.Designer.cs",
               "RelativeDocumentMoniker": "..\\..\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-212592001\\20260224222903_AgregarCodigoVenta.Designer.cs",
@@ -394,7 +516,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 49,
+              "DocumentIndex": 54,
               "Title": "DatabaseMigrationHelper.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Migrations\\DatabaseMigrationHelper.cs",
               "RelativeDocumentMoniker": "Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Migrations\\DatabaseMigrationHelper.cs",
@@ -406,7 +528,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 48,
+              "DocumentIndex": 53,
               "Title": "DatabaseContextFactory.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Contexto\\DatabaseContextFactory.cs",
               "RelativeDocumentMoniker": "Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Contexto\\DatabaseContextFactory.cs",
@@ -418,7 +540,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 47,
+              "DocumentIndex": 52,
               "Title": "VentaRepository.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Repositorios\\VentaRepository.cs",
               "RelativeDocumentMoniker": "Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Repositorios\\VentaRepository.cs",
@@ -430,7 +552,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 14,
               "Title": "VentaConfiguracion.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Configuraciones\\VentaConfiguracion.cs",
               "RelativeDocumentMoniker": "Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Configuraciones\\VentaConfiguracion.cs",
@@ -442,7 +564,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 15,
               "Title": "ObtenerVentaUseCase.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\ObtenerVentaUseCase.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\ObtenerVentaUseCase.cs",
@@ -454,7 +576,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 43,
+              "DocumentIndex": 50,
               "Title": "GuardarDetalleVentaUseCase.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\DetalleVenta\\GuardarDetalleVentaUseCase.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\DetalleVenta\\GuardarDetalleVentaUseCase.cs",
@@ -466,19 +588,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 42,
+              "DocumentIndex": 49,
               "Title": "ListarVentasUseCase.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\ListarVentasUseCase.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\ListarVentasUseCase.cs",
               "ToolTip": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Venta\\ListarVentasUseCase.cs",
               "RelativeToolTip": "Core\\VentasApp.Application\\CasoDeUso\\Venta\\ListarVentasUseCase.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAABBwAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABEAAAAAAAAAAIBQwAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-02-24T14:52:40.563Z"
+              "WhenOpened": "2026-02-24T14:52:40.563Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 16,
               "Title": "DetalleVentaWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml.cs",
@@ -490,7 +613,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 41,
+              "DocumentIndex": 48,
               "Title": "ObtenerProductosParaVentaUseCase.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Productos\\ObtenerProductosParaVentaUseCase.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Productos\\ObtenerProductosParaVentaUseCase.cs",
@@ -502,7 +625,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 40,
+              "DocumentIndex": 47,
               "Title": "ListadoProductoDto.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\DTOs\\Productos\\ListadoProductoDto.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\DTOs\\Productos\\ListadoProductoDto.cs",
@@ -514,7 +637,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 39,
+              "DocumentIndex": 46,
               "Title": "DetalleVentaViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\Ventas\\DetalleVentaViewModel.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\ViewModels\\Ventas\\DetalleVentaViewModel.cs",
@@ -526,7 +649,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 17,
               "Title": "AgregarProductoWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Productos\\AgregarProductoWindow.xaml",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Productos\\AgregarProductoWindow.xaml",
@@ -537,7 +660,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 18,
               "Title": "EditarProductoWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Productos\\EditarProductoWindow.xaml",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Productos\\EditarProductoWindow.xaml",
@@ -548,7 +671,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 38,
+              "DocumentIndex": 45,
               "Title": "EditarProductoWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Productos\\EditarProductoWindow.xaml.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Productos\\EditarProductoWindow.xaml.cs",
@@ -560,7 +683,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 37,
+              "DocumentIndex": 44,
               "Title": "AgregarProductoWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Productos\\AgregarProductoWindow.xaml.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Productos\\AgregarProductoWindow.xaml.cs",
@@ -572,7 +695,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 43,
               "Title": "IClienteRepository.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\Interfaces\\Repositorios\\IClienteRepository.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\Interfaces\\Repositorios\\IClienteRepository.cs",
@@ -584,7 +707,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 19,
               "Title": "ClienteRepository.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Repositorios\\ClienteRepository.cs",
               "RelativeDocumentMoniker": "Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Repositorios\\ClienteRepository.cs",
@@ -596,7 +719,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 20,
               "Title": "ClienteCardTemplate.xaml",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Resources\\Templates\\ClienteCardTemplate.xaml",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Resources\\Templates\\ClienteCardTemplate.xaml",
@@ -608,7 +731,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 22,
               "Title": "AgregarClienteWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Cliente\\AgregarClienteWindow.xaml",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Cliente\\AgregarClienteWindow.xaml",
@@ -619,7 +742,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 42,
               "Title": "AgregarClienteWindow.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Cliente\\AgregarClienteWindow.xaml.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Cliente\\AgregarClienteWindow.xaml.cs",
@@ -631,7 +754,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 21,
               "Title": "EditarClienteWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\Views\\Cliente\\EditarClienteWindow.xaml",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\Views\\Cliente\\EditarClienteWindow.xaml",
@@ -642,7 +765,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 24,
               "Title": "BuscarClienteDTO.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\DTOs\\Cliente\\BuscarClienteDTO.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\DTOs\\Cliente\\BuscarClienteDTO.cs",
@@ -654,7 +777,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 23,
               "Title": "Cliente.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Domain\\Modelo\\Cliente\\Cliente.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Domain\\Modelo\\Cliente\\Cliente.cs",
@@ -666,7 +789,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 25,
               "Title": "BuscarClientePorNombreCasoDeUso.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Cliente\\BuscarClientePorNombreCasoDeUso.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Cliente\\BuscarClientePorNombreCasoDeUso.cs",
@@ -678,7 +801,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 41,
               "Title": "ObtenerClientePorDniTest.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\Application\\ClienteTest\\ObtenerClientePorDniTest.cs",
               "RelativeDocumentMoniker": "Tests\\VentasApp.Tests\\Application\\ClienteTest\\ObtenerClientePorDniTest.cs",
@@ -690,7 +813,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 40,
               "Title": "buscarClientePorNombreTest.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\Application\\ClienteTest\\buscarClientePorNombreTest.cs",
               "RelativeDocumentMoniker": "Tests\\VentasApp.Tests\\Application\\ClienteTest\\buscarClientePorNombreTest.cs",
@@ -702,7 +825,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 39,
               "Title": "ActualizarClienteTest.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\Application\\ClienteTest\\ActualizarClienteTest.cs",
               "RelativeDocumentMoniker": "Tests\\VentasApp.Tests\\Application\\ClienteTest\\ActualizarClienteTest.cs",
@@ -714,7 +837,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 38,
               "Title": "CrearClienteTest.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\Application\\ClienteTest\\CrearClienteTest.cs",
               "RelativeDocumentMoniker": "Tests\\VentasApp.Tests\\Application\\ClienteTest\\CrearClienteTest.cs",
@@ -726,7 +849,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 37,
               "Title": "CrearClienteCasoDeUso.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Cliente\\CrearClienteCasoDeUso.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Cliente\\CrearClienteCasoDeUso.cs",
@@ -738,7 +861,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 36,
               "Title": "CrearClienteDTO.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\DTOs\\Cliente\\CrearClienteDTO.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\DTOs\\Cliente\\CrearClienteDTO.cs",
@@ -750,7 +873,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 35,
               "Title": "ClienteTest.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Tests\\VentasApp.Tests\\Domain\\ClienteTest\\ClienteTest.cs",
               "RelativeDocumentMoniker": "Tests\\VentasApp.Tests\\Domain\\ClienteTest\\ClienteTest.cs",
@@ -762,7 +885,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 34,
               "Title": "ClienteCardDto.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\DTOs\\ClienteCardDto.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\ViewModels\\DTOs\\ClienteCardDto.cs",
@@ -774,7 +897,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 33,
               "Title": "ClienteViewModel.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\UI\\VentasApp.Desktop\\ViewModels\\Cliente\\ClienteViewModel.cs",
               "RelativeDocumentMoniker": "UI\\VentasApp.Desktop\\ViewModels\\Cliente\\ClienteViewModel.cs",
@@ -786,7 +909,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 32,
               "Title": "ClienteConfiguracion.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Configuraciones\\ClienteConfiguracion.cs",
               "RelativeDocumentMoniker": "Infrastructure\\VentasApp.Infrastructure\\Persistencia\\Configuraciones\\ClienteConfiguracion.cs",
@@ -798,7 +921,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 31,
               "Title": "ActualizarClienteCasoDeUso.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ActualizarClienteCasoDeUso.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ActualizarClienteCasoDeUso.cs",
@@ -810,7 +933,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 30,
               "Title": "ActualizarClienteDTO.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\DTOs\\Cliente\\ActualizarClienteDTO.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\DTOs\\Cliente\\ActualizarClienteDTO.cs",
@@ -822,7 +945,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 29,
               "Title": "ObtenerClientePorDniCasoDeUso.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ObtenerClientePorDniCasoDeUso.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ObtenerClientePorDniCasoDeUso.cs",
@@ -834,7 +957,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 28,
               "Title": "ObtenerClientePorIdCasoDeUso.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ObtenerClientePorIdCasoDeUso.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ObtenerClientePorIdCasoDeUso.cs",
@@ -846,7 +969,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 27,
               "Title": "ObtenerClientePorTelefonoCasoDeUso.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ObtenerClientePorTelefonoCasoDeUso.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ObtenerClientePorTelefonoCasoDeUso.cs",
@@ -858,7 +981,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 26,
               "Title": "ObtenerTodosClientesCasoDeUso.cs",
               "DocumentMoniker": "C:\\Users\\Javier\\Desktop\\VentasApp\\Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ObtenerTodosClientesCasoDeUso.cs",
               "RelativeDocumentMoniker": "Core\\VentasApp.Application\\CasoDeUso\\Cliente\\ObtenerTodosClientesCasoDeUso.cs",

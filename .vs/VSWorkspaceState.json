@@ -6,6 +6,6 @@
     "\\UI\\VentasApp.Desktop\\Views",
     "\\UI\\VentasApp.Desktop\\Views\\Ventas"
   ],
-  "SelectedNode": "\\UI\\VentasApp.Desktop\\Views\\Ventas\\DetalleVentaWindow.xaml.cs",
+  "SelectedNode": "\\UI\\VentasApp.Desktop\\Views\\Ventas\\VentaView.xaml",
   "PreviewInSolutionExplorer": false
 }

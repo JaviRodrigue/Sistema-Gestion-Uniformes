@@ -44,4 +44,6 @@ public class VentaCardDto
     public bool TieneDeuda => Restante > 0;
 
     public bool EstaPagada => Restante <= 0.01m;
+    
+    public bool TodosLosPagosVerificados { get; set; }
 }
