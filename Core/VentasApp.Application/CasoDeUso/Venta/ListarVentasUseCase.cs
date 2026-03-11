@@ -8,11 +8,13 @@ public class ListarVentasUseCase
 {
     private readonly IVentaRepository _ventaRepository;
     private readonly IClienteRepository _clienteRepository;
+    private readonly IPagoRepository _pagoRepository;
 
-    public ListarVentasUseCase(IVentaRepository ventaRepository, IClienteRepository clienteRepository)
+    public ListarVentasUseCase(IVentaRepository ventaRepository, IClienteRepository clienteRepository, IPagoRepository pagoRepository)
     {
         _ventaRepository = ventaRepository;
         _clienteRepository = clienteRepository;
+        _pagoRepository = pagoRepository;
     }
 
     public async Task<List<VentaResumenDto>> EjecutarAsync()
@@ -23,6 +25,8 @@ public class ListarVentasUseCase
         foreach (var v in ventas)
         {
             var cliente = await _clienteRepository.ObtenerClientePorVenta(v.Id);
+            var pagos = await _pagoRepository.ObtenerPorVenta(v.Id);
+            var todosVerificados = pagos.Any() && pagos.All(p => p.Verificado);
             
             resultado.Add(new VentaResumenDto
             {
@@ -33,7 +37,8 @@ public class ListarVentasUseCase
                 Total = v.MontoTotal,
                 Restante = v.SaldoPendiente,
                 EstadoVenta = v.Estado.ToString(),
-                EstadoPago = v.SaldoPendiente <= 0.01m ? "Pagada" : "Pendiente"
+                EstadoPago = v.SaldoPendiente <= 0.01m ? "Pagada" : "Pendiente",
+                TodosLosPagosVerificados = todosVerificados
             });
         }
 

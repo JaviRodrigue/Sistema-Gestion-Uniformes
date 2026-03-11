@@ -77,7 +77,8 @@ public partial class VentaViewModel : ObservableObject, IBuscable
             EstadoVenta = v.EstadoVenta,
             EstadoPago = v.EstadoPago,
             Total = v.Total,
-            Restante = v.Restante
+            Restante = v.Restante,
+            TodosLosPagosVerificados = v.TodosLosPagosVerificados
         }).ToList();
 
         _ventasBusqueda = _todasLasVentas.ToList();

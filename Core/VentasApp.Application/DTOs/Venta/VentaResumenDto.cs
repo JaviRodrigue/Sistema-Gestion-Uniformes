@@ -14,4 +14,6 @@ public class VentaResumenDto
     public string EstadoVenta { get; set; } = "";
 
     public string EstadoPago { get; set; } = "";
+    
+    public bool TodosLosPagosVerificados { get; set; }
 }

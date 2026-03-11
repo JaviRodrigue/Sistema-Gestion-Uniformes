@@ -321,9 +321,9 @@ Background="{DynamicResource SecondaryPastel}">
 
                         <DataGrid.Columns>
 
-                            <DataGridCheckBoxColumn Header=""
+                            <DataGridCheckBoxColumn Header="Facturado"
                                                     Binding="{Binding Verificado, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                    Width="68">
+                                                    Width="90">
                                 <DataGridCheckBoxColumn.HeaderStyle>
                                     <Style TargetType="DataGridColumnHeader">
                                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
